@@ -1,0 +1,5 @@
+# Keep data and model files byte-exact so their SHA-256 manifests stay valid on every platform.
+data/synthetic/** -text
+models/** binary
+*.xlsx binary
+*.png binary
