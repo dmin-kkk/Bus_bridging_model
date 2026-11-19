@@ -2,11 +2,11 @@
 # synthetic cohort: 150 incidents, 105 cleared within 30 min, 45 longer (by construction
 # in scripts/make_synthetic_inputs.py; checked against the data at run time).
 duration_counts = { "30" = 105, "60" = 45 }  # incident counts per duration state defining pi_30 and pi_60
-duration_source = "operational303"  # cohort used for the duration prior
+duration_source = "cohort"  # cohort used for the duration prior
 station_smoothing_beta = 0.5  # location smoothing parameter beta
 duration_cutoff_min = 30  # cutoff in minutes between short and long duration classes
 cutoff_alternatives_min = [30, 35, 40]  # alternative cutoffs evaluated for the duration classifier
-long_counts_404 = { "30" = 45, "35" = 45, "40" = 45 }  # long-class sizes per cutoff in the full incident set
+long_counts_by_cutoff = { "30" = 45, "35" = 45, "40" = 45 }  # long-class sizes per cutoff in the full incident set
 
 [clustering]
 method = "K-means"  # representative-location clustering method

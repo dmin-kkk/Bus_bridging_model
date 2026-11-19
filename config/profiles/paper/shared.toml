@@ -2,11 +2,11 @@
 # Table 3 (Stage 1 probability settings): pi_30 = 0.686, pi_60 = 0.314 = 208/303, 95/303
 # estimated from the 303 incidents with complete predictor information (Sec. 4.1).
 duration_counts = { "30" = 208, "60" = 95 }  # incident counts per duration state defining pi_30 and pi_60
-duration_source = "operational303"  # cohort used for the duration prior
+duration_source = "cohort"  # cohort used for the duration prior
 station_smoothing_beta = 0.5  # Table 3: location smoothing parameter beta
 duration_cutoff_min = 30  # Sec. 4.4: short/long classes split at 30 min
 cutoff_alternatives_min = [30, 35, 40]  # Table tab:cutoff
-long_counts_404 = { "30" = 137, "35" = 104, "40" = 90 }  # long-class sizes per cutoff in the full incident set
+long_counts_by_cutoff = { "30" = 137, "35" = 104, "40" = 90 }  # long-class sizes per cutoff in the full incident set
 
 [clustering]
 method = "K-means"  # Sec. 5.1: K-means retained

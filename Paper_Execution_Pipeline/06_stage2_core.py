@@ -25,8 +25,8 @@ import pandas as pd
 from pipeline_config import (
     DISPATCH_BUFFER_MINUTES,
     DURATIONS,
-    OPERATIONAL_303_DURATION_COUNTS,
-    OPERATIONAL_303_DURATION_WEIGHTS,
+    COHORT_DURATION_COUNTS,
+    COHORT_DURATION_WEIGHTS,
     FLEET_SIZE as FLEET_TOTAL,
     DEPOT_ACCESS_BOUND_MIN as DEPOT_ACCESS_BOUND,
     MIN_TRIP_BOARDING,
@@ -182,9 +182,9 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--duration-probability-source",
-        choices=("operational303",),
+        choices=("cohort",),
         default=str(cfg.get("probability.duration_source")),
-        help=("duration prior; operational303 uses D30=208/303 and "
+        help=("duration prior; cohort uses D30=208/303 and "
               "D60=95/303"),
     )
     parser.add_argument(
@@ -303,9 +303,9 @@ def safe(value):
 
 
 def duration_prior(source: str) -> tuple[dict[int, int], dict[int, float]]:
-    if source == "operational303":
-        return (dict(OPERATIONAL_303_DURATION_COUNTS),
-                dict(OPERATIONAL_303_DURATION_WEIGHTS))
+    if source == "cohort":
+        return (dict(COHORT_DURATION_COUNTS),
+                dict(COHORT_DURATION_WEIGHTS))
     raise ValueError(f"unknown duration probability source: {source}")
 
 

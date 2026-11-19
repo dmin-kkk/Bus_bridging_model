@@ -249,7 +249,7 @@ def load_runner():
     pipeline_path = str(PIPELINE)
     if pipeline_path not in sys.path:
         sys.path.insert(0, pipeline_path)
-    name = f"oof303_extreme_wrong_stage2_{os.getpid()}"
+    name = f"oof_extreme_wrong_stage2_{os.getpid()}"
     specification = importlib.util.spec_from_file_location(name, STAGE2_RUNNER)
     if specification is None or specification.loader is None:
         raise ImportError(STAGE2_RUNNER)
@@ -319,7 +319,7 @@ def run_one(
     if exit_code not in (0, 3) or not _result_core_complete(root, job):
         raise RuntimeError(f"{job.job_id} failed with exit code {exit_code}")
     manifest = {
-        "schema": "oof303-opposite-state-bus-only-policy-v1",
+        "schema": "oof-opposite-state-bus-only-policy-v1",
         "job_id": job.job_id,
         "kind": job.kind,
         "incident_ids": list(job.incident_ids),
@@ -372,7 +372,7 @@ def preflight(
     extreme = [job for job in jobs.values() if job.kind == "extreme-wrong"]
     ml_completion = [job for job in jobs.values() if job.kind == "ml-completion"]
     return {
-        "schema": "oof303-opposite-state-bus-only-preflight-v1",
+        "schema": "oof-opposite-state-bus-only-preflight-v1",
         "ready": not missing,
         "case_rows": len(cases),
         "case_ids": int(cases["IncidentID"].nunique()),
@@ -511,7 +511,7 @@ def main() -> int:
             for job in jobs.values()
         )
         write_json_atomic(progress_path, {
-            "schema": "oof303-opposite-state-bus-only-batch-v1",
+            "schema": "oof-opposite-state-bus-only-batch-v1",
             "state": "COMPLETE" if completed == len(jobs) and not failures else "RUNNING",
             "incident_count": len(cases),
             "extreme_policy_jobs": len(extreme),

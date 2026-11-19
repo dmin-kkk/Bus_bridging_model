@@ -27,7 +27,7 @@ BUS_DECISION_NONANTICIPATIVITY = {
 }
 SENSITIVITY_SCHEMA = (
     "production-core-stage1-sensitivity-v3-"
-    "bus-only-wait-and-see-operational303"
+    "bus-only-wait-and-see-cohort"
 )
 
 
@@ -74,7 +74,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--heuristics", type=float)
     parser.add_argument(
         "--duration-probability-source",
-        choices=("operational303",),
+        choices=("cohort",),
         default=str(cfg.get("probability.duration_source")),
     )
     args = parser.parse_args()

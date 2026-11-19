@@ -293,7 +293,7 @@ def main() -> int:
         args.output_dir / "nested_oof_predictions.csv", index=False, encoding="utf-8-sig"
     )
     audit = {
-        "schema": "long30-303-optuna-nested-comparison-v1",
+        "schema": "long30-optuna-nested-comparison-v1",
         "profile": cfg.name,
         "N": int(len(target)),
         "Long": int(target.sum()),

@@ -34,7 +34,7 @@ from pipeline_config import (  # noqa: E402  (values read from the profile)
     DEPOT_ACCESS_BOUND_MIN,
     MIN_TRIP_BOARDING,
     OD_HOURLY_MIN_TRIPS,
-    OPERATIONAL_303_DURATION_WEIGHTS,
+    COHORT_DURATION_WEIGHTS,
     REPRESENTATIVE_BRANCH_FILENAME,
     REPRESENTATIVES_PER_DURATION,
     ROUTE_FILENAME,
@@ -196,8 +196,8 @@ def verify_pinned_branch_file(path: Path) -> None:
 
 
 def duration_weights(source: str) -> dict[int, float]:
-    if source == "operational303":
-        return dict(OPERATIONAL_303_DURATION_WEIGHTS)
+    if source == "cohort":
+        return dict(COHORT_DURATION_WEIGHTS)
     raise ValueError(f"unknown duration probability source: {source}")
 
 
@@ -513,9 +513,9 @@ def parse_args(argv=None):
         help="representative branch CSV used by every selected window")
     parser.add_argument(
         "--duration-probability-source",
-        choices=("operational303",),
+        choices=("cohort",),
         default=str(cfg.get("stage1.duration_probability_source")),
-        help=("duration prior used in the Stage 1 objective; operational303 "
+        help=("duration prior used in the Stage 1 objective; cohort "
               "uses probability.duration_counts (Table 3: pi_30, pi_60)"))
     parser.add_argument(
         "--accept-incumbent", action=argparse.BooleanOptionalAction,

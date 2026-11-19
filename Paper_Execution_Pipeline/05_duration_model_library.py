@@ -65,7 +65,7 @@ EXPECTED_SOURCE_N = int(cfg.get("prediction.guards.source_rows"))
 EXPECTED_COHORT_N = int(cfg.get("clustering.guards.regular_incidents"))
 PREDICTION_CUTOFFS = tuple(int(value) for value in cfg.get("probability.cutoff_alternatives_min"))
 PREDICTION_LONG_COUNTS = {
-    int(key): int(value) for key, value in cfg.get("probability.long_counts_404").items()
+    int(key): int(value) for key, value in cfg.get("probability.long_counts_by_cutoff").items()
 }
 REGULAR_TRIP_PATTERN = str(cfg.get("prediction.cohort.regular_trip_pattern"))
 PEAK_HOURS = [int(value) for value in cfg.get("prediction.cohort.peak_hours")]
@@ -1073,8 +1073,8 @@ def main() -> None:
         cutoff: int((duration >= cutoff).sum())
         for cutoff in PREDICTION_CUTOFFS
     }
-    if counts != PREDICTION_LONG_COUNTS:  # guard: probability.long_counts_404
-        raise ValueError(f"Unexpected long counts {counts} (probability.long_counts_404)")
+    if counts != PREDICTION_LONG_COUNTS:  # guard: probability.long_counts_by_cutoff
+        raise ValueError(f"Unexpected long counts {counts} (probability.long_counts_by_cutoff)")
     print(
         f"Preflight OK: N={len(data)}, Long counts={counts}, "
         f"families={len(candidate_models(args.trees, args.threads))}, "

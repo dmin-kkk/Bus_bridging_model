@@ -2548,7 +2548,7 @@ def build_retained_key_audit(
     assignment_path = require_file(
         production_dir.resolve()
         / output_name("assignments"),
-        "production operational303 retained assignment table",
+        "production cohort retained assignment table",
     )
     production = pd.read_csv(
         assignment_path,
@@ -2580,7 +2580,7 @@ def build_retained_key_audit(
 
     probability_path = require_file(
         production_dir.resolve() / output_name("station_probability"),
-        "production operational303 station probability table",
+        "production cohort station probability table",
     )
     production_probability = pd.read_csv(
         probability_path,
@@ -2641,12 +2641,12 @@ def build_retained_key_audit(
     if not audit["exact_key_set_match"]:
         raise AssertionError(
             "global FFS retained station-hour keys differ from production "
-            "operational303 support"
+            "cohort support"
         )
     if not audit["exact_station_probability_match"]:
         raise AssertionError(
             "global FFS station probabilities differ from production "
-            "operational303 probabilities"
+            "cohort probabilities"
         )
     return audit
 
@@ -3308,7 +3308,7 @@ def build_global_ffs_reduction_profile(
         gates.loc[len(gates)] = {
             "hour": -1,
             "k": -1,
-            "gate": "production_operational303_retained_key_set_exact",
+            "gate": "production_cohort_retained_key_set_exact",
             "observed": retained_key_audit["current_key_sha256"],
             "expected": retained_key_audit["production_key_sha256"],
             "passed": retained_key_audit["exact_key_set_match"],
@@ -3316,7 +3316,7 @@ def build_global_ffs_reduction_profile(
         gates.loc[len(gates)] = {
             "hour": -1,
             "k": -1,
-            "gate": "production_operational303_per_hour_counts_exact",
+            "gate": "production_cohort_per_hour_counts_exact",
             "observed": json.dumps(
                 retained_key_audit["current_count_by_hour"], sort_keys=True,
             ),
@@ -3328,7 +3328,7 @@ def build_global_ffs_reduction_profile(
         gates.loc[len(gates)] = {
             "hour": -1,
             "k": -1,
-            "gate": "production_operational303_station_probability_exact",
+            "gate": "production_cohort_station_probability_exact",
             "observed": retained_key_audit[
                 "maximum_station_probability_abs_delta"
             ],
@@ -3659,7 +3659,7 @@ def main(argv: list[str] | None = None) -> None:
     ):
         raise ValueError(
             "global FFS profile requires --history-cohort-file for the "
-            "operational303 cohort"
+            "operational cohort"
         )
     if args.global_ffs_reduction_profile_only:
         K_VALUES = GLOBAL_FFS_PROFILE_K_VALUES

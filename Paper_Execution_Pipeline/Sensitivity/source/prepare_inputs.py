@@ -201,7 +201,7 @@ def main() -> int:
         if path.is_file() and path.name != "input_manifest.json"
     )
     manifest = {
-        "schema": "peak-sensitivity-inputs-operational303-v2",
+        "schema": "peak-sensitivity-inputs-cohort-v2",
         "profile": cfg.name,
         "stage1_k_windows": list(STAGE1_K_WINDOWS),
         "stage2_windows": list(STAGE2_WINDOWS),

@@ -42,7 +42,7 @@ import network_data  # noqa: E402
 
 PREDICTION_FILE = ROOT / "05_duration_model_library.py"
 COMPARISON_FILE = ROOT / "05_duration_model_comparison.py"
-SCHEMA = "full-grid-fixed-type-lightgbm-303-refit-ensemble-v1"
+SCHEMA = "full-grid-fixed-type-lightgbm-refit-ensemble-v1"
 OOF_TOLERANCE = 1e-12      # comparison tolerance of the OOF reconstruction check
 PINNED_TOLERANCE = 1e-12   # comparison tolerance of the recompute-vs-pinned check
 

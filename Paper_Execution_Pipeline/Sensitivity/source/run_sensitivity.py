@@ -71,7 +71,7 @@ STAGE1_SCHEMA = (
 )
 STAGE1_SENSITIVITY_SCHEMA = (
     "production-core-stage1-sensitivity-v3-"
-    "bus-only-wait-and-see-operational303"
+    "bus-only-wait-and-see-cohort"
 )
 STAGE1_NONANTICIPATIVITY_SCOPE = "BUS_Y_U_PSI_ONLY"
 STAGE1_PASSENGER_RECOURSE_MODE = "DURATION_SPECIFIC_WAIT_AND_SEE"
@@ -94,7 +94,7 @@ SCENARIO_STATS = cfg.results_dir / cfg.get("paths.disruptions") / "_scenario_sta
 FINAL_LIGHTGBM_PROBABILITY_ROOT = cfg.results_dir / cfg.get("paths.probabilities")
 SAVED_FLEET_ALLOCATION_ROOT = STAGE1_PREREQUISITE_ROOT
 LIGHTGBM_PROBABILITY_SCHEMA = (
-    "full-grid-fixed-type-lightgbm-303-refit-ensemble-v1"
+    "full-grid-fixed-type-lightgbm-refit-ensemble-v1"
 )
 PROBABILITY_MODEL = str(cfg.get("evaluation.oof.model"))
 # Incident-type label -> slug of the ML stage's fixed-type probability files.
@@ -274,7 +274,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--stage1-duration-probability-source",
-        choices=("operational303",),
+        choices=("cohort",),
         default=STAGE1_DURATION_PROBABILITY_SOURCE,
     )
     parser.add_argument("--prepare-only", action="store_true")

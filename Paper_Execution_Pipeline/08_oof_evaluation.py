@@ -97,10 +97,10 @@ NONANTICIPATIVITY_MODE = "bus-only"
 FORMULATION_MODE = "BUS_ONLY_WAIT_AND_SEE"
 PASSENGER_RECOURSE = "WAIT_AND_SEE"
 SCHEMA = (
-    "paper-oof-operational-value-lightgbm-operational303-"
+    "paper-oof-operational-value-lightgbm-cohort-"
     "bus-only-wait-and-see-v3"
 )
-INPUT_AUDIT_SCHEMA = "paper-oof-operational303-input-audit-v1"
+INPUT_AUDIT_SCHEMA = "paper-oof-cohort-input-audit-v1"
 BASE_STAGE2_SCHEMA = (
     "paper-stage2-full-pool-joint-30-60-bus-only-na-v5"
 )
@@ -130,7 +130,7 @@ PASSENGER_AND_BUS_STAGE2_SCHEMA = (
     "paper-stage2-full-pool-joint-30-60-passenger-bus-na-raw-rail-v5"
 )
 PASSENGER_AND_BUS_OOF_SCHEMA = (
-    "paper-oof-operational-value-lightgbm-operational303-"
+    "paper-oof-operational-value-lightgbm-cohort-"
     "passenger-and-bus-shared-raw-rail-v5"
 )
 PASSENGER_AND_BUS_EVALUATION_SCHEMA = (
@@ -531,7 +531,7 @@ def prepare(args: argparse.Namespace) -> pd.DataFrame:
             (args.oof_file.parent / "audit.json").resolve()
         ),
         "stage1_allocation": (
-            "fixed x*(hour) from operational303 reclustered K14 Stage 1"
+            "fixed x*(hour) from cohort reclustered Stage 1"
         ),
         "stage1_allocation_dir": str(allocation_dir.resolve()),
         "evaluation": "realized branch, unweighted over held-out incidents",
@@ -566,7 +566,7 @@ def validate_preflight(
 ) -> dict:
     model_audit_path = args.oof_file.parent / "audit.json"
     model_audit = json.loads(model_audit_path.read_text(encoding="utf-8"))
-    if model_audit.get("schema") != "long30-303-optuna-nested-comparison-v1":
+    if model_audit.get("schema") != "long30-optuna-nested-comparison-v1":
         raise ValueError(f"unexpected nested-OOF audit schema: {model_audit_path}")
     if (
         int(model_audit.get("N", -1)) != COHORT_SIZE

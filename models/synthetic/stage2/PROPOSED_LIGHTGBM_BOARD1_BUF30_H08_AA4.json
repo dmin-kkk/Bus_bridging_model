@@ -1,0 +1,28 @@
+{
+  "model": "PROPOSED_LIGHTGBM_BOARD1_BUF30_H08_AA4",
+  "status": "OPTIMAL",
+  "objective": 443.46468842028247,
+  "bound": 439.76527968606257,
+  "gap": 0.008342059313443869,
+  "runtime_seconds": 12.32200002670288,
+  "solution_count": 9,
+  "num_vars": 123354,
+  "num_constrs": 96893,
+  "num_nonzeros": 332601,
+  "num_binary_vars": 734,
+  "fingerprint": 136144474,
+  "gurobi_version": "12.0.3",
+  "parameters": {
+    "TimeLimit": 60.0,
+    "MIPGap": 0.01,
+    "MIPFocus": 3,
+    "Heuristics": 0.05,
+    "Cuts": 2,
+    "Threads": 2,
+    "Seed": 0
+  },
+  "files": {
+    "mps": "PROPOSED_LIGHTGBM_BOARD1_BUF30_H08_AA4.mps.bz2",
+    "sol": "PROPOSED_LIGHTGBM_BOARD1_BUF30_H08_AA4.sol.bz2"
+  }
+}

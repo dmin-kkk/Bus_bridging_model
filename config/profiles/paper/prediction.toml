@@ -47,7 +47,7 @@ comparison = "long30_optuna"  # sub-folder of the model comparison
 thresholds = "lightgbm_cutoffs_permutation"  # sub-folder of the cutoff and permutation results
 incident_type_only = "lightgbm_incident_type_only"  # sub-folder of the incident-type-only model
 no_incident_type = "lightgbm_no_incident_type"  # sub-folder of the model without incident type
-legacy_cutoffs = "legacy404_cutoffs"  # sub-folder of the cutoff comparison
+legacy_cutoffs = "legacy_cutoffs"  # sub-folder of the cutoff comparison
 probability_file = "duration_probabilities_{slug}.csv"  # file name template of the probability tables
 save_models = false  # write the fitted classifier to disk
 model_dir = ""  # folder of the saved classifier (empty = none)

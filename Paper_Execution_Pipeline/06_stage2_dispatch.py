@@ -90,7 +90,7 @@ PASSENGER_AND_BUS_FORMULATION_MODE = (
     "PASSENGER_AND_BUS_SHARED_RAW_DURATION_RAIL"
 )
 # Format tag written by 05_duration_probabilities.py (SCHEMA).
-PROBABILITY_SCHEMA = "full-grid-fixed-type-lightgbm-303-refit-ensemble-v1"
+PROBABILITY_SCHEMA = "full-grid-fixed-type-lightgbm-refit-ensemble-v1"
 TRAINING_COHORT = str(cfg.get("probability.duration_source"))
 MODEL_FAMILY = str(cfg.get("prediction.full_grid.model_family"))
 # prediction.full_grid.incident_types: [slug, label] pairs (or a slug -> label table).

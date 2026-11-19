@@ -346,8 +346,8 @@ def main() -> int:
     FINAL_FIGURES.mkdir(parents=True, exist_ok=True)
     apply_global_style()
     optuna.logging.set_verbosity(optuna.logging.WARNING)
-    prediction = load_module("lightgbm303_prediction", PREDICTION_FILE)
-    optimizer = load_module("lightgbm303_optimizer", OPTUNA_FILE)
+    prediction = load_module("lightgbm_prediction", PREDICTION_FILE)
+    optimizer = load_module("lightgbm_optimizer", OPTUNA_FILE)
     OPTIMIZER = optimizer
     data, duration, identifiers, source_audit = load_cohort(prediction)
     n = len(data)
@@ -404,7 +404,7 @@ def main() -> int:
     plot_permutation(permutation_summary)
 
     audit = {
-        "schema": "lightgbm-303-thresholds-grouped-permutation-v1",
+        "schema": "lightgbm-thresholds-grouped-permutation-v1",
         "N": n,
         "cutoffs": list(CUTOFFS),
         "model": FAMILY,

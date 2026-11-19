@@ -1,5 +1,5 @@
 [stage1]
-duration_probability_source = "operational303"  # cohort used for the Stage 1 duration probabilities
+duration_probability_source = "cohort"  # cohort used for the Stage 1 duration probabilities
 max_depots_per_route = 0  # maximum depots considered per route (0 = all)
 # start Stage 1 from the allocation of a previous run when available (no previous run to start from)
 warm_start_enabled = false

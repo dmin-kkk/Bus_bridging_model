@@ -169,7 +169,7 @@ def main() -> int:
         encoding="utf-8-sig",
     )
     audit = {
-        "schema": "lightgbm-303-incident-type-ablation-v1",
+        "schema": "lightgbm-incident-type-ablation-v1",
         "N": len(target),
         "Long": int(target.sum()),
         "Short": int((target == 0).sum()),

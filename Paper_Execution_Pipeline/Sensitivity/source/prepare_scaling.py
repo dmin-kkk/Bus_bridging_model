@@ -432,7 +432,7 @@ def prepare_window(args: argparse.Namespace, window: int, k_values: tuple[int, .
         }
     audit = {
         "schema": (
-            f"operational303-kmeans-internal-h{WINDOW:02d}-scaling-input-v1"
+            f"cohort-kmeans-internal-h{WINDOW:02d}-scaling-input-v1"
         ),
         "window": WINDOW,
         "k_values": list(K_VALUES),
@@ -443,7 +443,7 @@ def prepare_window(args: argparse.Namespace, window: int, k_values: tuple[int, .
         "internal_representative_candidate_count": int(data["complete"].sum()),
         "maximum_exact_k": maximum_exact_k,
         "historical_rows": int(history_rows),
-        "baseline_k14_reproduction": checks,
+        "baseline_reproduction": checks,
         "baseline_k": BASELINE_K,
         "support_audit": support_audit,
         "outputs": outputs,

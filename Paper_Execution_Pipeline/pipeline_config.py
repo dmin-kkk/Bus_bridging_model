@@ -20,10 +20,10 @@ WINDOWS = tuple(int(window) for window in cfg.get("time.windows"))
 DURATIONS = tuple(int(duration) for duration in cfg.get("time.durations_min"))
 # Executable operational cohort used by the Long30 model and downstream OOF
 # evaluation (Table 3: pi_30, pi_60).
-OPERATIONAL_303_DURATION_COUNTS = _int_keys(cfg.get("probability.duration_counts"))
-OPERATIONAL_303_DURATION_WEIGHTS = {
-    duration: count / sum(OPERATIONAL_303_DURATION_COUNTS.values())
-    for duration, count in OPERATIONAL_303_DURATION_COUNTS.items()
+COHORT_DURATION_COUNTS = _int_keys(cfg.get("probability.duration_counts"))
+COHORT_DURATION_WEIGHTS = {
+    duration: count / sum(COHORT_DURATION_COUNTS.values())
+    for duration, count in COHORT_DURATION_COUNTS.items()
 }
 
 REPRESENTATIVES_PER_DURATION = int(cfg.get("clustering.k_per_window"))
@@ -37,7 +37,7 @@ OD_HOURLY_MIN_TRIPS = float(cfg.get("operations.od_hourly_min_trips"))
 WALKING_MINUTES = int(cfg.get("operations.walking_transfer_min"))
 WALKING_TIME_FILENAME = cfg.get("inputs.walking_times")
 PREDICTION_CUTOFFS = tuple(int(value) for value in cfg.get("probability.cutoff_alternatives_min"))
-PREDICTION_LONG_COUNTS = _int_keys(cfg.get("probability.long_counts_404"))
+PREDICTION_LONG_COUNTS = _int_keys(cfg.get("probability.long_counts_by_cutoff"))
 
 SCENARIO_LOGIC_VERSION = cfg.get("scenarios.logic_version")
 ROUTE_FILENAME = cfg.get("routes.library_file")

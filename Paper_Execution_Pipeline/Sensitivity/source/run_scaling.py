@@ -180,7 +180,7 @@ def run_window(args: argparse.Namespace, window: int, k_values: tuple[int, ...])
         if not path.exists():
             raise FileNotFoundError(path)
     audit = json.loads(audit_path.read_text(encoding="utf-8"))
-    if audit.get("baseline_k14_reproduction") != {
+    if audit.get("baseline_reproduction") != {
         "stored_internal_representatives": True,
         "stored_unique_representatives": True,
         "labels": True,
@@ -194,7 +194,7 @@ def run_window(args: argparse.Namespace, window: int, k_values: tuple[int, ...])
         )
 
     state = {
-        "schema": f"operational303-kmeans-internal-h{WINDOW:02d}-scaling-v1",
+        "schema": f"cohort-kmeans-internal-h{WINDOW:02d}-scaling-v1",
         "state": "RUNNING",
         "window": WINDOW,
         "k_values": list(K_VALUES),
@@ -222,7 +222,7 @@ def run_window(args: argparse.Namespace, window: int, k_values: tuple[int, ...])
             "VARIABLE_HINT_ONLY" if args.warm_start_hint_only
             else "MIP_START_AND_VARIABLE_HINT"
         ),
-        "baseline_k14_reused": str(
+        "baseline_reused": str(
             warm_start / "Performance" / f"FullMILP_{WINDOW:02d}_summary.json"
         ),
         "results": [],
@@ -253,7 +253,7 @@ def run_window(args: argparse.Namespace, window: int, k_values: tuple[int, ...])
     def command_for(k: int) -> list[str]:
         command = [
             str(PYTHON), "-X", "utf8", "-u", str(WORKER),
-            "--case-id", f"OP303_KMEANS_INTERNAL_H{WINDOW:02d}_K{k}",
+            "--case-id", f"COHORT_KMEANS_INTERNAL_H{WINDOW:02d}_K{k}",
             "--window", str(WINDOW),
             "--route-file", str(route),
             "--representative-branches", str(INPUT / (

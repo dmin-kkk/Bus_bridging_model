@@ -251,10 +251,10 @@ def plot_metric(
     dpi = int(cfg.get("archive.figure_dpi"))
     figure.savefig(output_dir / f"{stem}.png", dpi=dpi, bbox_inches="tight")
     final_names = {
-        "oof_ri_improvement_extreme_wrong_303": (
+        "oof_ri_improvement_extreme_wrong": (
             "OOF_average_RI.png"
         ),
-        "oof_passenger_time_reduction_extreme_wrong_303": (
+        "oof_passenger_time_reduction_extreme_wrong": (
             "OOF_average_PT.png"
         ),
     }
@@ -334,7 +334,7 @@ def main() -> int:
         )
     )
     check = {
-        "schema": "oof303-opposite-state-evaluation-preflight-v1",
+        "schema": "oof-opposite-state-evaluation-preflight-v1",
         "ready": ready,
         "batch_state": progress.get("state"),
         "completed_jobs": progress.get("completed_jobs"),
@@ -349,7 +349,7 @@ def main() -> int:
     if not ready:
         raise RuntimeError(f"evaluation is not ready: {check}")
 
-    evaluator = load_module("oof303_extreme_wrong_evaluator", EVALUATOR)
+    evaluator = load_module("oof_extreme_wrong_evaluator", EVALUATOR)
     # The RI/PT helpers read these module paths.
     evaluator.NORMAL_DIR = normal_dir
     evaluator.OD_FILE = OD_FILE
@@ -516,9 +516,9 @@ def main() -> int:
 
     figures_dir = evaluation_dir / "figures"
     evaluation_dir.mkdir(parents=True, exist_ok=True)
-    result.to_csv(evaluation_dir / "incident_policy_results_303.csv", index=False)
+    result.to_csv(evaluation_dir / "incident_policy_results_extreme_wrong.csv", index=False)
     summary = bootstrap_summary(result)
-    summary.to_csv(evaluation_dir / "policy_summary_303.csv", index=False)
+    summary.to_csv(evaluation_dir / "policy_summary_extreme_wrong.csv", index=False)
     ri_values = summary.loc[
         summary["Metric"].eq("RI improvement")
     ].set_index("Policy")["Value"]
@@ -526,7 +526,7 @@ def main() -> int:
     ri_order = bool(np.all(np.diff(ri_values.loc[list(POLICIES)].to_numpy()) > 0.0))
     pt_order = bool(np.all(np.diff(pt_values.loc[list(POLICIES)].to_numpy()) > 0.0))
     audit = {
-        "schema": "oof303-opposite-state-bus-only-evaluation-v1",
+        "schema": "oof-opposite-state-bus-only-evaluation-v1",
         "input_incidents": len(cases),
         "evaluated_incidents": len(evaluation_cases),
         "zero_impact_incidents_excluded": zero_impact_excluded,
@@ -559,14 +559,14 @@ def main() -> int:
         summary,
         "RI improvement",
         "RI improvement (%)",
-        "oof_ri_improvement_extreme_wrong_303",
+        "oof_ri_improvement_extreme_wrong",
         figures_dir,
     )
     plot_metric(
         summary,
         "PT reduction",
         "PT reduction (min/affected passenger)",
-        "oof_passenger_time_reduction_extreme_wrong_303",
+        "oof_passenger_time_reduction_extreme_wrong",
         figures_dir,
     )
     print(summary.to_string(index=False, float_format=lambda value: f"{value:.6f}"))
