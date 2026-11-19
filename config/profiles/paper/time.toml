@@ -1,8 +1,0 @@
-[time]
-windows = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]  # Sec. 4: 15 hourly planning windows, 06:00-20:00
-horizon_min = 240  # Table 3: planning horizon T
-disruption_onset_min = 10  # Table 3: disruption onset t0
-durations_min = [30, 60]  # Sec. 3.1 / Table 3 (pi_30, pi_60): two duration states
-dispatch_interval_min = 10  # Table 3: candidate service start interval eta
-clearance_buffer_min = 30  # Table 3: clearance buffer delta
-evaluation_start_min = 10  # Sec. 5 (RI/PT evaluated over t = 10..240)

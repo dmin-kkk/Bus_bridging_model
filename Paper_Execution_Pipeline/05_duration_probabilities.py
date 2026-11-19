@@ -52,7 +52,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-root", type=Path, default=cfg.results_dir / cfg.get("paths.probabilities"))
     parser.add_argument("--threads", type=int, default=int(cfg.get("parallel.ml_threads")))
     parser.add_argument("--recompute", action="store_true",
-                        help="paper profile: refit the ensemble and diff it against the pinned file")
+                        help="with pinned.use_pinned: refit the ensemble and diff it against the pinned file")
     parser.add_argument(
         "--comparison-dir", type=Path,
         default=cfg.results_dir / cfg.get("paths.ml") / cfg.get("prediction.outputs.comparison"),

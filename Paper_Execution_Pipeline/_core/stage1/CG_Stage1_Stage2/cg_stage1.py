@@ -2233,7 +2233,7 @@ def _export_model_files(model: gp.Model, directory, name: str,
                         metadata: Mapping | None = None) -> dict:
     """Write ``<name>.mps.gz``, ``<name>.sol.gz`` (when an incumbent exists) and a JSON sidecar.
 
-    Code-only (stage1.export_model_dir): used by the synthetic profile; the paper profile keeps
+    Code-only (stage1.export_model_dir): used by the synthetic profile; the paper run kept
     it off because real-instance models are restricted data.
     """
     import json

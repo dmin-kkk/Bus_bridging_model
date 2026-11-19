@@ -642,7 +642,7 @@ def data_corridor_item(arc: Archive) -> None:
     """Fig. 5b / Sec. 4.1: daily boarding and alighting per corridor group (needs the restricted OD matrix)."""
     try:
         od_path = cfg.path("inputs.od_matrix")
-    except Exception as exc:  # paper profile without $BB_DATA_DIR
+    except Exception as exc:  # profile whose data directory is not set
         arc.skip("data_corridor", f"inputs not available ({exc})")
         return
     if not od_path.is_file():

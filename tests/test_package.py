@@ -39,20 +39,6 @@ class ProfileTests(unittest.TestCase):
                                 capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
-    def test_pinned_files_match_their_hashes(self):
-        # The pinned paper files derive from restricted data and are not distributed;
-        # check them only when a user has placed them in the package.
-        if not (ROOT / "pinned").is_dir():
-            self.skipTest("pinned/ (paper profile, restricted) is not distributed")
-        paper = bbconfig.load("paper")
-        for group in ("clustering", "probabilities"):
-            for key, value in paper.get(f"pinned.{group}").items():
-                if key.endswith("_sha256"):
-                    continue
-                path = ROOT / value
-                self.assertTrue(path.is_file(), path)
-                self.assertEqual(sha256(path), paper.get(f"pinned.{group}.{key}_sha256").upper(), path)
-
     def test_synthetic_inputs_exist_and_match_manifest(self):
         synthetic = bbconfig.load("synthetic")
         for key, name in synthetic.get("inputs").items():
@@ -84,7 +70,7 @@ class ReleaseHygieneTests(unittest.TestCase):
             if any(part in SKIP for part in rel.parts) or rel.name == "test_package.py":
                 continue
             text = path.read_text(encoding="utf-8-sig", errors="replace")
-            scanner = rel.as_posix() in {"scripts/audit_package.py", "scripts/build_archive.py"}
+            scanner = rel.as_posix() == "scripts/build_archive.py"
             for number, line in enumerate(text.splitlines(), 1):
                 if scanner and "re.compile(" in line:
                     continue  # detection pattern of a scanning tool

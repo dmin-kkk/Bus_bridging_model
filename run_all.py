@@ -1,13 +1,12 @@
 """Run the whole pipeline for one configuration profile.
 
     python run_all.py --profile synthetic              # end-to-end run on the synthetic network
-    python run_all.py --profile paper --check          # check inputs, hashes and packages only
+    python run_all.py --check                          # check inputs, hashes and packages only
     python run_all.py --profile synthetic --dry-run    # print the plan
     python run_all.py --profile synthetic --from-stage 4 --to-stage 6
 
-Every parameter comes from ``config/profiles/<profile>/``. The paper profile reads its
-inputs from ``$BB_DATA_DIR`` (restricted data, not distributed); the synthetic profile
-reads ``data/synthetic/``. Outputs go to ``results/<profile>/`` unless ``$BB_RESULTS_DIR``
+Every parameter comes from ``config/profiles/<profile>/``. The default (and only shipped)
+profile, ``synthetic``, reads ``data/synthetic/``. Outputs go to ``results/<profile>/`` unless ``$BB_RESULTS_DIR``
 is set. Each task runs in its own process with ``BB_PROFILE`` set; its log is written to
 ``<results>/logs/``.
 """
@@ -153,7 +152,7 @@ def check(cfg, plan) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run the bus-bridging pipeline for one profile.")
-    parser.add_argument("--profile", default=os.environ.get("BB_PROFILE", "paper"),
+    parser.add_argument("--profile", default=os.environ.get("BB_PROFILE", "synthetic"),
                         choices=bbconfig.available_profiles())
     parser.add_argument("--check", action="store_true", help="check inputs and environment, then stop")
     parser.add_argument("--dry-run", action="store_true", help="print the plan, then stop")

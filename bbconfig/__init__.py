@@ -18,11 +18,11 @@ Usage
 Profile selection (first match wins):
 1. ``bbconfig.load(name)`` called explicitly;
 2. environment variable ``BB_PROFILE``;
-3. ``paper``.
+3. ``synthetic``.
 
 Data directory (restricted inputs are never stored in the package):
 * the profile's ``[profile].data_dir_env`` names an environment variable
-  (``BB_DATA_DIR`` for the paper profile) that must point to the inputs, or
+  (e.g. ``BB_DATA_DIR``) that must point to the inputs, or
 * ``[profile].data_dir`` gives a path relative to the package root
   (the synthetic profile ships its generated data in ``data/synthetic``).
 
@@ -130,9 +130,9 @@ def available_profiles() -> list[str]:
 
 
 def load(name: str | None = None) -> Profile:
-    """Load (and activate) a profile; ``name`` defaults to $BB_PROFILE or 'paper'."""
+    """Load (and activate) a profile; ``name`` defaults to $BB_PROFILE or 'synthetic'."""
     global _ACTIVE
-    name = name or os.environ.get("BB_PROFILE") or "paper"
+    name = name or os.environ.get("BB_PROFILE") or "synthetic"
     folder = PROFILE_ROOT / name
     if not folder.is_dir():
         raise ConfigError(f"unknown profile '{name}'; available: {available_profiles()}")

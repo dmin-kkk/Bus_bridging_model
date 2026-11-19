@@ -33,7 +33,7 @@ from bbconfig import cfg  # noqa: E402
 
 DURATIONS = tuple(int(value) for value in cfg.get("time.durations_min"))
 # Disruption rows weight a duration branch by the Table 3 duration prior pi_tau
-# (probability.duration_counts: pi_30 = 208/303, pi_60 = 95/303 in the paper profile).
+# (probability.duration_counts: pi_30 = 208/303, pi_60 = 95/303 in the paper).
 # The value enters only the Duration/Scenario_Probability columns of
 # Disruption_RI.csv; Bridging rows use each case's own Stage 2 duration weights.
 _PRIOR_COUNTS = {

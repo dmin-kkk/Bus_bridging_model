@@ -4,7 +4,7 @@
 
 The script writes every input file named in ``config/profiles/synthetic/inputs.toml``
 with the same columns, value formats and encodings as the corresponding file of the
-paper profile (``config/profiles/paper/inputs.toml``), for a fictitious 12-station,
+real (restricted) inputs used in the paper, for a fictitious 12-station,
 2-corridor regional rail network.  All values are produced here from the design
 constants in ``scripts/synthetic_design.toml`` and a seeded random generator; no value is
 copied, resampled or perturbed from the real (restricted) inputs.  The output is

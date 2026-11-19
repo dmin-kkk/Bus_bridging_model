@@ -5,7 +5,7 @@ creation hour.  The fixed Stage-1 allocation for that hour is then used in
 three Stage-2 policies:
 
 * Historical: the Stage-1 duration prior (probability.duration_counts;
-  paper profile P(D30)=208/303 and P(D60)=95/303).
+  paper values P(D30)=208/303 and P(D60)=95/303).
 * ML: the Optuna-tuned LightGBM Long30 OOF probability.
 * Oracle: the realized D30/D60 state is known at incident onset.
 

@@ -363,7 +363,7 @@ def parse_windows(value: str | None) -> tuple[int, ...]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--recompute", action="store_true",
-                        help="paper profile: rebuild the reduction and diff it against the pinned files")
+                        help="with pinned.use_pinned: rebuild the reduction and diff it against the pinned files")
     parser.add_argument("--windows", default=None, help="windows to recompute, e.g. 8,17 (default: time.windows)")
     parser.add_argument("--scenario-dir", type=Path, default=cfg.results_dir / cfg.get("paths.disruptions"),
                         help="step-01 disruption scenarios (default: <results>/paths.disruptions)")

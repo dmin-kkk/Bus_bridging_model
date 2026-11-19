@@ -50,7 +50,7 @@ ROUTE_POOL_CASES = [case["id"] for case in CASES if "route_pool" in case]
 def representative_branch_file() -> Path:
     """Stage 1 representative branches of the clustering stage (``clustering.files.branches``).
 
-    The paper profile's clustering stage copies the SHA-256-verified pinned files there.
+    With pinned.use_pinned, the clustering stage copies the SHA-256-verified pinned files there.
     """
     name = str(cfg.get("clustering.files.branches")).format(
         k=K_BASELINE, durations="_".join(str(d) for d in DURATIONS))
