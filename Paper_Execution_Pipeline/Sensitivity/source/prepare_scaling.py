@@ -35,7 +35,7 @@ sys.path.insert(0, str(PIPELINE))
 from bbconfig import cfg  # noqa: E402
 import network_data  # noqa: E402
 
-CLUSTERING = PIPELINE / "02_cluster_scenarios.py"
+CLUSTERING = PIPELINE / "02_reduction_method_comparison.py"
 RUNS = {
     int(run["window"]): tuple(int(k) for k in run["k_values"])
     for run in cfg.get("evaluation.scaling.runs")

@@ -24,7 +24,7 @@ sys.path.insert(0, str(PACKAGE))
 from bbconfig import cfg  # noqa: E402
 
 
-BASE_RUNNER = PIPELINE / "06_run_stage2.py"
+BASE_RUNNER = PIPELINE / "06_stage2_core.py"
 BASELINE_ROUTE_FILE = (
     cfg.results_dir / cfg.get("paths.routes") / str(cfg.get("routes.library_file"))
 )

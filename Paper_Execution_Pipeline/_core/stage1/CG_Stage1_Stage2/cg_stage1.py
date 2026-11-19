@@ -2911,7 +2911,7 @@ def solve_master(
             model, columns, scenario_variables, problem, config)
 
     # Eq. (27) [eq:obj_milp]: min sum_{xi in Xi^R} p_xi Z_m^B(xi); p_xi = representative
-    # cluster mass x duration prior pi_tau (Table 3), set by 04_run_stage1.reweight_duration_prior.
+    # cluster mass x duration prior pi_tau (Table 3), set by 04_stage1_positioning.reweight_duration_prior.
     model.setObjective(gp.quicksum(objective_terms), GRB.MINIMIZE)
     model.update()
     build_seconds = time.time() - started

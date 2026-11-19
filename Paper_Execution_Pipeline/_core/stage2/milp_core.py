@@ -1,5 +1,5 @@
 """
-3MILP_integrated_reduced.py — Two-Stage Stochastic MILP for Bus Bridging
+milp_core.py — Two-Stage Stochastic MILP for Bus Bridging
            열차 + 버스 공존 세계관 (파일 4 기반)
            ★ 대표 시나리오(reduced)만 Stage 2 실행 버전 ★
 
@@ -41,7 +41,7 @@ except ImportError:
 # =============================================================================
 # Every default below comes from the active configuration profile
 # (config/profiles/<profile>/*.toml, read through bbconfig).  Callers
-# (06_run_stage2.py and the evaluation scripts) may still replace the module
+# (06_stage2_core.py and the evaluation scripts) may still replace the module
 # attributes before loading data.
 import sys as _sys
 _sys.path.insert(0, str(Path(__file__).resolve().parents[3]))

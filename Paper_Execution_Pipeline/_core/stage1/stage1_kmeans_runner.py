@@ -1,6 +1,6 @@
 """Nonanticipative Stage 1 with fixed-K common-station K-means support.
 
-The original ``3MILP_integrated_reduced_corridor.py`` is imported read-only and
+The original ``stage1_network_model.py`` is imported read-only and
 left untouched.  This runner replaces only two extension points:
 
 1. scenario reduction: the precomputed common-station K-means K=10 support;
@@ -8,17 +8,17 @@ left untouched.  This runner replaces only two extension points:
    are removed before the original flow constraints are built.
 
 Dispatch variables use the original model's information-cell sharing, but with
-``DISRUPT_BUFFER=0`` so it matches ``stage2_adaptive.py`` exactly:
+``DISRUPT_BUFFER=0`` so it matches ``stage1_recourse.py`` exactly:
 
     tau <= start+30  -> (30,60,90)
     tau <= start+60  -> (60,90)
     otherwise        -> (90,)
 
 Run the full model:
-    python 3MILP_integrated_nonanticipative_kmeans_corridor.py
+    python stage1_kmeans_runner.py
 
 Audit cache-size reduction without solving:
-    python 3MILP_integrated_nonanticipative_kmeans_corridor.py --audit-window 20
+    python stage1_kmeans_runner.py --audit-window 20
 """
 
 from __future__ import annotations
@@ -35,7 +35,7 @@ import pandas as pd
 
 
 BASE = Path(__file__).resolve().parent
-CORE_FILE = BASE / "3MILP_integrated_reduced_corridor.py"
+CORE_FILE = BASE / "stage1_network_model.py"
 SUPPORT_FILE = (BASE / "Common_Station_KMeans_K10"
                 / "common_kmeans_k10_representatives.csv")
 OUTPUT_ROOT = Path(os.getenv("TSB_NA_OUTPUT_ROOT")

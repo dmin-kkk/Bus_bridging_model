@@ -27,7 +27,7 @@ Kmin, ..., Kmax.  Thus a Kmax route is never assembled independently of its
 smaller predecessors.  Exact topological duplicates (including reversals) are
 pruned globally after generation, as required by the manuscript.
 
-Default outputs (names built from the profile, see 03_generate_routes.py)
+Default outputs (names built from the profile, see 03_bus_routes.py)
 ---------------
 ``BusRoutes_LOC{n}_EXP_K{kmin}-{kmax}_T{tmax}.csv``
     The unchanged manual LOC routes plus the selected unique EXP routes.

@@ -32,7 +32,7 @@ sys.path.insert(0, str(PROJECT))
 
 from bbconfig import cfg  # noqa: E402
 
-STAGE2_RUNNER = PIPELINE / "06_run_stage2.py"
+STAGE2_RUNNER = PIPELINE / "06_stage2_core.py"
 RESULTS = cfg.results_dir
 ALLOCATION_DIR = RESULTS / cfg.get("paths.stage1") / "Allocation"
 DEFAULT_OUTPUT = RESULTS / cfg.get("paths.oof_wrong")

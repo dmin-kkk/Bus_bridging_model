@@ -1,5 +1,5 @@
 """
-stage2_adaptive.py — 지속시간 불확실성을 고려하는 적응형 Stage 2
+stage1_recourse.py — 지속시간 불확실성을 고려하는 적응형 Stage 2
 
 기존 구조
     p30·solve_stage2_fixed(D=30) + p60·solve_stage2_fixed(D=60) + p90·solve_stage2_fixed(D=90)

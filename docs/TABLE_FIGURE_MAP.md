@@ -80,7 +80,7 @@ conceptual illustration, not script-generated; **typed** = table typed in the ma
 | Table 8 | synthetic | `table8` | `04_stage1/` and `10_scaling/h<window>/S1_K*/` (window `archive.scaling_window`) | `tables/table8_stage1_scaling.{csv,tex}` |
 | Sec. 5.8 text | synthetic | `runtime_summary` | `04_stage1/Performance/`, `06_stage2_proposed/Performance/`, `07_stage2_fixed_benchmark/Performance/`, `10_scaling/` | `tables/runtime_summary.csv` |
 | Table A.1 | typed | metric definitions, not script-generated (computed in `Paper_Execution_Pipeline/05_*.py`) | - | - |
-| Table A.2 | typed | search space typed from `Paper_Execution_Pipeline/05_compare_models_long30_*_optuna.py` | - | - |
+| Table A.2 | typed | search space typed from `Paper_Execution_Pipeline/05_duration_model_comparison.py` | - | - |
 | Table C.1 | synthetic | `table_routes` | `03_routes/<routes.library_file>` | `tables/tableC1_local_routes.{csv,tex}` |
 | Table C.2 | synthetic | `table_routes` | as Table C.1 | `tables/tableC2_express_routes.{csv,tex}` |
 | Table D.1 | not produced | - | - | - (no schedule-table script in the package) |

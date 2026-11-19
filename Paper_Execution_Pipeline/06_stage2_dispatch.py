@@ -35,11 +35,11 @@ from bbconfig import cfg  # noqa: E402
 
 SCRIPT = Path(__file__).resolve()
 ROOT = SCRIPT.parent
-BASE_RUNNER = ROOT / "06_run_stage2.py"
+BASE_RUNNER = ROOT / "06_stage2_core.py"
 STAGE2 = cfg.get("stage2")
 SOLVER = cfg.get("stage2.solver")
 PARALLEL = cfg.get("parallel.stage2")
-# Stage 1 writes Allocation/DepotAlloc_HH.csv below paths.stage1 (04_run_stage1.py).
+# Stage 1 writes Allocation/DepotAlloc_HH.csv below paths.stage1 (04_stage1_positioning.py).
 ALLOCATION_SUBDIR = "Allocation"
 
 
@@ -89,7 +89,7 @@ PASSENGER_AND_BUS_NONANTICIPATIVITY = "passenger-and-bus"
 PASSENGER_AND_BUS_FORMULATION_MODE = (
     "PASSENGER_AND_BUS_SHARED_RAW_DURATION_RAIL"
 )
-# Format tag written by 09_generate_full_grid_lightgbm_probabilities.py (SCHEMA).
+# Format tag written by 05_duration_probabilities.py (SCHEMA).
 PROBABILITY_SCHEMA = "full-grid-fixed-type-lightgbm-303-refit-ensemble-v1"
 TRAINING_COHORT = str(cfg.get("probability.duration_source"))
 MODEL_FAMILY = str(cfg.get("prediction.full_grid.model_family"))

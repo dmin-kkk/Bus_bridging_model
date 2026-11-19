@@ -2,7 +2,7 @@
 
 Correspondence between the formulation of TRE-D-26-02425R1 (`manuscript.tex`, Sec. 3; Table 3 = `tab:settings`; printed equation numbers) and the code.
 Code column: file (abbreviation below), then function, then the name used in the code (variable, row name, constant or config key); several entries jointly implement one element.
-Files (below `Paper_Execution_Pipeline/`): **CG** `_core/stage1/CG_Stage1_Stage2/cg_stage1.py` · **CR** `_core/stage1/3MILP_integrated_nonanticipative_kmeans_exact_cg_corridor.py` · **C1** `_core/stage1/3MILP_integrated_reduced_corridor.py` · **SA** `_core/stage2/stage2_adaptive.py` · **MC** `_core/stage2/milp_core.py` · **NG** `_core/normal_generation.py` · **DG** `_core/disruption_generation.py` · **QC/SC/WE** `CG_Stage1_Stage2/{queue_compression,state_compression,walking_elimination}.py` · **ER** `Sensitivity/source/evaluate_ri.py` · **04/06/10** the runners `04_run_stage1.py`, `06_run_stage2.py`, `10_run_full_grid_ml_stage2.py`.
+Files (below `Paper_Execution_Pipeline/`): **CG** `_core/stage1/CG_Stage1_Stage2/cg_stage1.py` · **CR** `_core/stage1/stage1_exact_cg.py` · **C1** `_core/stage1/stage1_network_model.py` · **SA** `_core/stage2/stage2_adaptive.py` · **MC** `_core/stage2/milp_core.py` · **NG** `_core/normal_generation.py` · **DG** `_core/disruption_generation.py` · **QC/SC/WE** `CG_Stage1_Stage2/{queue_compression,state_compression,walking_elimination}.py` · **ER** `Sensitivity/source/evaluate_ri.py` · **04/06/06D** the runners `04_stage1_positioning.py`, `06_stage2_core.py`, `06_stage2_dispatch.py`.
 
 ## 1. Sets, parameters and variables
 
@@ -25,7 +25,7 @@ Files (below `Paper_Execution_Pipeline/`): **CG** `_core/stage1/CG_Stage1_Stage2
 | ε (Table 3: 1) | `operations.min_trip_boarding` → CG `CGConfig.min_trip_boarding`, MC `MIN_TRIP_BOARDING` |
 | κ (Table 3: 1.0) | `operations.out_of_vehicle_weight` → CG `OUT_OF_VEHICLE_WEIGHT`; NG/DG `KAPPA`; SA `reweight_flow_block` (κ cases of Sec. 5.7) |
 | μ_max (Table 3: 120) | `operations.depot_access_bound_min` → C1/MC `DEPOT_ACCESS_BOUND_MIN`, CR `EXACT_DEPOT_ACCESS_BOUND_MIN`, env `TSB_DEPOT_ACCESS_BOUND` |
-| n_s, express one-way bound (Table 3: 5, 120 min) | `routes.express_max_stops`, `routes.express_max_travel_min` → `03_generate_routes.py`, `_core/build_express_variants.py`; library `routes.library_file` |
+| n_s, express one-way bound (Table 3: 5, 120 min) | `routes.express_max_stops`, `routes.express_max_travel_min` → `03_bus_routes.py`, `_core/build_express_variants.py`; library `routes.library_file` |
 | D_{ω,j,t}, Σ_{t′≤t} D_{ω,s(ω),t′} | `build_window_data` `D`, `CumD` |
 | θ_{v,t}(ξ) | DG `compute_cancellation_start`, `theta`; C1/MC `load_disruption_scenarios` scenario `theta` |
 | S_{v,t}(ξ) | DG `cap_limit`; scenario `spare_capacity` |
@@ -35,8 +35,8 @@ Files (below `Paper_Execution_Pipeline/`): **CG** `_core/stage1/CG_Stage1_Stage2
 | Ψ | CG `_add_nonanticipative_vehicle_chain_constraints` (successor lists); SA `_compatible_trip_arcs` |
 | 𝒫_v(ξ), 𝒫_{v,v′}(ξ) | CG/SA `info_cells`, `_chain_arc_decision_time` |
 | π_τ (Table 3: 0.686, 0.314) | `probability.duration_counts` → 04 `reweight_duration_prior`; 08 `HISTORICAL_WEIGHTS` |
-| π̂_τ | `09_generate_full_grid_lightgbm_probabilities.py`; 10 `run_single` (`p60`) → SA `solve_stage2_adaptive` `duration_weight` |
-| β, n_j, π_λ, π_j | `probability.station_smoothing_beta` → `02_cluster_scenarios.py` `historical_corridor_probability`, `apply_corridor_probability`; `02_reproduce_production_clustering.py` `recompute` |
+| π̂_τ | `05_duration_probabilities.py`; 06D `run_single` (`p60`) → SA `solve_stage2_adaptive` `duration_weight` |
+| β, n_j, π_λ, π_j | `probability.station_smoothing_beta` → `02_reduction_method_comparison.py` `historical_corridor_probability`, `apply_corridor_probability`; `02_scenario_reduction.py` `recompute` |
 | p_ξ | 04 `reweight_duration_prior` (cluster mass × π_τ) → scenario `probability` |
 | x_g | CG `solve_master` `x[g]`; Stage 2: 06 `load_allocation` → `depot_counts` |
 | y_v(ξ) | CG `_build_shared_y` `y[block,trip|cell]`; SA `solve_stage2_adaptive` `yvar` `y[tid|cell]` |
@@ -64,9 +64,9 @@ Files (below `Paper_Execution_Pipeline/`): **CG** `_core/stage1/CG_Stage1_Stage2
 | (13) [eq:obj_db] Z_m^c over t ≥ t₀, 1/(T − t₀) | CG `eq13_inventories`, `eq13_objective`; per-scenario `objective` in `solve_master` results |
 | (14) [eq:obj_d] disrupted objective | DG `m_dis.setObjective` (Eq. (13) with c = D) |
 | Sec. 3.2.2, states before onset fixed to normal values | CR `_attach_pre_onset_normal_actions` (`normal_pre_onset`, `required_station_support`); CG `fix_pre_onset_to_normal`, `pre_onset_normal_station_support`; C1 `load_normal_trajectory`; DG `normal_pre_b`, `normal_pre_a`, `normal_pre_od` |
-| (15) [eq:location_prob] smoothed location probability | `02_cluster_scenarios.py` `historical_corridor_probability`, `apply_corridor_probability`; `02_reproduce_production_clustering.py` `recompute` |
-| (16) [eq:feature_component] clustering feature | `02_cluster_scenarios.py` `read_impact`, `load_impact_features` |
-| (17) [eq:k_allocation_obj] K allocation objective | `02_cluster_scenarios.py` `allocate_k`; `02_reproduce_production_clustering.py` `allocate` |
+| (15) [eq:location_prob] smoothed location probability | `02_reduction_method_comparison.py` `historical_corridor_probability`, `apply_corridor_probability`; `02_scenario_reduction.py` `recompute` |
+| (16) [eq:feature_component] clustering feature | `02_reduction_method_comparison.py` `read_impact`, `load_impact_features` |
+| (17) [eq:k_allocation_obj] K allocation objective | `02_reduction_method_comparison.py` `allocate_k`; `02_scenario_reduction.py` `allocate` |
 | (18) [eq:k_allocation_total] total K | `allocate_k`, `allocate` (`clustering.k_per_window`) |
 | (19) [eq:k_allocation_bound] K bounds | `allocate_k`, `allocate`, `fit_options` |
 | (20) [eq:arrival_indicator] I_{v,t,j} | C1 `build_window_data` `I_vts`; C1 `generate_bus_trips` `StopTimeList` |
@@ -120,7 +120,7 @@ Files (below `Paper_Execution_Pipeline/`): **CG** `_core/stage1/CG_Stage1_Stage2
 | (37) [eq:cap_bus] | CG `_add_hybrid_bus_load_states` via SA `_add_flow_block_exact` |
 | (38) [eq:min_svc] | SA `_add_flow_block_exact` (Σ b ≥ ε y) |
 | (39) [eq:domain_yu], (40) [eq:domain_psi] | SA `yvar`, `first_vars`, `link_vars` (binary) |
-| (41) [eq:s2_eval] min Σ π̂_τ Z_m^B | SA `solve_stage2_adaptive` `setObjective` (`P[D] * Zs[D]`); π̂ from 10 `run_single` |
+| (41) [eq:s2_eval] min Σ π̂_τ Z_m^B | SA `solve_stage2_adaptive` `setObjective` (`P[D] * Zs[D]`); π̂ from 06D `run_single` |
 | (42) [eq:ap] AP_t^c | ER `performance_ratio` |
 | (43) [eq:ri] RI^c | ER `resilience_index` |
 | (44) [eq:passenger_time] PT^c | ER `passenger_time_metrics` |

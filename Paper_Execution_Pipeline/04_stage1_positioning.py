@@ -53,7 +53,7 @@ RESULTS_DIR = cfg.results_dir
 CORE_DIR = PIPELINE_ROOT / "_core" / "stage1"
 ENGINE_DIR = CORE_DIR / "CG_Stage1_Stage2"
 ENGINE_RUNNER = (
-    CORE_DIR / "3MILP_integrated_nonanticipative_kmeans_exact_cg_corridor.py"
+    CORE_DIR / "stage1_exact_cg.py"
 )
 NORMAL_DIR = RESULTS_DIR / cfg.get("paths.normal")
 DISRUPTION_DIR = RESULTS_DIR / cfg.get("paths.disruptions")
@@ -124,9 +124,9 @@ STATIC_INPUTS = (
 
 LOCAL_MODULE_FILES = (
     ENGINE_RUNNER,
-    CORE_DIR / "3MILP_integrated_nonanticipative_kmeans_corridor.py",
-    CORE_DIR / "3MILP_integrated_reduced_corridor.py",
-    CORE_DIR / "stage2_adaptive.py",
+    CORE_DIR / "stage1_kmeans_runner.py",
+    CORE_DIR / "stage1_network_model.py",
+    CORE_DIR / "stage1_recourse.py",
     ENGINE_DIR / "cg_stage1.py",
     ENGINE_DIR / "cg_problem_builder.py",
     ENGINE_DIR / "state_compression.py",
@@ -1220,7 +1220,7 @@ def validate_local_bundle(output_dir: Path = OUTPUT_DIR) -> dict:
     }
     for name in (
         "cg_problem_builder", "state_compression", "queue_compression",
-        "walking_elimination", "stage2_adaptive",
+        "walking_elimination", "stage1_recourse",
     ):
         module = sys.modules.get(name)
         if module is None:

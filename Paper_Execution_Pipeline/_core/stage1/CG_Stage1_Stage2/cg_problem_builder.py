@@ -1,4 +1,4 @@
-"""3MILP_integrated_reduced_corridor.py 의 K-means 축소를 그대로 써서
+"""stage1_network_model.py 의 K-means 축소를 그대로 써서
 cg_stage1.CGProblem 을 만든다.
 
 원본 파일은 수정하지 않고 import 만 한다. 축소·노선선택·trip 생성·캐시 빌드는
@@ -46,7 +46,7 @@ from sklearn.cluster import KMeans
 import cg_stage1 as cg
 
 
-CORE_FILENAME = "3MILP_integrated_reduced_corridor.py"
+CORE_FILENAME = "stage1_network_model.py"
 EXPECTED_SCENARIO_LOGIC_VERSION = "causal_cancel_start_v3_20260809"
 # 원본 core 파일은 이 폴더의 부모(프로젝트 루트)에 있다. 이동해도 안 된다.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -309,7 +309,7 @@ def load_core(window_hour: int, module_name: str = "tsb_core"):
     # sklearn/MKL 은 스레드보다 청크가 적으면 Windows 에서 누수 경고를 낸다.
     os.environ.setdefault("OMP_NUM_THREADS", "1")
     os.environ["TSB_START_HOURS"] = str(int(window_hour))
-    # core 는 stage2_adaptive 등을 bare import 하므로 루트가 sys.path 에 있어야 한다.
+    # core 는 stage1_recourse 등을 bare import 하므로 루트가 sys.path 에 있어야 한다.
     if BASE_DIR not in sys.path:
         sys.path.insert(0, BASE_DIR)
     path = os.path.join(BASE_DIR, CORE_FILENAME)

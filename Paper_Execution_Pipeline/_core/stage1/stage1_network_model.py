@@ -1,5 +1,5 @@
 """
-3MILP_integrated_reduced.py — Two-Stage Stochastic MILP for Bus Bridging
+stage1_network_model.py — Two-Stage Stochastic MILP for Bus Bridging
            열차 + 버스 공존 세계관 (파일 4 기반)
            ★ 대표 시나리오(reduced)만 Stage 2 실행 버전 ★
 
@@ -27,7 +27,7 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA  # noqa: F401  (used by legacy reducers only)
 
-from stage2_adaptive import info_cells
+from stage1_recourse import info_cells
 
 try:
     import gurobipy as gp
@@ -45,7 +45,7 @@ import sys as _sys  # noqa: E402
 _sys.path.insert(0, str(_CORE_DIR.parents[2]))   # package root (bbconfig)
 from bbconfig import cfg as _bbcfg  # noqa: E402
 # Data/results folders come from the active profile; the PAPER_PIPELINE_* variables exported by
-# 04_run_stage1.py (set from the same profile) take precedence for legacy callers.
+# 04_stage1_positioning.py (set from the same profile) take precedence for legacy callers.
 _PIPELINE_INPUTS = Path(os.environ.get("PAPER_PIPELINE_INPUT_DIR")
                         or _bbcfg.data_dir).resolve()
 _PIPELINE_RESULTS = Path(os.environ.get("PAPER_PIPELINE_RESULTS_DIR")
@@ -2644,7 +2644,7 @@ def _build_shared_y(model, scenarios, buffer=DISRUPT_BUFFER, vtype=GRB.BINARY,
 
     같은 역의 30/60/90 은 '역은 실현, 지속시간은 미실현' 정보집합을 이룬다.
     배차시각 tau 에서 아직 구분할 수 없는 지속시간들이 **하나의 변수를 공유**
-    한다 (등식 제약이 아니라 변수 자체를 공유 — stage2_adaptive 와 같은 방식).
+    한다 (등식 제약이 아니라 변수 자체를 공유 — stage1_recourse 와 같은 방식).
 
         tau <= start+30      -> (30, 60, 90)   아직 아무것도 모름
         tau <= start+60      -> (60, 90)       30분 종료를 관측

@@ -38,8 +38,8 @@ from plot_style import (  # noqa: E402
 )
 
 
-PREDICTION_FILE = ROOT / "05_prediction_model.py"
-OPTUNA_FILE = ROOT / "05_compare_models_long30_303_optuna.py"
+PREDICTION_FILE = ROOT / "05_duration_model_library.py"
+OPTUNA_FILE = ROOT / "05_duration_model_comparison.py"
 ML_DIR = cfg.results_dir / cfg.get("paths.ml")
 LONG30_RESULTS = ML_DIR / cfg.get("prediction.outputs.comparison")
 OUTPUT = ML_DIR / cfg.get("prediction.outputs.thresholds")
@@ -58,7 +58,7 @@ LABEL_THRESHOLD = float(cfg.get("prediction.comparison.label_threshold"))
 # in the six reported families (the model comparison used the eight-family sampler_order).
 REPORTED_FAMILIES = tuple(str(v) for v in cfg.get("prediction.comparison.families"))
 OOF_TOLERANCE = 1e-12  # comparison tolerance of the stored-OOF reconstruction
-OPTIMIZER = None       # 05_compare_models module (set in main)
+OPTIMIZER = None       # 05_duration_model_comparison module (set in main)
 FILE_STEM = ""         # output stem built from family, cohort size and cutoff (set in main)
 FIGSIZE = (10.0, 7.2)
 FEATURES = [

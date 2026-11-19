@@ -14,7 +14,7 @@ Run the synthetic correctness gate::
 
 Prepare and solve one real window (LP CG only)::
 
-    python -X utf8 3MILP_integrated_nonanticipative_kmeans_exact_cg_corridor.py \
+    python -X utf8 stage1_exact_cg.py \
         --window 20 \
         --route-file BusRoutes_LOC14_EXP_K3-5_T120.csv \
         --allow-unaccelerated-large-run
@@ -54,7 +54,7 @@ sys.path.insert(0, str(BASE / "CG_Stage1_Stage2"))
 import cg_stage1 as cg
 import cg_problem_builder as problem_builder
 
-NA_FILE = BASE / "3MILP_integrated_nonanticipative_kmeans_corridor.py"
+NA_FILE = BASE / "stage1_kmeans_runner.py"
 DEPOT_CANDIDATE_FILE = PIPELINE_INPUTS / cfg.get("inputs.depots")
 MATCHED_REPRESENTATIVE_FILE = (
     BASE / "Matched_KMeans_Representatives" /
@@ -76,7 +76,7 @@ IMPLEMENTATION_FILES = (
     BASE / "CG_Stage1_Stage2" / "walking_elimination.py",
     BASE / "CG_Stage1_Stage2" / "cg_problem_builder.py",
     NA_FILE,
-    BASE / "3MILP_integrated_reduced_corridor.py",
+    BASE / "stage1_network_model.py",
 )
 DECISION_VARIABLE_FIELDS = (
     "Variable", "Omega", "Origin", "Dest", "Time", "StationID",

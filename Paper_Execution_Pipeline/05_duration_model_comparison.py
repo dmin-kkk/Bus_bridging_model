@@ -34,7 +34,7 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT.parent))
 from bbconfig import cfg  # noqa: E402
 
-PREDICTION_FILE = ROOT / "05_prediction_model.py"
+PREDICTION_FILE = ROOT / "05_duration_model_library.py"
 SEED = int(cfg.get("prediction.comparison.seed"))
 FAMILIES = tuple(str(value) for value in cfg.get("prediction.comparison.families"))
 # Family index used in the TPE sampler seed (the published run evaluated eight families).

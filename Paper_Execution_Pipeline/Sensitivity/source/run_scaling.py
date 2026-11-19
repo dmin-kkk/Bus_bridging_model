@@ -1,7 +1,7 @@
 """Run the Stage 1 K scaling (Sec. 6.8, Table 8) for the configured windows.
 
 Every run of ``evaluation.scaling.runs`` (window + K list) is solved with the
-representatives written by ``prepare_legacy_kmeans_h16_scaling.py``.  Without
+representatives written by ``prepare_scaling.py``.  Without
 arguments all configured windows are processed; ``--window`` selects one.
 Outputs: ``<results>/<paths.scaling>/h<WW>/S1_K<k>/`` plus
 ``scaling_status_h<WW>.json``.

@@ -1,6 +1,6 @@
 """Stage 2 duration probabilities for every retained location-window case (Sec. 4.4, Table 3).
 
-The outer-fold configurations selected by ``05_compare_models_long30_303_optuna.py`` for
+The outer-fold configurations selected by ``05_duration_model_comparison.py`` for
 ``prediction.full_grid.model_family`` are each refitted on the complete cohort and their
 probabilities are averaged (refit ensemble).  A reconstruction check first verifies that the
 stored configurations and outer splits reproduce the stored outer-fold OOF probabilities.
@@ -40,8 +40,8 @@ sys.path.insert(0, str(ROOT))
 from bbconfig import PACKAGE_ROOT, cfg  # noqa: E402
 import network_data  # noqa: E402
 
-PREDICTION_FILE = ROOT / "05_prediction_model.py"
-COMPARISON_FILE = ROOT / "05_compare_models_long30_303_optuna.py"
+PREDICTION_FILE = ROOT / "05_duration_model_library.py"
+COMPARISON_FILE = ROOT / "05_duration_model_comparison.py"
 SCHEMA = "full-grid-fixed-type-lightgbm-303-refit-ensemble-v1"
 OOF_TOLERANCE = 1e-12      # comparison tolerance of the OOF reconstruction check
 PINNED_TOLERANCE = 1e-12   # comparison tolerance of the recompute-vs-pinned check
@@ -233,7 +233,7 @@ def main() -> int:
     stored_oof_file = args.comparison_dir / f"oof_{family.lower().replace(' ', '_')}.csv"
     for path in (selection_file, stored_oof_file):
         if not path.is_file():
-            raise FileNotFoundError(f"step-05 output missing (run 05_compare_models first): {path}")
+            raise FileNotFoundError(f"step-05 output missing (run 05_duration_model_comparison first): {path}")
 
     prediction = load_module("full_grid_prediction", PREDICTION_FILE)
     comparison = load_module("full_grid_comparison", COMPARISON_FILE)

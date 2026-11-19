@@ -53,21 +53,21 @@ import network_data  # noqa: E402
 
 
 RESULTS = cfg.results_dir
-# OOF probabilities written by 05_compare_models_long30_303_optuna.py (ML stage).
+# OOF probabilities written by 05_duration_model_comparison.py (ML stage).
 OOF_FILE = (
     RESULTS / cfg.get("paths.ml") / cfg.get("prediction.outputs.comparison")
     / cfg.get("evaluation.oof.oof_file")
 )
 INCIDENT_FILE = cfg.path("inputs.incidents_gt10")
 RAW_INCIDENT_FILE = cfg.path("inputs.incidents_raw")
-STAGE2_RUNNER_FILE = PIPELINE / "06_run_stage2.py"
+STAGE2_RUNNER_FILE = PIPELINE / "06_stage2_core.py"
 EVALUATOR_FILE = PIPELINE / "Sensitivity" / "source" / "evaluate_ri.py"
 DEFAULT_OUTPUT = RESULTS / cfg.get("paths.oof")
 DEFAULT_ALLOCATION_DIR = RESULTS / cfg.get("paths.stage1") / "Allocation"
 DEFAULT_NORMAL_DIR = RESULTS / cfg.get("paths.normal")
 DEFAULT_DISRUPTION_DIR = RESULTS / cfg.get("paths.disruptions")
 RI_CACHE_DIR = RESULTS / cfg.get("paths.cache") / "ri"
-# Stage 2 inputs (same files as 06_run_stage2.py reads).
+# Stage 2 inputs (same files as 06_stage2_core.py reads).
 ROUTE_FILE = (
     RESULTS / cfg.get("paths.routes") / cfg.get("routes.library_file")
 )

@@ -13,7 +13,7 @@ PIPELINE = SCRIPT.parents[2]
 sys.path.insert(0, str(PIPELINE.parent))
 from bbconfig import cfg  # noqa: E402
 
-BASE_RUNNER = PIPELINE / "04_run_stage1.py"
+BASE_RUNNER = PIPELINE / "04_stage1_positioning.py"
 PRODUCTION_SCHEMA = (
     "paper-stage1-full-finite-pool-bus-only-na-"
     "passenger-wait-and-see-v1"

@@ -9,7 +9,7 @@ source_rows = 579  # expected row count of the incident source (0 = not checked)
 long_counts_cohort = [[30, 95], [35, 72], [40, 60]]
 
 [prediction.comparison]
-# 05_compare_models_long30_303_optuna.py (Table tab:classifier_performance, App. C)
+# 05_duration_model_comparison.py (Table tab:classifier_performance, App. C)
 # Sec. 4.4: candidate classifiers
 families = ["Logistic Regression", "KNN", "Random Forest", "GBDT", "XGBoost", "LightGBM"]
 # order of the families for the Optuna samplers
@@ -22,7 +22,7 @@ label_threshold = 0.5  # probability threshold of the long class
 selected_family = "LightGBM"  # Sec. 5.2: lowest outer-fold Brier score (0.140)
 
 [prediction.permutation]
-# 05_lightgbm_303_thresholds_and_permutation.py (Table tab:cutoff, Fig. grouped permutation importance)
+# 05_duration_cutoffs_importance.py (Table tab:cutoff, Fig. grouped permutation importance)
 repeats = 30  # permutation repeats of the grouped importance
 
 [prediction.legacy_cutoffs]
@@ -33,7 +33,7 @@ seed = 42  # random seed of the cutoff comparison
 rf_candidates = 48  # random-forest candidates of the cutoff comparison
 
 [prediction.full_grid]
-# 09_generate_full_grid_lightgbm_probabilities.py: Stage 2 classifier inputs (Table 3)
+# 05_duration_probabilities.py: Stage 2 classifier inputs (Table 3)
 model_family = "LightGBM"  # Sec. 5.2: selected classifier
 reference_incident_type = "infrastructure"  # Table 3: incident type = Infrastructure (slug into incident_types)
 reference_date = "2019-08-01"  # Table 3: Thursday, August, hourly rainfall/temperature of August 1, 2019

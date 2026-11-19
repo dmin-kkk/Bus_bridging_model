@@ -17,7 +17,7 @@ stations with a positive impact in every duration (legacy candidate rule of
 the 2026-08-28 run), corridor budgets allocated by minimum total SSE, and one
 internal representative per cluster chosen by an assignment problem with the
 station-code tie rule.  Only this rule reproduces the pinned memberships; the
-four-method comparison of ``02_cluster_scenarios.py`` breaks three exact
+four-method comparison of ``02_reduction_method_comparison.py`` breaks three exact
 distance ties differently (H13, H15, H16).
 """
 from __future__ import annotations
@@ -238,7 +238,7 @@ def recompute(windows: tuple[int, ...], scenario_dir: Path, read_workers: int) -
     method = str(cfg.get("clustering.method"))
     location_support = str(cfg.get("clustering.reduction.location_support"))
     weights = duration_weights()
-    core = load_module("production_clustering_core", ROOT / "02_cluster_scenarios.py")
+    core = load_module("production_clustering_core", ROOT / "02_reduction_method_comparison.py")
     core.HOURS = tuple(windows)
     core.SELECTED_K = k
     core.DURATION_WEIGHT = dict(weights)

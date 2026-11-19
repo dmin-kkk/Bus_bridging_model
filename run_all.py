@@ -52,31 +52,31 @@ def build_plan(cfg) -> list[dict]:
         item = cfg.get(f"parallel.{key}")
         return ["--workers", item["workers"], "--threads", item["threads"]]
 
-    add(0, "normal", PIPELINE / "00_generate_normal.py", layout("normal"), [out("normal")])
-    add(1, "disruptions", PIPELINE / "01_generate_disruptions.py", layout("disruptions"), [out("disruptions")])
-    add(2, "clustering", PIPELINE / "02_reproduce_production_clustering.py", (), [out("clustering")])
-    add(2, "clustering_comparison", PIPELINE / "02_cluster_scenarios.py", (), [out("clustering_comparison")])
-    add(3, "routes", PIPELINE / "03_generate_routes.py", (), [out("routes")])
-    add(4, "stage1", PIPELINE / "04_run_stage1.py", layout("stage1"), [out("stage1")])
+    add(0, "normal", PIPELINE / "00_normal_scenarios.py", layout("normal"), [out("normal")])
+    add(1, "disruptions", PIPELINE / "01_disruption_scenarios.py", layout("disruptions"), [out("disruptions")])
+    add(2, "clustering", PIPELINE / "02_scenario_reduction.py", (), [out("clustering")])
+    add(2, "clustering_comparison", PIPELINE / "02_reduction_method_comparison.py", (), [out("clustering_comparison")])
+    add(3, "routes", PIPELINE / "03_bus_routes.py", (), [out("routes")])
+    add(4, "stage1", PIPELINE / "04_stage1_positioning.py", layout("stage1"), [out("stage1")])
     threads = ["--threads", cfg.get("parallel.ml_threads")]
-    add(5, "ml_models", PIPELINE / "05_compare_models_long30_303_optuna.py", threads, [out("ml")])
-    add(5, "ml_cutoffs", PIPELINE / "05_lightgbm_303_thresholds_and_permutation.py", threads, [out("ml")])
-    add(5, "ml_no_type", PIPELINE / "05_lightgbm_303_no_incident_type.py", threads, [out("ml")])
-    add(5, "ml_type_only", PIPELINE / "05_lightgbm_303_incident_type_only.py", threads, [out("ml")])
-    add(5, "ml_full_grid", PIPELINE / "09_generate_full_grid_lightgbm_probabilities.py", threads, [out("probabilities")])
-    add(6, "stage2_proposed", PIPELINE / "10_run_full_grid_ml_stage2.py", layout("stage2"), [out("stage2_proposed")])
+    add(5, "ml_models", PIPELINE / "05_duration_model_comparison.py", threads, [out("ml")])
+    add(5, "ml_cutoffs", PIPELINE / "05_duration_cutoffs_importance.py", threads, [out("ml")])
+    add(5, "ml_no_type", PIPELINE / "05_duration_ablation_no_type.py", threads, [out("ml")])
+    add(5, "ml_type_only", PIPELINE / "05_duration_ablation_type_only.py", threads, [out("ml")])
+    add(5, "ml_full_grid", PIPELINE / "05_duration_probabilities.py", threads, [out("probabilities")])
+    add(6, "stage2_proposed", PIPELINE / "06_stage2_dispatch.py", layout("stage2"), [out("stage2_proposed")])
     add(7, "benchmark_allocations", SOURCE / "prepare_fixed_benchmark_allocations.py", (), [out("benchmark_allocations")])
-    add(7, "stage2_benchmark", PIPELINE / "10_run_full_grid_ml_stage2.py",
+    add(7, "stage2_benchmark", PIPELINE / "06_stage2_dispatch.py",
         ["--benchmark", *layout("stage2")], [out("stage2_benchmark")])
-    add(8, "oof", PIPELINE / "08_run_oof_operational_value.py", layout("oof"), [out("oof")])
-    add(8, "oof_wrong", COUNTER / "run_oof303_extreme_wrong_bus_only.py",
+    add(8, "oof", PIPELINE / "08_oof_evaluation.py", layout("oof"), [out("oof")])
+    add(8, "oof_wrong", COUNTER / "run_wrong_information.py",
         ["--resume", "--extreme-only", *layout("oof")], [out("oof_wrong")])
-    add(8, "oof_evaluation", COUNTER / "evaluate_oof303_extreme_wrong_bus_only.py", (), [out("oof_wrong")])
+    add(8, "oof_evaluation", COUNTER / "evaluate_wrong_information.py", (), [out("oof_wrong")])
     add(9, "sensitivity_inputs", SOURCE / "prepare_inputs.py", (), [out("sensitivity")])
     add(9, "sensitivity", SOURCE / "run_sensitivity.py", ["--skip-prepare", *layout("sensitivity")], [out("sensitivity")])
     add(9, "sensitivity_summary", SOURCE / "summarize_results.py", (), [out("sensitivity")])
-    add(10, "scaling_inputs", SOURCE / "prepare_legacy_kmeans_h16_scaling.py", (), [out("scaling")])
-    add(10, "scaling", SOURCE / "run_legacy_kmeans_h16_scaling.py",
+    add(10, "scaling_inputs", SOURCE / "prepare_scaling.py", (), [out("scaling")])
+    add(10, "scaling", SOURCE / "run_scaling.py",
         ["--threads", cfg.get("parallel.scaling")["threads"]], [out("scaling")])
     windows = [str(w) for w in cfg.get("time.windows")]
     weights = cfg.get("pinned.clustering.station_probability_evaluation")
