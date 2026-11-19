@@ -27,7 +27,7 @@ import gurobipy as gp
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))   # package root (bbconfig)
 from bbconfig import cfg  # noqa: E402
 
-from pipeline_config import (  # noqa: E402  (legacy names, read from the profile)
+from pipeline_config import (  # noqa: E402  (values read from the profile)
     DISPATCH_BUFFER_MINUTES,
     DURATIONS as MODELED_DURATIONS,
     FLEET_SIZE,
@@ -57,8 +57,8 @@ ENGINE_RUNNER = (
 )
 NORMAL_DIR = RESULTS_DIR / cfg.get("paths.normal")
 DISRUPTION_DIR = RESULTS_DIR / cfg.get("paths.disruptions")
-# Representative branches (Sec. 4.3 / 5.1, K per window): the paper profile reads the pinned,
-# hash-checked file shipped in the package; other profiles read the 02 clustering output.
+# Representative branches (Sec. 4.3 / 5.1, K per window): with pinned.use_pinned the hash-checked
+# file pinned.clustering.branches is read; otherwise the 02 clustering output.
 PINNED_BRANCH_FILE = (
     cfg.package_path("pinned.clustering.branches")
     if cfg.get("pinned.use_pinned") else None)
@@ -708,7 +708,7 @@ def solve_window(args) -> int:
         })
         incumbent_focus = args.incumbent_target is not None
         # Strategy parameters: Gurobi automatic defaults in every paper run
-        # (solver.stage1.auto_parameters); the manual profile below is legacy.
+        # (solver.stage1.auto_parameters); the manual profile below is optional.
         manual = cfg.get("solver.stage1.manual_profile")
         config = runner.build_cg_config(
             core,

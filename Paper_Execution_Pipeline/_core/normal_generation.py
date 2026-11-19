@@ -1,6 +1,6 @@
-"""0normal_generation_corridor.py — Normal(무장애) 시나리오 생성
+"""normal_generation.py — Normal(무장애) 시나리오 생성
 
-1scenario_generation_corridor.py 와 동일한 데이터 준비 / rel 계산 / 제약 구조를
+disruption_generation.py 와 동일한 데이터 준비 / rel 계산 / 제약 구조를
 쓰되, 다음만 다르다:
 
     - theta(운행 취소) 없음  -> 모든 열차가 정상 운행, cap_limit = 전체 여유용량
@@ -104,7 +104,7 @@ if "--window" in sys.argv:
 
 STATS_FILE = f"{DIR_NORMAL}/_normal_stats{_STATS_SUFFIX}.csv"
 
-# 재개 시 기존 통계를 이어쓴다.
+# 재개 시 저장된 통계를 이어쓴다.
 # (완료된 윈도우는 skip되어 stat이 새로 안 쌓이는데, 빈 리스트로 시작하면
 #  마지막 저장에서 파일이 덮어써져 이전 성능 기록이 전부 날아간다.)
 scenario_stats = []
@@ -114,10 +114,10 @@ if os.path.exists(STATS_FILE):
         _prev = pd.read_csv(STATS_FILE)
         scenario_stats = _prev.to_dict("records")
         _done_windows = set(_prev["window"].astype(str))
-        print(f"[RESUME] 기존 통계 {len(scenario_stats)}건 로드 "
+        print(f"[RESUME] 저장된 통계 {len(scenario_stats)}건 로드 "
               f"({STATS_FILE})")
     except Exception as e:
-        print(f"[RESUME] 기존 통계 로드 실패 (새로 시작): {e}")
+        print(f"[RESUME] 저장된 통계 로드 실패 (새로 시작): {e}")
 
 for start_h in START_HOURS:
     end_h = start_h + WINDOW_HOURS

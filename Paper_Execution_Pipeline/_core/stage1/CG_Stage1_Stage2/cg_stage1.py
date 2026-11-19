@@ -85,7 +85,7 @@ class CGConfig:
     feasibility_tolerance: float = 1e-9
     pricing_output_flag: int = 0
     rc_epsilon: float = RC_EPS
-    # Production models contain millions of generated names that are never
+    # Full-size models contain millions of generated names that are never
     # queried.  Discarding them saves build time and memory without changing
     # any variable, row, coefficient, bound, or objective term.  Keep the
     # standalone API default off so callers that inspect names retain them.
@@ -95,7 +95,7 @@ class CGConfig:
     enforce_vehicle_chains: bool = True
     turnaround_minutes: int = 0
     # Exact computational reformulations.  Defaults preserve the explicit
-    # minute-indexed reference model for standalone audits; the production
+    # minute-indexed reference model for standalone audits; the paper
     # runner enables them after parity tests.
     eliminate_w: bool = False
     eliminate_destination_states: bool = False
@@ -2965,7 +2965,7 @@ def solve_master(
         model.Params.TuneTargetMIPGap = float(config.mip_gap)
         # TuneTimeLimit is checked between tuning runs.  Bound each candidate
         # as well, otherwise the first baseline run can exceed the requested
-        # total tuning budget when the production TimeLimit is much larger.
+        # total tuning budget when the final TimeLimit is much larger.
         model.Params.TimeLimit = applied_tune_candidate_time_limit
         tune_started = time.time()
         model.tune()
@@ -2990,7 +2990,7 @@ def solve_master(
                 model.write(str(staged_tune_output))
                 shutil.copy2(staged_tune_output, tune_output)
         # Do not let solutions produced during tuning leak into the timed
-        # production solve.  reset() keeps starts and the selected parameters.
+        # final solve.  reset() keeps starts and the selected parameters.
         model.reset()
         if progress_hook is not None:
             progress_hook({
@@ -4834,7 +4834,7 @@ def build_pricing_index(problem: CGProblem, *,
             },
         }
         if depot_row_index is not None:
-            # Shared immutable-by-convention lookup.  Production pricing uses
+            # Shared immutable-by-convention lookup.  Pricing uses
             # it to visit only retained clique rows inside a trip interval.
             scenario_index["depot_base_row_index"] = depot_row_index
             scenario_index["depot_row_index"] = depot_row_index
@@ -5361,7 +5361,7 @@ def price_column(
         probability = float(data["scenario"].get(
             "probability", 1.0 / max(len(problem.scenarios), 1)))
         horizon = float(data["cache"]["T"])
-        # A lean production pricing index deliberately omits these enormous
+        # A lean pricing index deliberately omits these enormous
         # row sets.  Full-profile audit calls reconstruct only the scenario(s)
         # they inspect, and release the transient sets with this local solve.
         q_rows = pricing_index[sid].get("q_rows")
@@ -5951,7 +5951,7 @@ def _persistent_shadow_dimensions_match(
         return all(
             int(persistent_stats[field]) <= int(shadow_stats[field])
             for field in fields)
-    # Legacy persistent and rebuilt masters use the identical formulation.
+    # Persistent and rebuilt masters use the identical formulation.
     return all(
         int(persistent_stats[field]) == int(shadow_stats[field])
         for field in ("NumVars", "NumConstrs"))
@@ -6481,9 +6481,9 @@ def run_column_generation(
         if engine is not None:
             engine.close()
 
-    # Optional rollout gate.  It is intentionally off for large production
-    # runs because it performs one legacy rebuild; synthetic/pilot validation
-    # can enable it to compare the persistent model against the old oracle.
+    # Optional rollout gate.  It is intentionally off for large
+    # runs because it performs one full rebuild; synthetic/pilot validation
+    # can enable it to compare the persistent model against a rebuilt master.
     if (validate_persistent_final and persistent_rmp and certified and
             termination == "NO_NEGATIVE_OMITTED_COLUMN"):
         shadow = solve_rmp(problem, config, active, depot_rows)
@@ -6519,7 +6519,7 @@ def run_column_generation(
         final_duals = last_duals
         final_omitted_prices = last_prices
     else:
-        # The production runner consumes only the scalar summaries below.  Do
+        # The window runner consumes only the scalar summaries below.  Do
         # not carry the final dual/result dictionaries into the integer solve.
         rmp = None
         last_duals = {}

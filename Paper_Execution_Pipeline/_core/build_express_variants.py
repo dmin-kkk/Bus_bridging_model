@@ -1,6 +1,6 @@
-"""Build reviewer-defensible nested express variants from the manual LOC routes.
+"""Build nested express variants from the manual LOC routes.
 
-The original express-route file is deliberately *not* used.  For every parent
+For every parent
 local route, this script keeps only its upstream anchor (the first stop of the
 local route in inputs.local_routes) and constructs one nested chain
 
@@ -25,7 +25,7 @@ Among all feasible nested chains, the algorithm first maximizes the deepest K
 that can be reached, then lexicographically maximizes covered OD demand at
 Kmin, ..., Kmax.  Thus a Kmax route is never assembled independently of its
 smaller predecessors.  Exact topological duplicates (including reversals) are
-pruned globally after generation, as required by the manuscript.
+pruned globally after generation.
 
 Default outputs (names built from the profile, see 03_bus_routes.py)
 ---------------
@@ -34,10 +34,6 @@ Default outputs (names built from the profile, see 03_bus_routes.py)
 ``EXP_K{kmin}-{kmax}_T{tmax}_audit.csv``
     One row per parent LOC and requested K, including infeasibility and
     duplicate reasons.
-
-The production CG input is not overwritten by this script.  Switching the CG
-to the new route universe is a separate, explicit experiment requiring a full
-rerun.
 """
 
 from __future__ import annotations
@@ -211,7 +207,7 @@ def _load_parents(path: Path,
             raise ValueError(f"Road-time rounding collapses a leg in {route_name}")
         if calculated != model_cum:
             raise ValueError(
-                f"{route_name} does not match Station_Distance_Matrix after "
+                f"{route_name} does not match the road-time matrix after "
                 f"rounding: file={model_cum}, matrix={calculated}")
         parents.append(ParentRoute(
             route=str(route_name), baseline=baseline, stops=stops,

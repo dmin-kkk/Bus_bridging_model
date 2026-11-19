@@ -70,7 +70,7 @@ def load_support():
     if not SUPPORT_FILE.exists():
         raise FileNotFoundError(
             f"Common K-means support not found: {SUPPORT_FILE}\n"
-            "Run common_station_kmeans_k10.py first."
+            "Provide the common K-means representative table first."
         )
     support = pd.read_csv(SUPPORT_FILE)
     required = {"hour", "representative_station", "duration",

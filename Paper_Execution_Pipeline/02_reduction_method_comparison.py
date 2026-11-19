@@ -1124,7 +1124,7 @@ def centroid_representatives(
 
 
 def cost_matrix(x: np.ndarray, p: int = 1) -> np.ndarray:
-    """Return the canonical p=1 FFS cost or the legacy p>1 FM cost."""
+    """Return the canonical p=1 FFS cost or the p>1 FM cost."""
     x = np.asarray(x, dtype=float)
     difference = x[:, None, :] - x[None, :, :]
     distance = np.sqrt(np.square(difference).sum(axis=-1))
@@ -3543,7 +3543,7 @@ def parser() -> argparse.ArgumentParser:
         "--production-kmeans-dir",
         type=Path,
         default=DEFAULT_PRODUCTION_KMEANS_DIR,
-        help="existing production K-means output used only for comparison",
+        help="K-means output of 02_scenario_reduction.py, used only for comparison",
     )
     result.add_argument(
         "--history-cohort-file",

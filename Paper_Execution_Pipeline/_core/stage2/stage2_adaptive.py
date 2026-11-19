@@ -1,18 +1,17 @@
 """
 stage2_adaptive.py — 지속시간 불확실성을 고려하는 적응형 Stage 2
 
-기존 구조
+지속시간별 완전정보 기준 (wait-and-see)
     p30·solve_stage2_fixed(D=30) + p60·solve_stage2_fixed(D=60) + p90·solve_stage2_fixed(D=90)
     → 세 문제를 독립으로 풀고 사후에 가중합. 각 문제는 D 를 '알고' 배차표를 짠다.
-      Reviewer #1 (2) 가 지적한 wait-and-see / perfect-information 구조.
 
-새 구조
+적응형 구조
     solve_stage2_adaptive()  하나의 문제
     → 배차변수 y 는 비예견성 정보집합을 공유하고,
       승객 흐름변수 b/a/l/q/w 는 지속시간별로 복제되며,
       목적은  min Σ_D P(D)·Z_D.
 
-비예견성 (요구사항 5)
+비예견성
     장애 시작 후 τ 분에 배차하는 trip 은, 그 시점에 구분 불가능한 지속시간
     시나리오들에서 '같은 결정' 이어야 한다.
 
@@ -21,9 +20,9 @@ stage2_adaptive.py — 지속시간 불확실성을 고려하는 적응형 Stage
         그 외                    →  (90,)          60분 종료까지 관측함
 
     등식 제약을 걸지 않고, 같은 정보집합의 시나리오가 **하나의 변수를 공유**하도록
-    변수를 생성한다 (요구사항 5 단서).
+    변수를 생성한다.
 
-Trip 가용성 (요구사항 6)
+Trip 가용성
     후보 trip 은 90분 배차창으로 한 번만 생성한다.
     지속시간 D 에서 사용 가능한 조건:
 
@@ -164,7 +163,7 @@ def info_cells(tau, disrupt_start, durations=(30, 60, 90), buffer=DISPATCH_BUFFE
       - 아직 진행 중인(구분 불가) 시나리오들 → 하나로 묶인다
       - 이미 종료를 관측한 시나리오들       → 각각 독립 (buffer > 0 일 때만 등장)
 
-    buffer=0 이면 결과는 요구사항 5 의 shared_group 과 정확히 같다:
+    buffer=0 이면 결과는 위 비예견성 정보집합과 정확히 같다:
         tau <= start+30 -> [(30,60,90)]
         tau <= start+60 -> [(60,90)]
         그 외           -> [(90,)]
@@ -1210,7 +1209,7 @@ def build_adaptive_group(m3, station, start_h, wdata, raw_scenarios,
     else:
         trip_basis.pop("required_station_support", None)
 
-    # (요구사항 6) 가장 넓은 배차창으로 후보 trip 을 한 번만 생성
+    # 가장 넓은 배차창으로 후보 trip 을 한 번만 생성
     lib, _ = m3.build_scenario_route_library(
         trip_basis, start_h, depots, bus_tt, route_lib)
     sel = m3.select_routes(trip_basis, depots, lib, bus_tt)
@@ -1384,7 +1383,7 @@ def build_adaptive_group(m3, station, start_h, wdata, raw_scenarios,
 
 
 # =============================================================================
-# 3. 지속시간 하나의 승객 흐름 제약 (기존 solve_stage2_fixed 와 동일 구조)
+# 3. 지속시간 하나의 승객 흐름 제약 (solve_stage2_fixed 와 동일 구조)
 # =============================================================================
 def _passenger_key_minute(family, key):
     if family in ("b", "a"):
@@ -2666,7 +2665,7 @@ def solve_stage2_adaptive(m3, env, depots, depot_counts, group, wdata,
                 variable.Start = 1.0 if str(tid) in selected_trip_ids else 0.0
 
     # Depot capacity: only the paper's vehicle-chain rows, Eqs. (34)-(36), limit the
-    # buses leaving each depot (no per-minute occupancy rows; removed to match the paper).
+    # buses leaving each depot (no per-minute occupancy rows).
 
     # ---- 목적함수 ----
     # Eq. (41) [eq:s2_eval]: min sum_tau pi_hat_tau Z_m^B((j, tau)); branches

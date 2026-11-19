@@ -45,7 +45,7 @@ WINDOWS = tuple(int(hour) for hour in cfg.get("time.windows"))
 SHORT, LONG = (int(value) for value in cfg.get("time.durations_min"))
 P_NEAR = float(cfg.get("evaluation.oof.wrong_p_near"))
 P_FAR = float(cfg.get("evaluation.oof.wrong_p_far"))
-# The pinned Stage 2 runner turns a duration prior into counts; counts of
+# The Stage 2 runner turns a duration prior into counts; counts of
 # p * PSEUDO_COUNT_SCALE reproduce p at the 1e-5 resolution of P_FAR.
 PSEUDO_COUNT_SCALE = 100000
 DURATION_COUNTS = {

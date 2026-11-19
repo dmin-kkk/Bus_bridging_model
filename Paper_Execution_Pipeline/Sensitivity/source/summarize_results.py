@@ -27,7 +27,7 @@ BASELINE_CASE = str(cfg.get("evaluation.sensitivity.baseline_case"))
 BASE_MIN_TRIP_BOARDING = float(cfg.get("operations.min_trip_boarding"))
 CORRECTED_RESULTS = cfg.results_dir / cfg.get("paths.sensitivity")
 SUMMARY_DIR = CORRECTED_RESULTS / "summary"
-# Clustering-stage output (the paper profile copies the verified pinned file there).
+# Clustering-stage output (step 02 writes or copies the station probabilities there).
 STATION_PROBABILITY_FILE = (
     cfg.results_dir / cfg.get("paths.clustering")
     / str(cfg.get("clustering.files.station_probability"))

@@ -152,9 +152,7 @@ class Archive:
 
 
 # ---------------------------------------------------------------- aggregation formulas
-# These replicate the evaluation scripts used for the paper figures
-# (legacy Sensitivity/source/plot_full_production_evaluation.py, plot_proposed_vs_fixed_spe30.py and
-# plot_sensitivity_3x2.py of the source bundle; results verified identical to 1e-14 on the paper runs).
+# Aggregation formulas of the paper figures (case means and station-cluster bootstrap intervals).
 def station_bootstrap_ci(group: pd.DataFrame, value: str | None, numerator: str | None,
                          weight: str | None, seed: int, reps: int, quantile: bool):
     nums, dens = [], []
@@ -431,7 +429,7 @@ SENSITIVITY_KEEP = ["panel", "position", "parameter_label", "case_id", "window",
 
 
 def sensitivity_mean_ci(frame: pd.DataFrame, column: str, seed: int, reps: int):
-    """Unweighted case mean, station-cluster bootstrap (as the legacy plot_sensitivity_3x2.py)."""
+    """Unweighted case mean, station-cluster bootstrap."""
     valid = frame[["Station", column]].dropna()
     groups = [g[column].to_numpy(float) for _, g in valid.groupby("Station", sort=False)]
     rng = np.random.default_rng(seed)
@@ -444,7 +442,7 @@ def sensitivity_mean_ci(frame: pd.DataFrame, column: str, seed: int, reps: int):
 
 
 def sensitivity_ratio_ci(frame: pd.DataFrame, seed: int, reps: int):
-    """Probability-weighted PT ratio, station-cluster bootstrap (as the legacy plot_sensitivity_3x2.py)."""
+    """Probability-weighted PT ratio, station-cluster bootstrap."""
     weights = frame["Scenario_Probability"].to_numpy(float)
     denominator = float(np.sum(weights * frame["Passenger_Demand"].to_numpy(float)))
     if denominator <= 0:

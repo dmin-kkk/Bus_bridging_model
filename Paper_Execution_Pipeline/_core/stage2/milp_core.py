@@ -61,14 +61,14 @@ ROUTE_SOURCE            = os.getenv(
 # 버스 승차 위치 가정:
 #   general — 승객이 실제로 대기 중인 역(Disrupt CSV 의 StationID)에서 태울 수 있다.
 #             해당 역에 큐가 있고 목적지가 같은 모든 OD 를 승차 대상으로 삼는다.
-#   origin  — (구버전) OD 의 원출발역에서만 태울 수 있다. 열차 쪽과 비대칭.
+#   origin  — OD 의 원출발역에서만 태울 수 있다. 열차 쪽과 비대칭.
 BUS_BOARD_MODE          = os.getenv(
     "TSB_BUS_BOARD", cfg.get("routes.bus_boarding_mode")).strip().lower()
 FILE_DISTANCE           = str(cfg.path("inputs.road_times"))
 FILE_SCHEDULE           = str(cfg.path("inputs.timetable"))
 FILE_OD                 = str(cfg.path("inputs.od_matrix"))
 FILE_EXCEL              = str(cfg.path("inputs.stations"))
-# 0normal_generation_corridor.py / 1scenario_generation_corridor.py 산출물.
+# Normal / disruption 시나리오 생성 단계(00, 01)의 산출물.
 # 두 폴더는 반드시 같은 가정(240 지평, MAX_TRANSFERS)으로 생성된 짝이어야 한다.
 DIR_NORMAL              = str(RESULT_ROOT / cfg.get("paths.normal"))
 DIR_DISRUPT             = str(RESULT_ROOT / cfg.get("paths.disruptions"))
@@ -97,14 +97,14 @@ TRAIN_CAPACITY = cfg.get("operations.rail_capacity")   # Table 3: C_v, v in V_r
 MAX_TOTAL_BUSES = int(os.getenv("TSB_MAX_BUSES", cfg.get("operations.fleet_size")))  # Table 3: B
 
 # --- Scenario reduction ---
-# Same F2 (log1p -> z-score) -> K-means pipeline as k_clustering.py.
+# F2 (log1p -> z-score) -> K-means pipeline.
 # No PCA, no row-normalization. K is the global cluster count; representatives
 # are then picked per duration x cluster, so K=10 gives up to 3*10=30 reps/hour.
 K_PER_DURATION = int(os.getenv("TSB_K_PER_DURATION", _LEGACY["k_per_duration"]))
-# duration 별 K 결정 (Reviewer #5 Q9 대응). 두 축으로 나뉜다.
+# duration 별 K 결정. 두 축으로 나뉜다.
 #
 # K_MODE — 배분 방식
-#   fixed    : 30/60/90 모두 K_PER_DURATION. 기존 동작.
+#   fixed    : 30/60/90 모두 K_PER_DURATION. (기본)
 #   adaptive : duration 마다 K_CRITERION 이 고른 K 를 그대로 쓴다. 총 대표 수가 변하고
 #              따라서 Stage 1 규모도 변한다 — 성능 비교시 이 점을 반드시 밝혀야 한다.
 #   budget   : K_CRITERION 이 고른 K 의 비율대로 '총 대표 수를 고정한 채' 배분만 바꾼다.
@@ -120,7 +120,7 @@ K_PER_DURATION = int(os.getenv("TSB_K_PER_DURATION", _LEGACY["k_per_duration"]))
 #               평탄구간에서 더 촘촘한 분할을 택해 커버리지를 높인다.
 #   argmax    : silhouette 최댓값 K. 평탄구간에서 불안정.
 #   elbow     : inertia 곡선의 최대 곡률점(kneedle). silhouette 를 안 쓰는 대안.
-# 군집화 방법 (Reviewer #3 Q3 대응 — k-medoids / 대안 거리 검토 요구)
+# 군집화 방법
 #   kmeans   : 현행. 대표는 '중심에 가장 가까운 시나리오'로 사후 근사한다.
 #   kmedoids : 대표(medoid)가 정의상 실제 시나리오다. 목적함수 Σ d(x_i, medoid(i)) 가
 #              곧 시나리오 축소오차이므로, 원 특징공간 거리로 돌리면 축소오차를
@@ -130,11 +130,10 @@ K_PER_DURATION = int(os.getenv("TSB_K_PER_DURATION", _LEGACY["k_per_duration"]))
 #   orig : log1p 만. 역별 임팩트의 원 스케일을 유지 — 축소오차 기준이 이 공간이다.
 # 거리
 #   euclidean / cosine (cosine 은 임팩트의 공간 패턴만 보고 총 규모는 무시)
-# 시나리오 공간확률 p(역) — Reviewer #3 (2) 대응
+# 시나리오 공간확률 p(역)
 #   uniform   : 모든 역이 등확률 (현행). 대표 확률 = 군집크기 / duration내 시나리오 수
 #   frequency : 사고 기록의 역별 발생 빈도 (Laplace 평활). 가장 직접적인 추정
 #   exposure  : 그 윈도우에 열차가 그 역을 지나는 횟수 (passenger-exposure weighting)
-# 세 설정을 바꿔가며 돌리면 심사자가 요구한 민감도 비교가 그대로 나온다.
 SCENARIO_PRIOR = os.getenv("TSB_SCENARIO_PRIOR", _LEGACY["scenario_prior"]).strip().lower()
 PRIOR_ALPHA    = float(os.getenv("TSB_PRIOR_ALPHA", _LEGACY["prior_alpha"]))   # Laplace 평활 강도
 FILE_INCIDENT  = os.getenv("TSB_INCIDENT_FILE", str(cfg.path("inputs.incidents_raw")))
@@ -150,7 +149,7 @@ K_SIL_TAU   = float(os.getenv("TSB_K_SIL_TAU", _LEGACY["k_sil_tau"]))
 K_MIN    = int(os.getenv("TSB_K_MIN", _LEGACY["k_min"]))
 K_MAX    = int(os.getenv("TSB_K_MAX", _LEGACY["k_max"]))
 K_BUDGET = int(os.getenv("TSB_K_BUDGET", _LEGACY["k_budget"]))   # 0 → len(DURATIONS) * K_PER_DURATION
-# 축소 단위 (Reviewer #1 (2), #3 (3), #5 (9))
+# 축소 단위
 #   duration : duration 별 독립 K-means. 현행. 대표 30개가 서로 다른 21~26개 역에
 #              흩어져, 한 역에 세 지속시간이 모두 붙는 경우가 윈도우당 0~2개다.
 #              그래서 Stage 1 축소집합 위에서는 "역은 실현, 지속시간은 미실현"
@@ -167,15 +166,14 @@ DURATION_WEIGHT = {d: _PRIOR_COUNTS[d] / sum(_PRIOR_COUNTS.values()) for d in DU
 
 # --- Route/trip filtering ---
 # 후보 (노선, 차고지) 를 거르는 두 규칙. 버스측 재차변수 l 이 모델의 54.5% 이고
-# trip 수에 선형이라 여기가 최대 레버다 (DESIGN §3.6).
+# trip 수에 선형이라 여기가 최대 레버다.
 #
 # DEPOT_ACCESS_BOUND_MIN — Eq. (21) [eq:deadhead_bound] mu_max (Table 3: 120 min).
 #   차고지에서 노선 기점까지 허용 회송시간 (operations.depot_access_bound_min).
-#   운영 규칙이라 노선에 무관하게 일관되고 Reviewer #5 (4) 의 "장거리 버스가
-#   현실적인가" 에 직접 답한다. 배차는 t=20 부터이므로 deadhead d 인 버스는
+#   운영 규칙이라 노선에 무관하게 일관된다. 배차는 t=20 부터이므로 deadhead d 인 버스는
 #   t=20+d 에야 태우기 시작한다. 실측 분포는 중앙 47 / p75 62 / p90 77 / 최대 90 분.
 #   ★ 상한이 낮으면 차고지가 하나도 없는 노선이 생겨 커버가 사라진다.
-#     값은 {90, 60, 45, 30} 감도로 정한다 (Reviewer #3 (4)).
+#     값은 {90, 60, 45, 30} 감도로 정한다.
 #
 # MAX_DEPOTS_PER_ROUTE — 노선당 차고지 개수 상한 (가까운 순). 0 = 무제한.
 #   노선마다 거리 분포가 달라 자의적이다. 시간 상한을 우선 쓰고 이건 보조.
@@ -347,7 +345,7 @@ def load_route_library(path, *, distance_path=None,
 
     Passing ``distance_path`` activates the production timing convention.  A
     reverse route is recomputed from the reverse-direction entries in
-    ``Station_Distance_Matrix`` and is cumulative-rounded; it is never made by
+    the road-time matrix (inputs.road_times) and is cumulative-rounded; it is never made by
     merely reversing the forward integer segments.  With
     ``validate_forward_times=True`` the CSV's forward cumulative times must
     already follow the same convention.  The no-keyword legacy behavior is
@@ -400,7 +398,7 @@ def load_route_library(path, *, distance_path=None,
             if validate_forward_times and matrix_cum != cum:
                 raise ValueError(
                     f"{route_name}: route CSV does not match directed "
-                    "cumulative-rounded Station_Distance_Matrix timing: "
+                    "cumulative-rounded road-time matrix timing: "
                     f"file={cum}, matrix={matrix_cum}")
 
         entry = {
@@ -502,8 +500,8 @@ def build_window_data(start_h, schedule_df, od_df):
     # Cancellation timing needs the last safe upstream stop even when it lies
     # immediately outside the optimization window.  Keep the optimization
     # support filtered, but construct the timing sequence from the complete
-    # schedule of every train that is active in this window.  This matches
-    # 1scenario_generation_corridor.py causal_cancel_start_v3_20260809.
+    # schedule of every train that is active in this window, as in the
+    # disruption scenario generator (scenarios.logic_version).
     active_trip_ids = set(Vm)
     timing_sched = sched[sched["Trip"].isin(active_trip_ids)]
     trip_stops_seq = {}
@@ -671,7 +669,7 @@ def load_normal_results(start_h):
 
 
 # =============================================================================
-# 4. Disruption Processing — Corridor-based (SAME_CORRIDOR.csv)
+# 4. Disruption Processing — Corridor-based (inputs.corridors)
 # =============================================================================
 # Corridor topology + station coords — 모듈 로드시 1회
 FILE_CORRIDOR = str(cfg.path("inputs.corridors"))
@@ -1014,8 +1012,8 @@ def load_disruption_scenarios(start_h, wdata):
 
         scenario_id = f"{start_h}_{station}_{duration}"
         recorded = logic_manifest.get(scenario_id)
-        # A v3 NO_AFFECTED checkpoint supersedes any stale result CSV left by
-        # an older run.  Ignore that file without deleting user data.
+        # A current-version NO_AFFECTED checkpoint supersedes any stale result CSV
+        # in the folder.  Ignore that file without deleting user data.
         if (recorded is not None and
                 recorded[0] == SCENARIO_LOGIC_VERSION and
                 recorded[1] == "NO_AFFECTED"):
@@ -1273,8 +1271,7 @@ def _reduce_scenarios_duration_legacy(scenarios, k_per_duration=K_PER_DURATION):
 
 def _reduce_scenarios_total_legacy(scenarios, k_total=K_PER_DURATION):
     """
-    make_methodology_figures.py의 F2 -> PCA(5) -> K-means 방법을 실제 MILP
-    scenario reduction에 적용한다.
+    F2 -> PCA(5) -> K-means 방법을 MILP scenario reduction에 적용한다.
 
     Difference from the legacy reducer:
       - duration별로 K개씩 뽑지 않는다.
@@ -1322,7 +1319,7 @@ def _reduce_scenarios_total_legacy(scenarios, k_total=K_PER_DURATION):
             if st in idx:
                 X[i, idx[st]] = v
 
-    # Same transform chain as make_methodology_figures.transform_chain.
+    # F2 transform chain (log1p, row normalisation, PCA).
     X = np.log1p(X)
     rs = X.sum(axis=1, keepdims=True)
     rs[rs < 1e-9] = 1.0
@@ -1388,7 +1385,7 @@ def _methodology_stage0_raw_matrix(scenarios):
 
 def _methodology_transform_chain(X):
     """
-    Match k_clustering.py exactly: log1p -> z-score (no row-normalization, no PCA).
+    F2 transform: log1p -> z-score (no row-normalization, no PCA).
     """
     X1 = np.log1p(X)
     mu = X1.mean(axis=0)
@@ -1406,11 +1403,10 @@ def _methodology_select_representatives_within_duration(dur_scenarios, dur_label
 
     Probability = dur_weight * (군집이 차지하는 공간확률 비중)
 
-      prior 가 None(=uniform)  : cluster_size / n_dur          ← 기존 동작
+      prior 가 None(=uniform)  : cluster_size / n_dur          ← 기본
       prior 가 주어지면        : Σ_{i∈군집} p(역_i) / Σ_j p(역_j)
 
-    prior 는 scenario_station_prior() 가 준 {역: 확률} 이며, Reviewer #3 (2) 의
-    "uniform spatial probabilities" 지적에 대응하는 지점이다.
+    prior 는 scenario_station_prior() 가 준 {역: 확률} 이다.
     """
     dur_labels = np.asarray(dur_labels)
     X_dur = np.asarray(X_dur, dtype=float)
@@ -1445,7 +1441,7 @@ def _methodology_select_representatives_within_duration(dur_scenarios, dur_label
             den = sum(prior.get(s["station"], 0.0) for s in dur_scenarios) or 1.0
             share = num / den
         else:
-            share = len(local_members) / n_dur          # 균등 가정 (기존)
+            share = len(local_members) / n_dur          # 균등 가정
         rep["probability"] = dur_weight * share
         rep["prob_share"] = float(share)
         rep["cluster_id"] = int(cid)
@@ -1645,14 +1641,13 @@ def _largest_remainder(weights, total, lo, hi):
 
 def resolve_k_per_duration(X_by_dur, k_per_duration=K_PER_DURATION):
     """
-    duration 별 K 를 결정한다 (Reviewer #5 Q9).
+    duration 별 K 를 결정한다.
 
     fixed    : 전부 k_per_duration.
     adaptive : duration 마다 K_CRITERION 이 고른 K 를 그대로 사용.
                → 총 대표 수가 달라지므로 Stage 1 규모도 달라진다.
     budget   : 그 K 들의 비율대로 총 대표 수를 재배분. 총합이 fixed 와 같으므로
                '같은 계산예산에서 배분만 바꿨을 때 무엇이 나아지는가'를 볼 수 있다.
-               심사 대응에는 이쪽이 핵심이다.
 
     반환: ({duration: K}, 진단문자열)
     """
@@ -1781,9 +1776,6 @@ def _reduce_scenarios_station_blocks(scenarios, k_stations=K_STATIONS, wdata=Non
     균등 가중한다 (실측 거리기여 0.320 / 0.337 / 0.342). 실제 P(D) 는
     (0.506, 0.222, 0.272) 이라 30분이 크게 과소 가중된다. √P(D) 가 이를 고친다.
 
-    같은 기계가 `common_station_kmeans_k10.py` / `station_bundle_clustering.py`
-    에도 있다. 두 경로가 어긋나면 안 되므로 변환·시드·대표선택 규칙을 일치시킨다.
-
     duration 을 축으로 유지하는 근거: duration 별 독립 K-means 파티션끼리의
     ARI 가 30-60 0.328, 30-90 0.276, 60-90 0.597 로 낮다. 특히 30분과 90분의
     군집 구조는 거의 다르다. concat 은 이를 좌표 평균으로 뭉갠다.
@@ -1807,15 +1799,13 @@ def _reduce_scenarios_station_blocks(scenarios, k_stations=K_STATIONS, wdata=Non
     r = Σimp30 / Σimp90 은 '30분 시점에 최종 피해의 몇 %가 이미 나타났나' 이며,
     r 이 작은 역(모집단의 27~44%, 평균 34.3%)이 곧 "지금 배차할까 관측하고
     기다릴까" 가 실제 결정이 되는 곳이다. 접으면 이 분포 재현도가 2배 나빠지고
-    (B 6승 1패), 대표집합이 r 을 못 담으면 EVPI 가 0 으로 나와 Reviewer #1 (2)
-    에 대한 답 자체가 성립하지 않는다.
+    (B 6승 1패), 대표집합이 r 을 못 담으면 EVPI 가 0 으로 나온다.
 
     Jensen 에 의해 dist(평균) ≤ 평균(dist) 이므로 좌표를 접으면 역 간 분리가
     줄어든다. A2 처럼 접는 시점을 늦춰도 소용없고 거리를 평균해야 보존된다.
-    재현: scratchpad/collapse.py
 
     C_agg 가 Kantorovich 비용이므로 확률계획 안정성 정리가 그대로 적용된다.
-    K-means 에는 없는 보장이며 Reviewer #3 (3) 이 요구한 대안 축소 알고리즘이다.
+    K-means 에는 없는 보장이다.
 
     임팩트가 0 인 (역, duration) 은 raw 에 존재하지 않는다 — Omega_m 이 비면
     load_disruption_scenarios 가 건너뛴다. 결측이 아니라 '피해 없음' 이므로
@@ -1870,7 +1860,7 @@ def _reduce_scenarios_station_blocks(scenarios, k_stations=K_STATIONS, wdata=Non
         Zs.append(np.sqrt(w_dur[di]) * Z)
     X_joint = np.hstack(Zs)
 
-    # 공간확률 p(역) — uniform | frequency | exposure (Reviewer #3 (2))
+    # 공간확률 p(역) — uniform | frequency | exposure
     prior = scenario_station_prior(scenarios, wdata)
     p_st = np.array([prior.get(st, 0.0) for st in stations], dtype=float)
     if p_st.sum() <= 0:
@@ -1922,7 +1912,7 @@ def reduce_scenarios(scenarios, k_per_duration=K_PER_DURATION, wdata=None):
       each duration on its own sub-matrix.
 
     Representative = scenario closest to its cluster's feature-space centroid
-    (k_clustering.py rule). This guarantees up to len(DURATIONS) * K reps and
+    (F2 K-means rule). This guarantees up to len(DURATIONS) * K reps and
     avoids the "empty (duration, cluster) cell" artifact that occurs when a
     single global K-means is sliced by duration.
 
@@ -1954,7 +1944,7 @@ def reduce_scenarios(scenarios, k_per_duration=K_PER_DURATION, wdata=None):
     X_final = (np.log1p(X_raw) if CLUSTER_SPACE == "orig"
                else _methodology_transform_chain(X_raw))
 
-    # 공간확률 p(역) — SCENARIO_PRIOR 가 uniform 이면 None (기존 동작 유지)
+    # 공간확률 p(역) — SCENARIO_PRIOR 가 uniform 이면 None
     prior = None
     if SCENARIO_PRIOR != "uniform":
         prior = scenario_station_prior(scenarios, wdata)
@@ -2029,7 +2019,7 @@ def bus_demand_map(scenario):
         s = scenario.get("strand_score")
         if s:
             return s
-        # strand_score 를 못 읽은 시나리오는 조용히 구버전 기준으로 되돌린다
+        # strand_score 가 없는 시나리오는 pair_score 로 대체한다
     return scenario["pair_score"]
 
 
@@ -2046,7 +2036,6 @@ def build_scenario_route_library(scenario, start_h, depots, bus_tt, fallback_lib
 def select_routes(scenario, depots, route_library, bus_tt):
     """
     Omega_m 기반 수요맵으로 route 선별.
-    기존 파일 3의 select_routes와 동일 구조, scoring 기준만 교체.
     """
     pair_score   = bus_demand_map(scenario)
     dispatch_end = scenario["DISPATCH_END_MIN"]
@@ -2081,12 +2070,12 @@ def select_routes(scenario, depots, route_library, bus_tt):
                 "earliest": int(earliest), "latest": int(latest),
             }
 
-        # 노선당 차고지 상한 (Reviewer #3 (4) 후보생성 감도, #3 (8) 전처리).
+        # 노선당 차고지 상한 (후보생성 전처리).
         # deadhead <= 90분이 유일한 필터라 노선당 평균 9개 차고지가 붙는데,
         # 후보 (노선,차고지) 의 deadhead 중앙값이 47분이다. 배차는 t=20 부터라
         # 그 버스는 t=67 에야 태우기 시작하고, 30분 장애는 t=40 에 끝나 있다.
         # 계산 낭비이기 전에 운영상 성립하지 않는 배차다.
-        # 0 이면 무제한(기존 동작). 동률은 이름순으로 깨 결정론을 유지한다.
+        # 0 이면 무제한. 동률은 이름순으로 깨 결정론을 유지한다.
         if MAX_DEPOTS_PER_ROUTE > 0 and len(feasible) > MAX_DEPOTS_PER_ROUTE:
             keep = sorted(feasible, key=lambda d: (feasible[d]["dh_out"], d))
             feasible = {d: feasible[d] for d in keep[:MAX_DEPOTS_PER_ROUTE]}
@@ -2244,7 +2233,7 @@ def build_stage2_cache(scenario, wdata, bus_trips,
         ∪ {버스 trip stops 중 ω ODCoverage에 포함된 역}
         ∪ {dest(ω)}
 
-    ── 열 생성용 인자 (DESIGN_column_generation.md §2, §9-B) ──────────────
+    ── 열 생성용 인자 ────────────────────────────────────────────────
     N_ω 가 bus_trips 에 의존하므로, trip 부분집합으로 이 함수를 다시 부르면
     q/w 행 집합 자체가 줄어든다. 그러면 RMP 가 전체 LP 의 제한 문제가 아니게
     되어 열 생성의 전제가 깨진다.
@@ -2257,8 +2246,7 @@ def build_stage2_cache(scenario, wdata, bus_trips,
         support = build_stage2_cache(scen, wdata, 전체_trips, support_only=True)["N_omega"]
         cache   = build_stage2_cache(scen, wdata, 부분집합,  bus_stop_support=support)
 
-    같은 코드 경로로 만들어지므로 규칙이 어긋날 수 없다. 기본 인자에서는
-    기존 동작과 완전히 동일하다.
+    같은 코드 경로로 만들어지므로 규칙이 어긋날 수 없다.
     """
     Omega_m   = scenario["Omega_m"]
     Omega_Map = wdata["Omega_Map"]
@@ -2327,7 +2315,7 @@ def build_stage2_cache(scenario, wdata, bus_trips,
     #   j 에서 대기 가능한(j ∈ N_ω) 승객을 실을 수 있다. 열차 쪽은 이미 N_ω 의
     #   모든 역에서 승차를 허용하므로 이렇게 해야 두 수단이 대칭이 된다.
     #   (표본 40개 시나리오 기준 잔류 수요의 49.3% 가 원출발역이 아닌 중간역에 있다)
-    # BUS_BOARD_MODE == "origin" (구버전):
+    # BUS_BOARD_MODE == "origin":
     #   om 을 board_station 에서 역산 → OD 원출발역에서만 승차 가능.
     oms_by_dest = defaultdict(list)
     if BUS_BOARD_MODE == "general":
@@ -2575,7 +2563,7 @@ def build_block_trips(scenarios, start_h, depots, bus_tt, route_lib):
     비예견성의 계산 비용이다.
 
     반환 {sid: (selected_routes, bus_trips)}. block_station 이 없으면 빈 dict
-    (= duration 축소 경로 → 호출부가 기존대로 시나리오별 생성).
+    (= duration 축소 경로 → 호출부가 시나리오별로 생성).
     """
     blocks = defaultdict(list)
     for s in scenarios:
@@ -2632,7 +2620,7 @@ def _build_shared_y(model, scenarios, buffer=DISRUPT_BUFFER, vtype=GRB.BINARY,
     독립 변수가 된다 (info_cells 가 (30,) 같은 단일 셀로 분리).
 
     block_station 이 없으면 빈 dict → 호출부가 시나리오별 독립 변수를 만든다
-    (기존 완전정보 리코스).
+    (완전정보 리코스).
     """
     blocks = defaultdict(list)
     for s in scenarios:
@@ -2741,14 +2729,14 @@ def solve_milp(env, depots, scenarios, all_caches, wdata,
 
     lp_relax : x, y 를 연속으로 완화한다. 열 생성의 RMP 용.
     duals_out: dict 를 주면 결합제약의 **듀얼 값**을 담는다
-               (DESIGN_column_generation.md §1). 핸들이 아니라 float 다 —
+               핸들이 아니라 float 다 —
                model.dispose() 후에는 핸들이 무효이므로 반환 전에 값으로 뽑는다.
                  duals_out["q"][(sid, om, j, t)]      큐균형   π
                  duals_out["w"][(sid, om, j, t)]      도보     ρ
                  duals_out["depot"][(sid, d, tau)]    차고지   μ
                lp_relax=False 이면 MIP 라 듀얼이 없으므로 빈 dict 가 된다.
     active_columns:
-               None 이면 기존처럼 모든 trip-cell 을 만든다. 집합을 주면
+               None 이면 모든 trip-cell 을 만든다. 집합을 주면
                (block_station, trip_id, information_cell) 단위로 버스의
                y/b/a/l 및 국소제약만 제한한다. q/w/od, 열차 변수와 그 행은
                all_caches 의 full-pool 지지집합을 그대로 유지한다. 따라서
@@ -2757,16 +2745,14 @@ def solve_milp(env, depots, scenarios, all_caches, wdata,
     depot_row_keys:
                exact CG에서 고정할 full-pool (sid, depot, minute) 행 집합.
                활성 trip이 아직 없어도 0 <= x[d] 행을 만들어 μ=0으로
-               full dual에 확장할 수 있게 한다. None이면 기존 행 생성 방식.
+               full dual에 확장할 수 있게 한다. None이면 기본 행 생성 방식.
     extract_solution:
                False이면 최적값/듀얼/통계만 반환하고 큰 해 추출을 생략한다.
-               exact CG의 반복 RMP용이며 기본값은 기존과 동일한 True.
+               exact CG의 반복 RMP용이며 기본값은 True.
     aggregate_bus_load_balance:
                True이면 (omega, trip)별 단일 재귀식에 시간별 unique b/a를
-               합산한다. exact CG가 사용한다. 기본 False는 과거 duration
-               경로의 모형과 결과를 보존한다.
-
-    기본 인자에서는 기존 동작과 완전히 동일하다.
+               합산한다. exact CG가 사용한다. 기본 False는 duration
+               경로의 모형이다.
     """
     _collect = duals_out is not None
     if _collect:
@@ -2789,7 +2775,7 @@ def solve_milp(env, depots, scenarios, all_caches, wdata,
     # ==========================================
     # 🚀 Gurobi 휴리스틱 몰빵 세팅 추가
     # ==========================================
-    # 기본값은 기존 그대로다 (duration 경로 결과 보존).
+    # 기본값은 duration 경로용이다.
     # station 경로는 모델이 1.7배로 커지고 근 LP 가 병목이라 반대 튜닝이 필요하다:
     #   MIPFocus=1 + Heuristics=0.5 는 '해를 하나라도 찾자' 설정이라
     #   갭을 닫아야 하는 상황에서는 시간의 절반을 낭비한다.
@@ -2831,7 +2817,7 @@ def solve_milp(env, depots, scenarios, all_caches, wdata,
     START_MIN          = wdata["START_MIN"]
     CumD               = wdata["CumD"]
 
-    # exact CG key를 한 번 정규화한다.  기본값 None은 기존 전체 모델이다.
+    # exact CG key를 한 번 정규화한다.  기본값 None은 전체 모델이다.
     _active_columns = (None if active_columns is None else {
         (str(k), str(tid), tuple(cell)) for k, tid, cell in active_columns
     })
@@ -2848,7 +2834,7 @@ def solve_milp(env, depots, scenarios, all_caches, wdata,
             _depot_rows_by_sid_d[(row_sid, row_d)].add(tau)
 
     # 역 블록이면 배차변수를 정보집합 단위로 미리 만든다 (비예견성).
-    # duration 축소 경로에서는 빈 dict 이므로 아래에서 기존대로 시나리오별 생성.
+    # duration 축소 경로에서는 빈 dict 이므로 아래에서 시나리오별 생성.
     y_shared = _build_shared_y(
         model, scenarios, buffer=DISRUPT_BUFFER, vtype=_vt_y,
         active_columns=_active_columns, column_ub=_column_ub)
@@ -3817,7 +3803,7 @@ def main():
     env.start()
 
     try:
-        # 재개 시 기존 통계를 이어쓴다.
+        # 재개 시 저장된 통계를 이어쓴다.
         # (완료된 윈도우는 DepotAlloc_{HH}.csv 존재로 skip되어 row가 새로 안
         #  쌓이는데, 빈 리스트로 시작하면 마지막 저장에서 파일이 덮어써져
         #  이전 성능 기록이 전부 날아간다.)
@@ -3827,14 +3813,14 @@ def main():
         if os.path.exists(_prev_perf):
             try:
                 stage1_perf_rows = pd.read_csv(_prev_perf).to_dict("records")
-                print(f"  [RESUME] 기존 Stage1 perf {len(stage1_perf_rows)}건 로드")
+                print(f"  [RESUME] 저장된 Stage1 perf {len(stage1_perf_rows)}건 로드")
             except Exception as e:
                 print(f"  [RESUME] Stage1 perf 로드 실패 (새로 시작): {e}")
         _prev_scen = os.path.join(DIR_OUT_PERF, "_scenario_stats.csv")
         if os.path.exists(_prev_scen):
             try:
                 all_scenario_rows = pd.read_csv(_prev_scen).to_dict("records")
-                print(f"  [RESUME] 기존 시나리오 통계 {len(all_scenario_rows)}건 로드")
+                print(f"  [RESUME] 저장된 시나리오 통계 {len(all_scenario_rows)}건 로드")
             except Exception as e:
                 print(f"  [RESUME] 시나리오 통계 로드 실패 (새로 시작): {e}")
 
@@ -3844,8 +3830,6 @@ def main():
 
             # Skip if Stage 1 already completed.
             # Stage 1의 유일한 산출물은 DepotAlloc_{HH}.csv 이므로 이것만 체크한다.
-            # (이전엔 Stage 1이 만들지도 않는 Summary_{HH}.csv 도 AND 조건으로 체크해서
-            #  실제로는 스킵이 절대 발동하지 않던 버그가 있었음.)
             _alloc_path = os.path.join(DIR_OUT_ALLOC, f"DepotAlloc_{start_h:02d}.csv")
             if os.path.exists(_alloc_path):
                 print(f"  -> Already done (DepotAlloc_{start_h:02d}.csv exists), skipping.")

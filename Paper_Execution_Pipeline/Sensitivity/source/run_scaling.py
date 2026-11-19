@@ -235,7 +235,7 @@ def run_window(args: argparse.Namespace, window: int, k_values: tuple[int, ...])
         "MKL_NUM_THREADS": "1",
         "TSB_MAX_BUSES": str(FLEET_SIZE),
         "TSB_DEPOT_ACCESS_BOUND": str(cfg.get("operations.depot_access_bound_min")),
-        # Legacy core mode switches (code paths, not parameters).
+        # Core mode switches (code paths, not parameters).
         "TSB_ROUTE_SOURCE": "predefined",
         "TSB_BUS_BOARD": "general",
     })

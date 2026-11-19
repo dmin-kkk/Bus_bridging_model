@@ -15,7 +15,7 @@ inputs.route_topology 의 CumTime 은 철도 소요시간이다. 브리징 버�
 --------
 넣지 않는다. 순수 도로 주행시간만 쓴다 (급행과 동일 규약).
 
-출력: Local_route_Detail.csv
+출력: routes.local_detail_file (paths.routes 폴더)
 """
 import os
 import sys

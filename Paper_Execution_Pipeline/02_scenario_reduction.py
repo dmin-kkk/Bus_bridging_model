@@ -1,4 +1,4 @@
-"""Production scenario reduction used by Stage 1 (Sec. 4.3, Sec. 5.1).
+"""Scenario reduction used by Stage 1 (Sec. 4.3, Sec. 5.1).
 
 Profiles
 --------
@@ -11,12 +11,11 @@ Profiles
 * ``pinned.use_pinned = false`` (synthetic): the reduction is always recomputed
   and written to ``cfg.results_dir / paths.clustering``.
 
-Production rule (kept on purpose, see docs/MODEL_CODE_MAP.md): unweighted
+Reduction rule (see docs/MODEL_CODE_MAP.md): unweighted
 corridor-constrained K-means per corridor, local K capped by the number of
-stations with a positive impact in every duration (legacy candidate rule of
-the 2026-08-28 run), corridor budgets allocated by minimum total SSE, and one
+stations with a positive impact in every duration, corridor budgets allocated by minimum total SSE, and one
 internal representative per cluster chosen by an assignment problem with the
-station-code tie rule.  Only this rule reproduces the pinned memberships; the
+station-code tie rule.  Only this rule reproduces the paper memberships; the
 four-method comparison of ``02_reduction_method_comparison.py`` breaks three exact
 distance ties differently (H13, H15, H16).
 """
@@ -46,7 +45,7 @@ from bbconfig import cfg  # noqa: E402
 
 FLOAT_RTOL = 1e-9    # comparison tolerance for recomputed vs pinned floats
 FLOAT_ATOL = 1e-12
-TIE_EPSILON = 1e-12  # station-order tie breaker of the legacy representative rule
+TIE_EPSILON = 1e-12  # station-order tie breaker of the representative rule
 PINNED_KEYS = ("representatives", "branches", "assignments", "station_probability")
 DESCRIPTIVE_COLUMNS = {"selection_rule"}   # free-text descriptions, reported but not compared
 COMPARE_KEYS = {
@@ -105,7 +104,7 @@ def verified_pinned_files() -> dict[str, Path]:
 
 
 # ---------------------------------------------------------------------------
-# Production K-means rule (legacy candidate rule; see module docstring)
+# Corridor-constrained K-means rule (see module docstring)
 # ---------------------------------------------------------------------------
 def fit_options(data: dict, maximum_k: int, corridors: list[str], seed: int, n_init: int) -> dict:
     options = {}
@@ -262,7 +261,7 @@ def recompute(windows: tuple[int, ...], scenario_dir: Path, read_workers: int) -
         data = core.build_hour(support, valid_support, raw, hour, location_support)
         probability_rows.extend(core.apply_corridor_probability(
             data, station_corridor, corridor_probability, station_counts, beta))
-        # Legacy candidate rule: local K capped by the stations with a positive impact in every duration.
+        # Candidate rule: local K capped by the stations with a positive impact in every duration.
         data["complete"] = data["all_duration_positive_impact"]
         options = fit_options(data, k, corridors, seed, n_init)
         data["complete"] = data["all_duration_valid"]

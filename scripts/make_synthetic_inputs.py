@@ -470,7 +470,7 @@ def network_frames(net: Network) -> dict[str, object]:
 
 
 def route_topology(net: Network, od_hourly: dict) -> pd.DataFrame:
-    """Local route per line with scheduled rail times (topology file, as BusRoutes_Detail)."""
+    """Local route per line with scheduled rail times (route topology file, inputs.route_topology)."""
     dwell = DESIGN["service"]["dwell_min"]
     rows = []
     for corridor in net.corridors:

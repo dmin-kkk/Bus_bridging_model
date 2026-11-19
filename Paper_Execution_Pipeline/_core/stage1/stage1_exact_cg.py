@@ -1,17 +1,12 @@
 """Run the exact finite-pool nonanticipative Stage-1 block CG.
 
-This runner is intentionally window-by-window.  The correctness gate is
-``test_cg_stage1.py``; run it before a real window.  Production uses certified
+This runner is intentionally window-by-window.  It uses certified
 dynamic partial pricing: promising omitted columns are priced in deterministic
 batches, while a complete canonical-pool pass is still required before the
 root LP can be reported as certified.
 
 Examples
 --------
-Run the synthetic correctness gate::
-
-    python -X utf8 -m unittest -v test_cg_stage1.py
-
 Prepare and solve one real window (LP CG only)::
 
     python -X utf8 stage1_exact_cg.py \
@@ -202,7 +197,7 @@ def _current_disruption_input_files(hour: int, disruption_dir: Path,
                                     manifests, modeled_durations) -> tuple[Path, ...]:
     """Mirror the core's manifest gate and return only consumed result CSVs.
 
-    The result directory also contains old postprocessed files matching the
+    The result directory may also contain other files matching the
     broad ``Disrupt_H_*`` glob.  The preprocessing core reads only filenames
     whose final token is a modeled duration and whose latest manifest record is
     the current logic version with checkpoint ``EXTRACTED``.  Hashing exactly
@@ -2192,7 +2187,7 @@ def _run_impl(args, checkpoint):
                 summary["total_fixed_buses"] = sum(integer_counts.values())
             elif has_incumbent:
                 # Preserve a diagnostically useful incumbent without exposing
-                # it under the production filename consumed by Stage 2.
+                # it under the allocation filename consumed by Stage 2.
                 partial_path = (output / "Allocation" /
                                 f"DepotAlloc_{int(args.window):02d}_PARTIAL.csv")
                 integer_counts = _write_depot_allocation(

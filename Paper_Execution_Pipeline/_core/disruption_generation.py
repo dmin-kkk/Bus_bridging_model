@@ -318,8 +318,8 @@ if "--targets" in sys.argv:
     print(f"[TARGETS] restricted to {_TEST_TARGET_FILTER}")
 
 # --- 병렬 실행 지원: --window <시작시각> 로 단일 윈도우만 처리 ---
-# runner(2run_parallel.py)가 윈도우별 프로세스를 띄울 때 사용한다.
-# 인자가 없으면 기존 동작(전체 윈도우 순차)과 완전히 동일.
+# 윈도우별 프로세스를 병렬로 띄울 때 사용한다.
+# 인자가 없으면 전체 윈도우를 순차 처리한다.
 _STATS_SUFFIX = ""
 if "--window" in sys.argv:
     _w = int(sys.argv[sys.argv.index("--window") + 1])
@@ -331,7 +331,7 @@ if "--window" in sys.argv:
 # 병렬 실행 시 프로세스별로 파일을 분리해야 서로 덮어쓰지 않는다.
 STATS_FILE = f"{DIR_DISRUPT}/_scenario_stats{_STATS_SUFFIX}.csv"
 
-# 재개 시 기존 통계를 이어쓴다.
+# 재개 시 저장된 통계를 이어쓴다.
 # (완료된 시나리오는 CSV 존재로 skip되어 stat이 새로 안 쌓이는데, 빈 리스트로
 #  시작하면 _flush_stats()가 파일을 덮어써 이전 성능 기록이 전부 날아간다.)
 scenario_stats = []
@@ -355,9 +355,9 @@ if os.path.exists(STATS_FILE):
                 for row in _prev[["scenario", "checkpoint"]].itertuples(index=False)
                 if pd.notna(row.checkpoint)
             }
-        print(f"[RESUME] 기존 통계 {len(scenario_stats)}건 로드 ({STATS_FILE})")
+        print(f"[RESUME] 저장된 통계 {len(scenario_stats)}건 로드 ({STATS_FILE})")
     except Exception as e:
-        print(f"[RESUME] 기존 통계 로드 실패 (새로 시작): {e}")
+        print(f"[RESUME] 저장된 통계 로드 실패 (새로 시작): {e}")
 
 for start_h in START_HOURS:
     end_h = start_h + WINDOW_HOURS
@@ -537,8 +537,8 @@ for start_h in START_HOURS:
     _seq_items = list(train_seq.items())
 
     # === Phase C: 환승 <= MAX_TRANSFERS 여정이 점유 가능한 역만 남기는 rel 계산 ===
-    # 기존 방식(orig/dest를 지나는 열차의 모든 정차역 합집합)은 |N|의 ~50%를
-    # 담아 qd/dd 변수가 과다 생성됐다. 여기서는 라운드별 relaxation으로
+    # orig/dest를 지나는 열차의 모든 정차역 합집합을 쓰면 |N|의 ~50%를
+    # 담아 qd/dd 변수가 과다 생성된다. 여기서는 라운드별 relaxation으로
     # "탑승 r회 이내 도달 최소시각"(forward)과 "남은 r회로 dest 도달 최대
     # 출발시각"(backward)을 구해, 두 값이 양립하는 역만 남긴다.
     # avg |rel| 52.4 -> 23.0 (~2.3x), precompute는 OD 전체 0.2초 수준.
@@ -710,7 +710,7 @@ for start_h in START_HOURS:
                     and _scenario_checkpoints.get(scenario_name)
                     in {"EXTRACTED", "NO_AFFECTED"}):
                 # 결과가 이미 있으면 건너뛴다. 통계는 위에서 로드해 뒀으므로
-                # 이 시나리오의 기존 기록은 그대로 보존된다.
+                # 이 시나리오의 저장된 기록은 그대로 보존된다.
                 if scenario_name not in _done_scenarios:
                     print(f"    [SKIP] {scenario_name} (결과 있음, 통계 없음)")
                 continue
@@ -719,7 +719,7 @@ for start_h in START_HOURS:
                       f"{existing_version or 'unversioned'} -> "
                       f"{SCENARIO_LOGIC_VERSION}; regenerating")
 
-            # 동일 시나리오의 구버전/중단 통계 row가 있으면 새 실행 row로 교체한다.
+            # 동일 시나리오의 이전 logic_version/중단 통계 row가 있으면 새 실행 row로 교체한다.
             scenario_stats = [
                 row for row in scenario_stats
                 if str(row.get("scenario", "")) != scenario_name

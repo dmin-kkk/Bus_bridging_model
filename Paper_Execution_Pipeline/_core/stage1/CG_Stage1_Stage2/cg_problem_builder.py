@@ -48,7 +48,7 @@ import cg_stage1 as cg
 
 CORE_FILENAME = "stage1_network_model.py"
 EXPECTED_SCENARIO_LOGIC_VERSION = "causal_cancel_start_v3_20260809"
-# 원본 core 파일은 이 폴더의 부모(프로젝트 루트)에 있다. 이동해도 안 된다.
+# core 모듈(stage1_network_model.py)은 이 폴더의 부모 폴더에 있다.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PIPELINE_ROOT = os.path.dirname(os.path.dirname(BASE_DIR))
 sys.path.insert(0, os.path.dirname(PIPELINE_ROOT))   # package root (bbconfig)
@@ -58,12 +58,12 @@ PIPELINE_RESULTS = str(os.environ.get("PAPER_PIPELINE_RESULTS_DIR") or cfg.resul
 ROUTE_FILE = os.path.join(
     PIPELINE_RESULTS, cfg.get("paths.routes"), cfg.get("routes.library_file"))
 DEPOT_CANDIDATE_FILE = os.path.join(PIPELINE_INPUTS, cfg.get("inputs.depots"))
-# Legacy exposure-prior file of the in-engine reduction (not read by the paper pipeline,
-# which passes the pinned representative branches).
+# Exposure-prior file of the in-engine reduction (not read by the paper pipeline,
+# which passes the representative branches of step 02).
 SCENARIO_PROBABILITY_FILE = os.path.join(
     PIPELINE_RESULTS, cfg.get("paths.clustering"), "scenario_probabilities_exposure.csv")
 
-# Reviewer-validated production scenario reduction.  Scenario probabilities
+# Scenario reduction settings.  Scenario probabilities
 # are deliberately excluded from K-means fitting and are reassigned only after
 # the partition is fixed.
 DEFAULT_K_PER_DURATION = 12
@@ -72,7 +72,7 @@ CLUSTER_N_INIT = 20
 CLUSTER_FEATURE = "log1p_time_aggregated_q_plus_w"
 CLUSTER_METHOD = "unweighted_euclidean_kmeans"
 
-# Provenance label for the fixed, all-period K3--5 production library.
+# Provenance label for the fixed, all-period K3--5 route library.
 ROUTE_POOL_PROVENANCE = "static-all-od-k3-5"
 
 

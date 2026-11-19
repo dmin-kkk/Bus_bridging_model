@@ -1,6 +1,6 @@
 # Model ↔ code map
 
-Correspondence between the formulation of TRE-D-26-02425R1 (`manuscript.tex`, Sec. 3; Table 3 = `tab:settings`; printed equation numbers) and the code.
+Correspondence between the formulation of the paper (Sec. 3; Table 3 = `tab:settings`; printed equation numbers) and the code.
 Code column: file (abbreviation below), then function, then the name used in the code (variable, row name, constant or config key); several entries jointly implement one element.
 Files (below `Paper_Execution_Pipeline/`): **CG** `_core/stage1/CG_Stage1_Stage2/cg_stage1.py` · **CR** `_core/stage1/stage1_exact_cg.py` · **C1** `_core/stage1/stage1_network_model.py` · **SA** `_core/stage2/stage2_adaptive.py` · **MC** `_core/stage2/milp_core.py` · **NG** `_core/normal_generation.py` · **DG** `_core/disruption_generation.py` · **QC/SC/WE** `CG_Stage1_Stage2/{queue_compression,state_compression,walking_elimination}.py` · **ER** `Sensitivity/source/evaluate_ri.py` · **04/06/06D** the runners `04_stage1_positioning.py`, `06_stage2_core.py`, `06_stage2_dispatch.py`.
 
