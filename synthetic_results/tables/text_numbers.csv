@@ -1,0 +1,86 @@
+item,value,note
+corridor ALPHA D30 RI improvement (%),2.0068268615222515,
+corridor ALPHA D30 PT reduction (min),4.507800434977552,
+corridor ALPHA D60 RI improvement (%),5.794790102760723,
+corridor ALPHA D60 PT reduction (min),8.693679735288027,
+corridor BETA D30 RI improvement (%),1.1457326586017496,
+corridor BETA D30 PT reduction (min),3.599741785935191,
+corridor BETA D60 RI improvement (%),6.101229211885067,
+corridor BETA D60 PT reduction (min),9.181719213661935,
+corridor CENTRAL_SHARED D30 RI improvement (%),2.188834100747363,
+corridor CENTRAL_SHARED D30 PT reduction (min),3.777288085014681,
+corridor CENTRAL_SHARED D60 RI improvement (%),6.876081015246751,
+corridor CENTRAL_SHARED D60 PT reduction (min),6.151786598315569,
+top-10 heatmap D30 rank 1,8.594541384118159,AA5 8:00
+top-10 heatmap D30 rank 2,5.625821250660918,HUB 17:00
+top-10 heatmap D30 rank 3,5.054884612567087,BB5 8:00
+top-10 heatmap D60 rank 1,15.8680178854731,AA5 8:00
+top-10 heatmap D60 rank 2,13.120290134707703,HUB 17:00
+top-10 heatmap D60 rank 3,10.0947267727445,BB2 8:00
+hourly BASELINE 8:00 RI improvement (%),4.453774341671978,
+hourly BASELINE 17:00 RI improvement (%),3.3272860254811203,
+hourly FIXED_HUB 8:00 RI improvement (%),2.831703380824191,
+hourly FIXED_HUB 17:00 RI improvement (%),2.827530085193578,
+hourly BASELINE 8:00 PT reduction (min),4.484652384159625,
+hourly BASELINE 17:00 PT reduction (min),6.78925763909344,
+hourly FIXED_HUB 8:00 PT reduction (min),3.1020669565328647,
+hourly FIXED_HUB 17:00 PT reduction (min),6.791950645866894,
+boarding share ALPHA (%),30.802257523613203,
+boarding share BETA (%),27.877647894261788,
+boarding share CENTRAL_SHARED (%),41.32009458212501,
+OOF Wrong information RI improvement,1.795524905498452,
+OOF Wrong information PT reduction,3.7125013924456094,
+OOF Historical RI improvement,2.2109060767107573,
+OOF Historical PT reduction,4.8993412657784905,
+OOF LightGBM RI improvement,2.196202908927063,
+OOF LightGBM PT reduction,5.0260140367231765,
+OOF Perfect information RI improvement,2.399698077666529,
+OOF Perfect information PT reduction,5.509202529613213,
+sensitivity S2_TYPE_ROLLING 8:00 RI improvement (%),4.115355965048614,(a) Incident type
+sensitivity S2_TYPE_ROLLING 8:00 PT reduction (min),3.8195832422743208,(a) Incident type
+sensitivity S2_TYPE_ROLLING 17:00 RI improvement (%),2.975808214640041,(a) Incident type
+sensitivity S2_TYPE_ROLLING 17:00 PT reduction (min),5.209376643496971,(a) Incident type
+sensitivity BASELINE 8:00 RI improvement (%),4.453774341671978,(a) Incident type
+sensitivity BASELINE 8:00 PT reduction (min),4.484652384159625,(a) Incident type
+sensitivity BASELINE 17:00 RI improvement (%),3.3272860254811203,(a) Incident type
+sensitivity BASELINE 17:00 PT reduction (min),6.78925763909344,(a) Incident type
+sensitivity BASELINE 8:00 RI improvement (%),4.453774341671978,(b) Minimum trip boarding
+sensitivity BASELINE 8:00 PT reduction (min),4.484652384159625,(b) Minimum trip boarding
+sensitivity BASELINE 17:00 RI improvement (%),3.3272860254811203,(b) Minimum trip boarding
+sensitivity BASELINE 17:00 PT reduction (min),6.78925763909344,(b) Minimum trip boarding
+sensitivity S2_MTB05 8:00 RI improvement (%),4.357324578333212,(b) Minimum trip boarding
+sensitivity S2_MTB05 8:00 PT reduction (min),4.4067332165818485,(b) Minimum trip boarding
+sensitivity S2_MTB05 17:00 RI improvement (%),3.2983146343258203,(b) Minimum trip boarding
+sensitivity S2_MTB05 17:00 PT reduction (min),6.7561836517435,(b) Minimum trip boarding
+sensitivity BASELINE 8:00 RI improvement (%),4.453774341671978,(c) Travel time scaling
+sensitivity BASELINE 8:00 PT reduction (min),4.484652384159625,(c) Travel time scaling
+sensitivity BASELINE 17:00 RI improvement (%),3.3272860254811203,(c) Travel time scaling
+sensitivity BASELINE 17:00 PT reduction (min),6.78925763909344,(c) Travel time scaling
+sensitivity S2_TTP20 8:00 RI improvement (%),3.22914564128461,(c) Travel time scaling
+sensitivity S2_TTP20 8:00 PT reduction (min),2.748462458712292,(c) Travel time scaling
+sensitivity S2_TTP20 17:00 RI improvement (%),2.3769829010760595,(c) Travel time scaling
+sensitivity S2_TTP20 17:00 PT reduction (min),4.8095463850310605,(c) Travel time scaling
+sensitivity S2_BUS04 8:00 RI improvement (%),3.250446412296394,(d) Fleet size
+sensitivity S2_BUS04 8:00 PT reduction (min),2.962030660774832,(d) Fleet size
+sensitivity S2_BUS04 17:00 RI improvement (%),2.574593289384993,(d) Fleet size
+sensitivity S2_BUS04 17:00 PT reduction (min),5.354495034636586,(d) Fleet size
+sensitivity BASELINE 8:00 RI improvement (%),4.453774341671978,(d) Fleet size
+sensitivity BASELINE 8:00 PT reduction (min),4.484652384159625,(d) Fleet size
+sensitivity BASELINE 17:00 RI improvement (%),3.3272860254811203,(d) Fleet size
+sensitivity BASELINE 17:00 PT reduction (min),6.78925763909344,(d) Fleet size
+sensitivity S2_ROUTE_K3 8:00 RI improvement (%),4.067515252081607,(e) Express route pool
+sensitivity S2_ROUTE_K3 8:00 PT reduction (min),4.223417212650944,(e) Express route pool
+sensitivity S2_ROUTE_K3 17:00 RI improvement (%),3.1915117167424056,(e) Express route pool
+sensitivity S2_ROUTE_K3 17:00 PT reduction (min),6.684288840573551,(e) Express route pool
+sensitivity BASELINE 8:00 RI improvement (%),4.453774341671978,(e) Express route pool
+sensitivity BASELINE 8:00 PT reduction (min),4.484652384159625,(e) Express route pool
+sensitivity BASELINE 17:00 RI improvement (%),3.3272860254811203,(e) Express route pool
+sensitivity BASELINE 17:00 PT reduction (min),6.78925763909344,(e) Express route pool
+sensitivity BASELINE 8:00 RI improvement (%),4.453774341671978,(f) Out-of-vehicle time weight
+sensitivity BASELINE 8:00 PT reduction (min),4.484652384159625,(f) Out-of-vehicle time weight
+sensitivity BASELINE 17:00 RI improvement (%),3.3272860254811203,(f) Out-of-vehicle time weight
+sensitivity BASELINE 17:00 PT reduction (min),6.78925763909344,(f) Out-of-vehicle time weight
+sensitivity S2_QW150 8:00 RI improvement (%),4.281486474968489,(f) Out-of-vehicle time weight
+sensitivity S2_QW150 8:00 PT reduction (min),4.47542341360063,(f) Out-of-vehicle time weight
+sensitivity S2_QW150 17:00 RI improvement (%),3.245008555379691,(f) Out-of-vehicle time weight
+sensitivity S2_QW150 17:00 PT reduction (min),6.682060193560727,(f) Out-of-vehicle time weight

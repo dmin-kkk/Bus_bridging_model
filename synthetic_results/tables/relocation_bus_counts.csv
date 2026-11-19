@@ -1,0 +1,3 @@
+from_window,to_window,buses_relocated_min,depots_losing,depots_gaining
+8,17,1.0,1.0,1.0
+mean,,1.0,1.0,1.0

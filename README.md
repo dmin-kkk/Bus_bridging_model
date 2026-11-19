@@ -22,7 +22,21 @@ structure as the original case-study data. No original operational data is inclu
 | `scripts/build_archive.py`, `scripts/make_paper_figures.py` | aggregate the results and draw the figures and tables |
 | `docs/TABLE_FIGURE_MAP.md` | each table and figure of the article → script → input and output files |
 | `docs/MODEL_CODE_MAP.md` | each set, parameter, variable and equation of the formulation → code location |
+| `synthetic_results/` | figures, tables and run log of a complete synthetic run (see below) |
 | `tests/` | quick checks (`python -m unittest discover -s tests`) |
+
+## Results without running the code
+
+`synthetic_results/` holds the output of one complete run of `python run_all.py` on the synthetic
+network, so the results can be inspected before anything is executed:
+
+* `figures/` — the article's figures (Figs. 5–13) regenerated from the synthetic run, with
+  `figure_status.csv`;
+* `tables/` — the article's tables (Tables 4–8, C.1–C.2) and summary numbers, as CSV and LaTeX;
+* `run_status.json` — the runtime of each of the 27 pipeline tasks.
+
+The numbers differ from the article because the network and demand are synthetic; the figures
+and tables have the same structure and are produced by the same scripts.
 
 ## Requirements
 
