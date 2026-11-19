@@ -1,0 +1,9 @@
+[operations]
+fleet_size = 6  # reserve fleet size B (6 reserve buses)
+bus_capacity = 50  # bridging bus capacity C_v
+rail_capacity = 500  # rail vehicle capacity C_v
+min_trip_boarding = 1.0  # minimum trip boarding epsilon
+walking_transfer_min = 2  # rail-bus walking transfer time sigma
+out_of_vehicle_weight = 1.0  # out-of-vehicle time weight kappa
+depot_access_bound_min = 120  # depot access bound mu_max, Eq. (21)
+od_hourly_min_trips = 1.0  # minimum hourly OD trips for an OD pair to be kept

@@ -1,0 +1,13 @@
+[scenarios]
+time_step_min = 1  # length of one time step in minutes
+drain_buffer_min = 0  # extra minutes for in-vehicle passengers to drain after the horizon
+train_active_buffer_min = 10  # minutes a train stays active around its scheduled movement
+target_station_limit = 12  # maximum number of target stations (every station of the 12-station network)
+pass_through_fallback_ratio = 0.5  # fallback share of passengers passing through a disrupted station
+day_wrap_min = 720  # minutes added when a time wraps past midnight
+python_hash_seed = 0  # PYTHONHASHSEED of the worker processes
+constraint_block_ods = 100  # number of OD pairs per constraint-building block
+
+[scenarios.solver]
+mip_gap = 0.01  # Gurobi MIPGap of the scenario solves
+presolve = 2  # Gurobi Presolve level of the scenario solves

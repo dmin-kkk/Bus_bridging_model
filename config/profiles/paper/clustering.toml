@@ -1,0 +1,35 @@
+[clustering.reduction]
+k_candidates = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]  # Sec. 5.1: K in {6,...,20}
+# K values of the global fast-forward selection profile
+global_ffs_profile_k = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+# Sec. 4.3: four reduction methods compared
+methods = ["K-means", "K-medoids", "Hierarchical clustering", "Fast-forward scenario reduction"]
+seed = 42  # random seed of K-means and K-medoids restarts
+n_init = 20  # number of K-means restarts
+location_support = "all-duration"  # duration support used to define the location features
+read_workers = 8  # worker threads reading the disruption result files
+impact_variables = ["Queue", "Walking"]  # Sec. 4.3: clustering feature = log1p(Queue + Walking) impact per station
+production_rule = "legacy-positive-impact-cap"  # selection rule of the representative stations
+
+[clustering.guards]
+# Expected data counts (Sec. 4.3); 0 disables a check
+retained_cases = 1058  # Sec. 4.3: 1,058 retained location-window cases
+regular_incidents = 404  # expected number of regular incidents (0 disables the check)
+
+[clustering.files]
+# Output file names (below cfg.results_dir / paths.clustering). {k} = clustering.k_per_window,
+# {durations} = time.durations_min joined by "_" (e.g. "30_60")
+# output file name of the representative stations
+representatives = "selected_representative_stations_k{k}_{durations}.csv"
+branches = "selected_representative_branches_k{k}_{durations}.csv"  # output file name of the representative branches
+# output file name of the station-to-representative assignments
+assignments = "selected_station_assignments_k{k}_{durations}.csv"
+# output file name of the hourly corridor-station probabilities
+station_probability = "hourly_corridor_station_probability.csv"
+# output file name of the historical corridor probabilities
+corridor_probability = "historical_corridor_probability.csv"
+# output file name of the station-corridor definition
+corridor_definition = "station_corridor_definition_{durations}.csv"
+audit = "production_clustering_audit.json"  # output file name of the clustering audit record
+comparison = "method_comparison_k{k}.csv"  # output file name of the reduction-method comparison
+ffs_mapping = "canonical_ffs_mapping_k{k}.csv"  # output file name of the fast-forward selection mapping

@@ -1,0 +1,8 @@
+[profile]
+name = "paper"  # profile name
+description = "V/Line regional rail case study as reported in the manuscript"  # profile description
+# The V/Line incident registry, running records, OD matrix and road travel-time
+# matrix are not redistributed. Point BB_DATA_DIR to a folder holding the files
+# named in [inputs] (available from the data provider on request).
+data_dir_env = "BB_DATA_DIR"  # environment variable that points to the input data folder
+results_dir = "results/paper"  # output folder of the profile

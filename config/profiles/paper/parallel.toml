@@ -1,0 +1,11 @@
+[parallel]
+normal = { workers = 2, threads = 10 }  # worker processes and Gurobi threads per worker for normal-case runs
+disruptions = { workers = 2, threads = 10 }  # worker processes and Gurobi threads per worker for disruption runs
+stage1 = { workers = 2, threads = 10 }  # worker processes and Gurobi threads per worker for Stage 1 solves
+stage2 = { workers = 5, threads = 4 }  # worker processes and Gurobi threads per worker for Stage 2 solves
+oof = { workers = 4, threads = 5 }  # worker processes and Gurobi threads per worker for out-of-fold runs
+sensitivity = { workers = 4, threads = 5 }  # worker processes and Gurobi threads per worker for sensitivity runs
+# worker processes and Gurobi threads per worker for fleet-size Stage 1 solves
+fleet_stage1 = { workers = 1, threads = 20 }
+scaling = { workers = 1, threads = 20 }  # worker processes and Gurobi threads per worker for scaling runs
+ml_threads = 20  # threads of the classifier training

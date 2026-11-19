@@ -1,0 +1,33 @@
+[pinned]
+use_pinned = true  # read the frozen input files below (hash-checked) instead of recomputing them
+
+[pinned.clustering]
+# frozen file of the representative branches
+branches = "pinned/clustering_k14/selected_representative_branches_k14_30_60.csv"
+# SHA-256 of the frozen representative branches file
+branches_sha256 = "F555A9950E49800625B299373863F62D779734F6F0A89B4CF15C298F174D37FF"
+# frozen file of the station assignments
+assignments = "pinned/clustering_k14/selected_station_assignments_k14_30_60.csv"
+# SHA-256 of the frozen station assignments file
+assignments_sha256 = "180BF938222DD45DF13FF3DB2BEF6D86E46302CB0E81FDE3D53B21FDB75BB518"
+# frozen file of the representative stations
+representatives = "pinned/clustering_k14/selected_representative_stations_k14_30_60.csv"
+# SHA-256 of the frozen representative stations file
+representatives_sha256 = "648C69FADA1738ED726BDAA52935B468A9AB58AA64285D1C162C2DDA628CC8A9"
+# frozen file of the hourly corridor-station probabilities
+station_probability = "pinned/clustering_k14/hourly_corridor_station_probability.csv"
+# SHA-256 of the frozen hourly corridor-station probabilities file
+station_probability_sha256 = "560FDEB5A51F2020320FF49D5DD0AF40ABCD61F33EC56F22FF84A672D9404926"
+# Station weights of the RI/PT evaluation (Figs. 8, 9, 12, 13): the all-incident station-probability file of 02_clustering
+# frozen file of the evaluation station probabilities
+station_probability_evaluation = "pinned/clustering_k14/hourly_corridor_station_probability_evaluation.csv"
+# SHA-256 of the frozen evaluation station probabilities file
+station_probability_evaluation_sha256 = "07A23A4D430401A216C7B0DC4769077520F44403B728C4D51407F5E307FC2E66"
+
+[pinned.probabilities]
+# Sec. 4.4 / Table 3 (Stage 2 classifier inputs): LightGBM refit-ensemble duration probabilities
+# for the 1,058 retained location-window cases, incident type fixed to Infrastructure.
+# frozen file of the Infrastructure duration probabilities
+infrastructure = "pinned/probabilities/duration_probabilities_infrastructure.csv"
+# SHA-256 of the frozen Infrastructure duration probabilities file
+infrastructure_sha256 = "DDC9130B01BDBA65C57625F54481B10D40487641F6212289987158E91F784D32"

@@ -1,0 +1,15 @@
+[routes]
+source_mode = "predefined"  # how the route library is obtained
+bus_boarding_mode = "general"  # bus boarding rule
+local_routes_expected = 14  # Sec. 4.2: "14 local and 35 express routes" (checked against the generated library)
+express_routes_expected = 35  # Sec. 4.2: 35 express routes
+express_min_stops = 3  # Sec. 4.2: "Express candidates contain at least three stops"
+express_max_stops = 5  # Table 3: maximum express-route stops n_s = 5
+express_chain_max_stops = 7  # maximum stops of a chained express route
+express_max_travel_min = 120  # Table 3 / Sec. 4.2: maximum express-route one-way travel time
+express_min_saving_min = 1  # minimum travel-time saving of an express route over the local route in minutes
+express_endpoint_policy = "demand"  # rule selecting express route endpoints
+pool_max_stops = [3, 5, 7]  # maximum-stop variants of the express route pool
+local_earliest_start_min = 20  # earliest start minute of local routes
+local_detail_file = "Local_route_Detail.csv"  # file name of the local route stop detail
+pool_manifest_file = "Stage2_route_pool_variants_manifest.json"  # file name of the route pool variant manifest

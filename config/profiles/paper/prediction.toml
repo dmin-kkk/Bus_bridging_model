@@ -1,0 +1,144 @@
+[prediction.cohort]
+regular_trip_pattern = '8\d{3}'  # regular expression of regular trip ids
+peak_hours = [7, 8, 9, 16, 17, 18, 19]  # hours flagged as peak in the classifier features
+
+[prediction.guards]
+# Expected data counts; 0 or an empty list disables a check
+source_rows = 579  # expected row count of the incident source (0 = not checked)
+# Table tab:cutoff: [cutoff, long-class size] in the 303-incident cohort
+long_counts_cohort = [[30, 95], [35, 72], [40, 60]]
+
+[prediction.comparison]
+# 05_compare_models_long30_303_optuna.py (Table tab:classifier_performance, App. C)
+# Sec. 4.4: candidate classifiers
+families = ["Logistic Regression", "KNN", "Random Forest", "GBDT", "XGBoost", "LightGBM"]
+# order of the families for the Optuna samplers
+sampler_order = ["Logistic Regression", "KNN", "Random Forest", "GBDT", "Extra Trees", "XGBoost", "LightGBM", "CatBoost"]
+outer_folds = 5  # App. C: five stratified outer folds
+inner_folds = 3  # App. C: three stratified inner folds
+trials = 15  # App. C: 15 Optuna TPE configurations per outer fold
+seed = 42  # random seed of the model comparison
+label_threshold = 0.5  # probability threshold of the long class
+selected_family = "LightGBM"  # Sec. 5.2: lowest outer-fold Brier score (0.140)
+
+[prediction.permutation]
+# 05_lightgbm_303_thresholds_and_permutation.py (Table tab:cutoff, Fig. grouped permutation importance)
+repeats = 30  # permutation repeats of the grouped importance
+
+[prediction.legacy_cutoffs]
+outer_folds = 5  # outer folds of the cutoff comparison
+inner_folds = 5  # inner folds of the cutoff comparison
+trees = 300  # trees of the cutoff-comparison forest
+seed = 42  # random seed of the cutoff comparison
+rf_candidates = 48  # random-forest candidates of the cutoff comparison
+
+[prediction.full_grid]
+# 09_generate_full_grid_lightgbm_probabilities.py: Stage 2 classifier inputs (Table 3)
+model_family = "LightGBM"  # Sec. 5.2: selected classifier
+reference_incident_type = "infrastructure"  # Table 3: incident type = Infrastructure (slug into incident_types)
+reference_date = "2019-08-01"  # Table 3: Thursday, August, hourly rainfall/temperature of August 1, 2019
+# Sec. 5.4 (incident-type sensitivity): fixed incident types evaluated with --recompute
+# incident types [slug, label] evaluated in the probability grid
+incident_types = [["infrastructure", "Infrastructure"], ["rolling_stock", "Rolling Stock"], ["excess_loading", "Excess Loading"], ["planning_timetable", "Planning/Timetable"], ["obstruction_track", "Obstruction on/near Track"]]
+
+[prediction.outputs]
+# Sub-folders below cfg.results_dir / paths.ml, and the probability file below paths.probabilities.
+comparison = "long30_optuna"  # sub-folder of the model comparison
+thresholds = "lightgbm_cutoffs_permutation"  # sub-folder of the cutoff and permutation results
+incident_type_only = "lightgbm_incident_type_only"  # sub-folder of the incident-type-only model
+no_incident_type = "lightgbm_no_incident_type"  # sub-folder of the model without incident type
+legacy_cutoffs = "legacy404_cutoffs"  # sub-folder of the cutoff comparison
+probability_file = "duration_probabilities_{slug}.csv"  # file name template of the probability tables
+save_models = false  # write the fitted classifier to disk
+model_dir = ""  # folder of the saved classifier (empty = none)
+
+[prediction.search_space."Logistic Regression"]
+C = { type = "float", low = 0.01, high = 10.0, log = true }  # Optuna search range of C for Logistic Regression
+# Optuna search range of class_weight for Logistic Regression
+class_weight = { type = "categorical", choices = ["none", "balanced"] }
+
+[prediction.search_space.KNN]
+n_neighbors = { type = "int", low = 5, high = 45, step = 2 }  # Optuna search range of n_neighbors for KNN
+weights = { type = "categorical", choices = ["uniform", "distance"] }  # Optuna search range of weights for KNN
+p = { type = "int", low = 1, high = 2 }  # Optuna search range of p for KNN
+
+[prediction.search_space."Random Forest"]
+n_estimators = { type = "categorical", choices = [300, 600] }  # Optuna search range of n_estimators for Random Forest
+# Optuna search range of criterion for Random Forest
+criterion = { type = "categorical", choices = ["gini", "log_loss"] }
+# Optuna search range of max_features for Random Forest
+max_features = { type = "categorical", choices = ["sqrt", 0.3, 0.5, 0.7] }
+# Optuna search range of max_depth for Random Forest
+max_depth = { type = "categorical", choices = ["none", 6, 10, 16] }
+min_samples_split = { type = "int", low = 2, high = 10 }  # Optuna search range of min_samples_split for Random Forest
+min_samples_leaf = { type = "int", low = 1, high = 12 }  # Optuna search range of min_samples_leaf for Random Forest
+bootstrap = { type = "categorical", choices = [true, false] }  # Optuna search range of bootstrap for Random Forest
+# Optuna search range of class_weight for Random Forest
+class_weight = { type = "categorical", choices = ["none", "balanced", "balanced_subsample"] }
+
+[prediction.search_space.GBDT]
+n_estimators = { type = "int", low = 100, high = 400, step = 50 }  # Optuna search range of n_estimators for GBDT
+# Optuna search range of learning_rate for GBDT
+learning_rate = { type = "float", low = 0.02, high = 0.12, log = true }
+max_depth = { type = "int", low = 1, high = 4 }  # Optuna search range of max_depth for GBDT
+min_samples_leaf = { type = "int", low = 3, high = 20 }  # Optuna search range of min_samples_leaf for GBDT
+subsample = { type = "float", low = 0.7, high = 1.0 }  # Optuna search range of subsample for GBDT
+
+[prediction.search_space."Extra Trees"]
+n_estimators = { type = "categorical", choices = [300, 600] }  # Optuna search range of n_estimators for Extra Trees
+# Optuna search range of criterion for Extra Trees
+criterion = { type = "categorical", choices = ["gini", "entropy", "log_loss"] }
+# Optuna search range of max_features for Extra Trees
+max_features = { type = "categorical", choices = ["sqrt", 0.2, 0.3, 0.5, 0.7] }
+# Optuna search range of max_depth for Extra Trees
+max_depth = { type = "categorical", choices = ["none", 6, 10, 16] }
+min_samples_split = { type = "int", low = 2, high = 10 }  # Optuna search range of min_samples_split for Extra Trees
+min_samples_leaf = { type = "int", low = 1, high = 15 }  # Optuna search range of min_samples_leaf for Extra Trees
+bootstrap = { type = "categorical", choices = [true, false] }  # Optuna search range of bootstrap for Extra Trees
+# Optuna search range of class_weight for Extra Trees
+class_weight = { type = "categorical", choices = ["none", "balanced", "balanced_subsample"] }
+
+[prediction.search_space.XGBoost]
+n_estimators = { type = "int", low = 150, high = 450, step = 50 }  # Optuna search range of n_estimators for XGBoost
+max_depth = { type = "int", low = 1, high = 5 }  # Optuna search range of max_depth for XGBoost
+# Optuna search range of learning_rate for XGBoost
+learning_rate = { type = "float", low = 0.02, high = 0.15, log = true }
+min_child_weight = { type = "int", low = 1, high = 12 }  # Optuna search range of min_child_weight for XGBoost
+subsample = { type = "float", low = 0.7, high = 1.0 }  # Optuna search range of subsample for XGBoost
+colsample_bytree = { type = "float", low = 0.7, high = 1.0 }  # Optuna search range of colsample_bytree for XGBoost
+reg_lambda = { type = "float", low = 0.5, high = 10.0, log = true }  # Optuna search range of reg_lambda for XGBoost
+reg_alpha = { type = "float", low = 1e-4, high = 2.0, log = true }  # Optuna search range of reg_alpha for XGBoost
+
+[prediction.search_space.LightGBM]
+max_depth = { type = "int", low = 2, high = 6 }  # Optuna search range of max_depth for LightGBM
+n_estimators = { type = "int", low = 150, high = 450, step = 50 }  # Optuna search range of n_estimators for LightGBM
+# Optuna search range of learning_rate for LightGBM
+learning_rate = { type = "float", low = 0.02, high = 0.15, log = true }
+num_leaves = { type = "categorical", choices = [3, 5, 7, 15, 31] }  # Optuna search range of num_leaves for LightGBM
+min_child_samples = { type = "int", low = 5, high = 30 }  # Optuna search range of min_child_samples for LightGBM
+subsample = { type = "float", low = 0.7, high = 1.0 }  # Optuna search range of subsample for LightGBM
+colsample_bytree = { type = "float", low = 0.7, high = 1.0 }  # Optuna search range of colsample_bytree for LightGBM
+reg_lambda = { type = "float", low = 0.5, high = 10.0, log = true }  # Optuna search range of reg_lambda for LightGBM
+reg_alpha = { type = "float", low = 1e-4, high = 2.0, log = true }  # Optuna search range of reg_alpha for LightGBM
+
+[prediction.search_space.CatBoost]
+iterations = { type = "int", low = 150, high = 450, step = 50 }  # Optuna search range of iterations for CatBoost
+depth = { type = "int", low = 3, high = 7 }  # Optuna search range of depth for CatBoost
+# Optuna search range of learning_rate for CatBoost
+learning_rate = { type = "float", low = 0.02, high = 0.15, log = true }
+# Optuna search range of l2_leaf_reg for CatBoost
+l2_leaf_reg = { type = "float", low = 1.0, high = 15.0, log = true }
+# Optuna search range of random_strength for CatBoost
+random_strength = { type = "float", low = 1e-3, high = 2.0, log = true }
+
+[prediction.fixed_params]
+"Logistic Regression" = { max_iter = 4000 }  # fixed constructor arguments of Logistic Regression
+KNN = {}  # fixed constructor arguments of KNN
+"Random Forest" = {}  # fixed constructor arguments of Random Forest
+GBDT = {}  # fixed constructor arguments of GBDT
+"Extra Trees" = {}  # fixed constructor arguments of Extra Trees
+# fixed constructor arguments of XGBoost
+XGBoost = { objective = "binary:logistic", eval_metric = "logloss", verbosity = 0 }
+LightGBM = { verbosity = -1 }  # fixed constructor arguments of LightGBM
+# fixed constructor arguments of CatBoost
+CatBoost = { loss_function = "Logloss", verbose = false, allow_writing_files = false }

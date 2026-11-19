@@ -1,0 +1,145 @@
+﻿Origin_Code,Origin_Name,Destination_Code,Destination_Name,Distance_km,Duration_min
+AA1,Alpha 1,AA1,Alpha 1,0.0,0.0
+AA1,Alpha 1,AA2,Alpha 2,12.85,15.42
+AA1,Alpha 1,AA3,Alpha 3,26.41,31.69
+AA1,Alpha 1,AA4,Alpha 4,38.5,46.2
+AA1,Alpha 1,AA5,Alpha 5,53.42,64.1
+AA1,Alpha 1,BB1,Beta 1,14.26,17.11
+AA1,Alpha 1,BB2,Beta 2,23.86,28.63
+AA1,Alpha 1,BB3,Beta 3,37.44,44.93
+AA1,Alpha 1,BB4,Beta 4,48.69,58.43
+AA1,Alpha 1,BB5,Beta 5,62.9,75.48
+AA1,Alpha 1,CEN,Central,12.64,15.17
+AA1,Alpha 1,HUB,Hub Terminal,21.94,26.33
+AA2,Alpha 2,AA1,Alpha 1,12.85,15.42
+AA2,Alpha 2,AA2,Alpha 2,0.0,0.0
+AA2,Alpha 2,AA3,Alpha 3,13.89,16.67
+AA2,Alpha 2,AA4,Alpha 4,25.75,30.9
+AA2,Alpha 2,AA5,Alpha 5,40.85,49.02
+AA2,Alpha 2,BB1,Beta 1,22.6,27.12
+AA2,Alpha 2,BB2,Beta 2,27.12,32.54
+AA2,Alpha 2,BB3,Beta 3,37.16,44.59
+AA2,Alpha 2,BB4,Beta 4,46.65,55.98
+AA2,Alpha 2,BB5,Beta 5,60.63,72.76
+AA2,Alpha 2,CEN,Central,25.4,30.48
+AA2,Alpha 2,HUB,Hub Terminal,34.73,41.68
+AA3,Alpha 3,AA1,Alpha 1,26.41,31.69
+AA3,Alpha 3,AA2,Alpha 2,13.89,16.67
+AA3,Alpha 3,AA3,Alpha 3,0.0,0.0
+AA3,Alpha 3,AA4,Alpha 4,12.27,14.72
+AA3,Alpha 3,AA5,Alpha 5,27.02,32.42
+AA3,Alpha 3,BB1,Beta 1,36.1,43.32
+AA3,Alpha 3,BB2,Beta 2,38.41,46.09
+AA3,Alpha 3,BB3,Beta 3,45.15,54.18
+AA3,Alpha 3,BB4,Beta 4,52.35,62.82
+AA3,Alpha 3,BB5,Beta 5,65.35,78.42
+AA3,Alpha 3,CEN,Central,39.05,46.86
+AA3,Alpha 3,HUB,Hub Terminal,47.87,57.44
+AA4,Alpha 4,AA1,Alpha 1,38.5,46.2
+AA4,Alpha 4,AA2,Alpha 2,25.75,30.9
+AA4,Alpha 4,AA3,Alpha 3,12.27,14.72
+AA4,Alpha 4,AA4,Alpha 4,0.0,0.0
+AA4,Alpha 4,AA5,Alpha 5,15.38,18.46
+AA4,Alpha 4,BB1,Beta 1,47.02,56.42
+AA4,Alpha 4,BB2,Beta 2,47.31,56.77
+AA4,Alpha 4,BB3,Beta 3,51.08,61.3
+AA4,Alpha 4,BB4,Beta 4,56.0,67.2
+AA4,Alpha 4,BB5,Beta 5,67.61,81.13
+AA4,Alpha 4,CEN,Central,51.12,61.34
+AA4,Alpha 4,HUB,Hub Terminal,60.11,72.13
+AA5,Alpha 5,AA1,Alpha 1,53.42,64.1
+AA5,Alpha 5,AA2,Alpha 2,40.85,49.02
+AA5,Alpha 5,AA3,Alpha 3,27.02,32.42
+AA5,Alpha 5,AA4,Alpha 4,15.38,18.46
+AA5,Alpha 5,AA5,Alpha 5,0.0,0.0
+AA5,Alpha 5,BB1,Beta 1,62.39,74.87
+AA5,Alpha 5,BB2,Beta 2,62.36,74.83
+AA5,Alpha 5,BB3,Beta 3,64.83,77.8
+AA5,Alpha 5,BB4,Beta 4,68.21,81.85
+AA5,Alpha 5,BB5,Beta 5,78.44,94.13
+AA5,Alpha 5,CEN,Central,66.05,79.26
+AA5,Alpha 5,HUB,Hub Terminal,74.66,89.59
+BB1,Beta 1,AA1,Alpha 1,14.26,17.11
+BB1,Beta 1,AA2,Alpha 2,22.6,27.12
+BB1,Beta 1,AA3,Alpha 3,36.1,43.32
+BB1,Beta 1,AA4,Alpha 4,47.02,56.42
+BB1,Beta 1,AA5,Alpha 5,62.39,74.87
+BB1,Beta 1,BB1,Beta 1,0.0,0.0
+BB1,Beta 1,BB2,Beta 2,12.03,14.44
+BB1,Beta 1,BB3,Beta 3,26.83,32.2
+BB1,Beta 1,BB4,Beta 4,38.77,46.52
+BB1,Beta 1,BB5,Beta 5,52.56,63.07
+BB1,Beta 1,CEN,Central,13.1,15.72
+BB1,Beta 1,HUB,Hub Terminal,22.62,27.14
+BB2,Beta 2,AA1,Alpha 1,23.86,28.63
+BB2,Beta 2,AA2,Alpha 2,27.12,32.54
+BB2,Beta 2,AA3,Alpha 3,38.41,46.09
+BB2,Beta 2,AA4,Alpha 4,47.31,56.77
+BB2,Beta 2,AA5,Alpha 5,62.36,74.83
+BB2,Beta 2,BB1,Beta 1,12.03,14.44
+BB2,Beta 2,BB2,Beta 2,0.0,0.0
+BB2,Beta 2,BB3,Beta 3,14.81,17.77
+BB2,Beta 2,BB4,Beta 4,26.77,32.12
+BB2,Beta 2,BB5,Beta 5,40.54,48.65
+BB2,Beta 2,CEN,Central,25.1,30.12
+BB2,Beta 2,HUB,Hub Terminal,34.23,41.08
+BB3,Beta 3,AA1,Alpha 1,37.44,44.93
+BB3,Beta 3,AA2,Alpha 2,37.16,44.59
+BB3,Beta 3,AA3,Alpha 3,45.15,54.18
+BB3,Beta 3,AA4,Alpha 4,51.08,61.3
+BB3,Beta 3,AA5,Alpha 5,64.83,77.8
+BB3,Beta 3,BB1,Beta 1,26.83,32.2
+BB3,Beta 3,BB2,Beta 2,14.81,17.77
+BB3,Beta 3,BB3,Beta 3,0.0,0.0
+BB3,Beta 3,BB4,Beta 4,11.98,14.38
+BB3,Beta 3,BB5,Beta 5,25.79,30.95
+BB3,Beta 3,CEN,Central,39.91,47.89
+BB3,Beta 3,HUB,Hub Terminal,48.88,58.66
+BB4,Beta 4,AA1,Alpha 1,48.69,58.43
+BB4,Beta 4,AA2,Alpha 2,46.65,55.98
+BB4,Beta 4,AA3,Alpha 3,52.35,62.82
+BB4,Beta 4,AA4,Alpha 4,56.0,67.2
+BB4,Beta 4,AA5,Alpha 5,68.21,81.85
+BB4,Beta 4,BB1,Beta 1,38.77,46.52
+BB4,Beta 4,BB2,Beta 2,26.77,32.12
+BB4,Beta 4,BB3,Beta 3,11.98,14.38
+BB4,Beta 4,BB4,Beta 4,0.0,0.0
+BB4,Beta 4,BB5,Beta 5,14.23,17.08
+BB4,Beta 4,CEN,Central,51.86,62.23
+BB4,Beta 4,HUB,Hub Terminal,60.86,73.03
+BB5,Beta 5,AA1,Alpha 1,62.9,75.48
+BB5,Beta 5,AA2,Alpha 2,60.63,72.76
+BB5,Beta 5,AA3,Alpha 3,65.35,78.42
+BB5,Beta 5,AA4,Alpha 4,67.61,81.13
+BB5,Beta 5,AA5,Alpha 5,78.44,94.13
+BB5,Beta 5,BB1,Beta 1,52.56,63.07
+BB5,Beta 5,BB2,Beta 2,40.54,48.65
+BB5,Beta 5,BB3,Beta 3,25.79,30.95
+BB5,Beta 5,BB4,Beta 4,14.23,17.08
+BB5,Beta 5,BB5,Beta 5,0.0,0.0
+BB5,Beta 5,CEN,Central,65.6,78.72
+BB5,Beta 5,HUB,Hub Terminal,74.22,89.06
+CEN,Central,AA1,Alpha 1,12.64,15.17
+CEN,Central,AA2,Alpha 2,25.4,30.48
+CEN,Central,AA3,Alpha 3,39.05,46.86
+CEN,Central,AA4,Alpha 4,51.12,61.34
+CEN,Central,AA5,Alpha 5,66.05,79.26
+CEN,Central,BB1,Beta 1,13.1,15.72
+CEN,Central,BB2,Beta 2,25.1,30.12
+CEN,Central,BB3,Beta 3,39.91,47.89
+CEN,Central,BB4,Beta 4,51.86,62.23
+CEN,Central,BB5,Beta 5,65.6,78.72
+CEN,Central,CEN,Central,0.0,0.0
+CEN,Central,HUB,Hub Terminal,10.4,12.48
+HUB,Hub Terminal,AA1,Alpha 1,21.94,26.33
+HUB,Hub Terminal,AA2,Alpha 2,34.73,41.68
+HUB,Hub Terminal,AA3,Alpha 3,47.87,57.44
+HUB,Hub Terminal,AA4,Alpha 4,60.11,72.13
+HUB,Hub Terminal,AA5,Alpha 5,74.66,89.59
+HUB,Hub Terminal,BB1,Beta 1,22.62,27.14
+HUB,Hub Terminal,BB2,Beta 2,34.23,41.08
+HUB,Hub Terminal,BB3,Beta 3,48.88,58.66
+HUB,Hub Terminal,BB4,Beta 4,60.86,73.03
+HUB,Hub Terminal,BB5,Beta 5,74.22,89.06
+HUB,Hub Terminal,CEN,Central,10.4,12.48
+HUB,Hub Terminal,HUB,Hub Terminal,0.0,0.0

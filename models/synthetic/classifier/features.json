@@ -1,0 +1,62 @@
+{
+  "raw_features": {
+    "categorical": [
+      "Station",
+      "ModelCorridor",
+      "ItemTaxonomyRoot",
+      "Hour",
+      "WeekdayCategory",
+      "MonthCategory"
+    ],
+    "numeric": [
+      "RainMm",
+      "TemperatureC"
+    ]
+  },
+  "model_input_features": [
+    "categorical__Station_AA1",
+    "categorical__Station_AA2",
+    "categorical__Station_AA3",
+    "categorical__Station_AA4",
+    "categorical__Station_AA5",
+    "categorical__Station_BB1",
+    "categorical__Station_BB2",
+    "categorical__Station_BB3",
+    "categorical__Station_BB4",
+    "categorical__Station_BB5",
+    "categorical__Station_CEN",
+    "categorical__Station_HUB",
+    "categorical__ModelCorridor_Alpha",
+    "categorical__ModelCorridor_Beta",
+    "categorical__ModelCorridor_Central",
+    "categorical__ItemTaxonomyRoot_Excess Loading",
+    "categorical__ItemTaxonomyRoot_Infrastructure",
+    "categorical__ItemTaxonomyRoot_Obstruction on/near Track",
+    "categorical__ItemTaxonomyRoot_Rolling Stock",
+    "categorical__ItemTaxonomyRoot_Staff Error",
+    "categorical__Hour_17",
+    "categorical__Hour_8",
+    "categorical__WeekdayCategory_0",
+    "categorical__WeekdayCategory_1",
+    "categorical__WeekdayCategory_2",
+    "categorical__WeekdayCategory_3",
+    "categorical__WeekdayCategory_4",
+    "categorical__WeekdayCategory_5",
+    "categorical__WeekdayCategory_6",
+    "categorical__MonthCategory_8",
+    "categorical__MonthCategory_9",
+    "numeric__RainMm",
+    "numeric__TemperatureC"
+  ],
+  "numeric_scaling": {
+    "mean": [
+      0.05333333333333334,
+      14.968666666666667
+    ],
+    "scale": [
+      0.3554652663138208,
+      2.62262302963189
+    ]
+  },
+  "target": "MaxDelayMinutes >= 30 (long)"
+}

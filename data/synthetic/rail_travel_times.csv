@@ -1,0 +1,13 @@
+﻿Line,Origin_Code,Origin_Name,Destination_Code,Destination_Name,Travel_Time_Min
+LNA,HUB,Hub Terminal,CEN,Central,7
+LNA,CEN,Central,AA1,Alpha 1,9
+LNA,AA1,Alpha 1,AA2,Alpha 2,7
+LNA,AA2,Alpha 2,AA3,Alpha 3,9
+LNA,AA3,Alpha 3,AA4,Alpha 4,8
+LNA,AA4,Alpha 4,AA5,Alpha 5,10
+LNB,HUB,Hub Terminal,CEN,Central,7
+LNB,CEN,Central,BB1,Beta 1,8
+LNB,BB1,Beta 1,BB2,Beta 2,8
+LNB,BB2,Beta 2,BB3,Beta 3,9
+LNB,BB3,Beta 3,BB4,Beta 4,8
+LNB,BB4,Beta 4,BB5,Beta 5,8

@@ -1,0 +1,19 @@
+[stage1]
+# Planning windows solved by default (= time.windows); the CLI --windows selects a subset.
+# Table 3 (pi_30 = 208/303, pi_60 = 95/303; shared.toml probability.duration_counts)
+duration_probability_source = "operational303"
+max_depots_per_route = 0  # maximum depots considered per route (0 = all)
+# Nonbinding MIP start: every window starts from the depot allocation of the
+# previous (reclustered) Stage 1 run when one existed in the output folder or in paths.stage1
+# (depot values only; trip/chain values are repaired by the solver). This changes the solve
+# path only, never the model.
+warm_start_enabled = true  # start Stage 1 from the allocation of a previous run when available
+warm_start_depot_only = true  # warm start sets depot values only
+warm_start_hint_only = false  # warm start is a hint, not a fixed MIP start
+# Model files: "" = off
+export_model_dir = ""  # folder for exported Stage 1 models (empty = off)
+
+[stage1.tuning]
+time_limit_s = 300.0  # time limit in seconds of the Stage 1 parameter tuning
+candidate_time_limit_s = 60.0  # time limit in seconds per tuning candidate
+trials = 0  # number of tuning trials (0 = off)

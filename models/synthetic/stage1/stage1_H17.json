@@ -1,0 +1,33 @@
+{
+  "model": "stage1_H17",
+  "status": "OPTIMAL",
+  "runtime_seconds": 232.4359998703003,
+  "num_vars": 974318,
+  "num_constrs": 736558,
+  "num_nonzeros": 2628970,
+  "fingerprint": -1325395986,
+  "objective": 615.3748302335955,
+  "bound": 610.4945543042213,
+  "gap": 0.007930574488270257,
+  "parameters": {
+    "MIPGap": 0.01,
+    "Threads": 4,
+    "TimeLimit": 300.0
+  },
+  "gurobi_version": "12.0.3",
+  "metadata": {
+    "stage": 1,
+    "window": 17,
+    "k": 8,
+    "fleet_size": 6,
+    "durations": [
+      30,
+      60
+    ],
+    "duration_weights": {
+      "30": 0.7,
+      "60": 0.3
+    },
+    "warm_start_source": "04_stage1"
+  }
+}

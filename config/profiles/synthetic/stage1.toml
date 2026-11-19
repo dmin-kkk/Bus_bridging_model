@@ -1,0 +1,14 @@
+[stage1]
+duration_probability_source = "operational303"  # cohort used for the Stage 1 duration probabilities
+max_depots_per_route = 0  # maximum depots considered per route (0 = all)
+# start Stage 1 from the allocation of a previous run when available (no previous run to start from)
+warm_start_enabled = false
+warm_start_depot_only = true  # warm start sets depot values only
+warm_start_hint_only = false  # warm start is a hint, not a fixed MIP start
+# folder for exported Stage 1 models (.mps/.sol/.json for every solved window)
+export_model_dir = "models/synthetic/stage1"
+
+[stage1.tuning]
+time_limit_s = 300.0  # time limit in seconds of the Stage 1 parameter tuning
+candidate_time_limit_s = 60.0  # time limit in seconds per tuning candidate
+trials = 0  # number of tuning trials (0 = off)

@@ -1,0 +1,17 @@
+[inputs]
+timetable = "timetable.csv"  # file name of the train timetable
+od_matrix = "od_matrix_hourly.csv"  # file name of the hourly OD matrix
+road_times = "road_time_matrix.csv"  # file name of the road travel-time matrix between stations
+rail_travel_times = "rail_travel_times.csv"  # file name of the rail travel-time table
+stations = "stations_by_line.xlsx"  # file name of the station list by line
+corridors = "corridors.csv"  # file name of the station-to-corridor table
+corridor_tracks = "corridor_tracks.csv"  # file name of the track column to corridor id and label table
+depots = "depot_candidates.csv"  # file name of the depot candidate list
+walking_times = "walking_times.csv"  # file name of the station walking-transfer times
+local_routes = "local_routes.csv"  # file name of the ordered stops of the local routes
+route_topology = "bus_routes_detail.csv"  # file name of the route topology used to build express candidates
+incidents_raw = "incidents_raw.csv"  # file name of the raw incident records
+incidents_gt10 = "incidents_gt10.csv"  # file name of the incidents longer than 10 min with corridor and trip ids
+incidents_ge20 = "incidents_ge20.csv"  # file name of the incidents of at least 20 min with corridor and trip ids
+incident_cohort = "incident_cohort.csv"  # file name of the operational incident cohort
+weather = "weather_hourly.csv"  # file name of the hourly weather series

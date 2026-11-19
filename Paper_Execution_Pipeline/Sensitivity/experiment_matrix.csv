@@ -1,0 +1,20 @@
+case_id,reported_stage,parameter,value,windows,fleet_size,allocation_rule,min_trip_boarding,travel_time_multiplier,route_pool,queue_multiplier,walking_multiplier,objective_comparable_to_baseline,notes
+BASELINE,reference,incident type,Infrastructure,"8|17",30,matching K14 Stage1 allocation,1,1.0,EXP_K3-5,1.0,1.0,TRUE,Fixed-Infrastructure operational303 LightGBM refit-ensemble probabilities; bus-only wait-and-see
+S2_TYPE_ROLLING,stage2,incident type,Rolling Stock,"8|17",30,matching K14 Stage1 allocation,1,1.0,EXP_K3-5,1.0,1.0,TRUE,Only the fixed taxonomy used for duration probabilities changes
+S2_TYPE_EXCESS,stage2,incident type,Excess Loading,"8|17",30,matching K14 Stage1 allocation,1,1.0,EXP_K3-5,1.0,1.0,TRUE,Only the fixed taxonomy used for duration probabilities changes
+S2_TYPE_TIMETABLE,stage2,incident type,Planning/Timetable,"8|17",30,matching K14 Stage1 allocation,1,1.0,EXP_K3-5,1.0,1.0,TRUE,Only the fixed taxonomy used for duration probabilities changes
+S2_TYPE_OBSTRUCTION,stage2,incident type,Obstruction on/near Track,"8|17",30,matching K14 Stage1 allocation,1,1.0,EXP_K3-5,1.0,1.0,TRUE,Only the fixed taxonomy used for duration probabilities changes
+S2_MTB05,stage2,minimum trip boarding,5,"8|17",30,matching K14 Stage1 allocation,5,1.0,EXP_K3-5,1.0,1.0,TRUE,One-factor Stage2 change
+S2_MTB10,stage2,minimum trip boarding,10,"8|17",30,matching K14 Stage1 allocation,10,1.0,EXP_K3-5,1.0,1.0,TRUE,One-factor Stage2 change
+S2_TTM20,stage2,bus travel time,-20%,"8|17",30,matching K14 Stage1 allocation,1,0.8,EXP_K3-5,1.0,1.0,TRUE,Scale road matrix and recompute route times
+S2_TTM10,stage2,bus travel time,-10%,"8|17",30,matching K14 Stage1 allocation,1,0.9,EXP_K3-5,1.0,1.0,TRUE,Scale road matrix and recompute route times
+S2_TTP10,stage2,bus travel time,+10%,"8|17",30,matching K14 Stage1 allocation,1,1.1,EXP_K3-5,1.0,1.0,TRUE,Scale road matrix and recompute route times
+S2_TTP20,stage2,bus travel time,+20%,"8|17",30,matching K14 Stage1 allocation,1,1.2,EXP_K3-5,1.0,1.0,TRUE,Scale road matrix and recompute route times
+S2_BUS10,stage2,fleet size,10,"8|17",10,matching N10 Stage1 allocation,1,1.0,EXP_K3-5,1.0,1.0,TRUE,Stage1 allocation prerequisite per window
+S2_BUS20,stage2,fleet size,20,"8|17",20,matching N20 Stage1 allocation,1,1.0,EXP_K3-5,1.0,1.0,TRUE,Stage1 allocation prerequisite per window
+S2_BUS40,stage2,fleet size,40,"8|17",40,matching N40 Stage1 allocation,1,1.0,EXP_K3-5,1.0,1.0,TRUE,Stage1 allocation prerequisite per window
+S2_BUS50,stage2,fleet size,50,"8|17",50,matching N50 Stage1 allocation,1,1.0,EXP_K3-5,1.0,1.0,TRUE,Stage1 allocation prerequisite per window
+S2_ROUTE_K3,stage2,express route pool,K=3 only,"8|17",30,matching K14 Stage1 allocation,1,1.0,EXP_K3,1.0,1.0,TRUE,Production K3-5 selected-route set restricted to raw K3 library
+S2_ROUTE_K7,stage2,express route pool,K=3-7,"8|17",30,matching K14 Stage1 allocation,1,1.0,EXP_K3-7,1.0,1.0,TRUE,Production K3-5 selected-route set retained and augmented by K3-7 candidates
+S2_QW150,stage2,out-of-vehicle time weight,1.5,"8|17",30,matching K14 Stage1 allocation,1,1.0,EXP_K3-5,1.5,1.5,FALSE,Queue and walking coefficients are jointly scaled; compare policy and raw states
+S2_QW200,stage2,out-of-vehicle time weight,2.0,"8|17",30,matching K14 Stage1 allocation,1,1.0,EXP_K3-5,2.0,2.0,FALSE,Queue and walking coefficients are jointly scaled; compare policy and raw states

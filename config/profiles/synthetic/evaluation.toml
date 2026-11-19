@@ -1,0 +1,65 @@
+[evaluation]
+benchmark_depot = "HUB"  # depot receiving all reserve buses in the fixed centralized benchmark (central hub depot)
+benchmark_fleet = 6  # number of buses of the fixed centralized benchmark (= operations.fleet_size)
+benchmark_windows = [8, 17]  # planning windows evaluated for the fixed centralized benchmark (= time.windows)
+
+[evaluation.solver]
+# time limit in seconds per Stage 2 solve of the evaluation runs (60 s per Stage 2 instance)
+stage2_time_limit_s = 60.0
+mip_gap = 0.01  # Gurobi MIPGap of the evaluation solves
+mip_focus = 3  # Gurobi MIPFocus of the evaluation solves
+heuristics = 0.05  # Gurobi Heuristics fraction of the evaluation solves
+cuts = 2  # Gurobi Cuts level of the evaluation solves
+accept_incumbent = true  # accept the time-limit incumbent of an evaluation solve
+nonanticipativity_mode = "bus-only"  # which decisions are shared across duration branches
+# time limit in seconds of Stage 1 re-solves in sensitivity and scaling runs (bounded Stage 1 inside sensitivity/scaling)
+stage1_time_limit_s = 300.0
+stage1_auto_parameters = true  # let Stage 1 re-solves choose Gurobi parameters automatically
+
+[evaluation.ri]
+od_scope = "full"  # OD set over which RI is computed
+proposed_case = "PROPOSED"  # case id of the proposed run in the RI results
+sensitivity_output = "RI_FullOD"  # RI column used by the sensitivity summary
+
+[evaluation.oof]
+model = "LightGBM"  # classifier whose probabilities define the LightGBM information setting
+oof_file = "oof_lightgbm.csv"  # file of out-of-fold duration probabilities
+wrong_p_near = 0.99999  # branch probability of the short state under wrong information
+wrong_p_far = 0.00001  # branch probability of the long state under wrong information
+# expected number of wrong-information policy jobs (0 = not checked; count follows from the generated cohort)
+expected_wrong_policy_jobs = 0
+# expected number of eligible out-of-fold incidents (-1 = not checked; incidents outside the two windows are ineligible)
+expected_eligible_incidents = -1
+expected_zero_impact_realized = -1  # expected number of zero-impact realized cases (-1 = not checked)
+bootstrap_samples = 2000  # bootstrap resamples of the Fig. 11 confidence intervals (fewer replications)
+bootstrap_seed = 42  # random seed of the paired incident bootstrap
+
+[evaluation.sensitivity]
+windows = [8, 17]  # planning windows of the sensitivity analysis (= time.windows)
+baseline_case = "BASELINE"  # case id of the baseline sensitivity run
+baseline_incident_type = "Infrastructure"  # incident type of the baseline duration probabilities
+require_lightgbm_probabilities = true  # require LightGBM-based probability tables for the incident-type cases
+upper_route_pool_file = "BusRoutes_LOC2_EXP_K3-7_T120.csv"  # route library of the extended express pool case
+lower_route_pool_file = "BusRoutes_LOC2_EXP_K3_T120.csv"  # route library of the 3-stop express pool case
+lower_route_pool_suffix = "_EXP_K3"  # file-name suffix identifying the 3-stop express pool
+stage1_k_values = [4, 6]  # K values of the Stage 1 representative-location sensitivity
+stage1_k_windows = [17]  # planning windows of the Stage 1 K sensitivity
+
+# One value per axis (a few cases).
+# sensitivity cases with their one-factor overrides, in run order
+cases = [
+  { id = "BASELINE" },
+  { id = "S2_MTB05", min_trip_boarding = 5 },
+  { id = "S2_TTP20", travel_time_multiplier = 1.2 },
+  { id = "S2_BUS04", fleet_size = 4 },
+  { id = "S2_ROUTE_K3", route_pool = "lower" },
+  { id = "S2_QW150", out_of_vehicle_weight = 1.5 },
+  { id = "S2_TYPE_ROLLING", incident_type = "Rolling Stock" },
+]
+
+[evaluation.scaling]
+# Stage 1 scaling runs: planning window and K values
+runs = [
+  { window = 17, k_values = [4, 6, 8] },   # synthetic: 12 stations, K <= 8
+]
+warm_start_hint_only = true  # use the previous allocation only as a MIP start hint in scaling runs

@@ -1,0 +1,58 @@
+[stage2]
+# Sec. 3.4.3 (Eqs. (31)-(33) applied unchanged in Stage 2): trip activation y, duty start u and
+# chaining psi are shared across indistinguishable duration branches; passenger flows are
+# scenario-dependent (wait-and-see).
+nonanticipativity_mode = "bus-only"  # which decisions are shared across duration branches
+# Sec. 3.4.4 (Solution approach): exact reductions are applied before optimization.
+exact_state_compression = true  # apply exact state compression before optimization
+exact_trip_cell_pruning = false  # apply exact trip-cell pruning before optimization
+accept_incumbent = true  # accept the time-limit incumbent of Stage 2
+# Sec. 3.4.2: Stage 2 branch weights pi_hat come from the selected classifier (case-insensitive
+# text required in every probability_method row of the probability file).
+require_probability_method = "LightGBM"  # probability method required in the probability file
+train_active_padding_min = 10  # minutes padded around active train movements
+# Case labels written to every summary. Built from config values:
+#   {model}    prediction.full_grid.model_family (upper case)
+#   {boarding} operations.min_trip_boarding (epsilon, Table 3), {buffer} time.clearance_buffer_min
+#   {depot}/{fleet} evaluation.benchmark_depot / evaluation.benchmark_fleet
+# Example labels: PROPOSED_LIGHTGBM_BOARD1_BUF30 and FIXED_SPE30_LIGHTGBM_BOARD1_BUF30.
+proposed_case_label = "PROPOSED_{model}_BOARD{boarding}_BUF{buffer}"  # case label template of the proposed run
+# case label template of the fixed benchmark run
+benchmark_case_label = "FIXED_{depot}{fleet}_{model}_BOARD{boarding}_BUF{buffer}"
+export_model_dir = ""  # folder for exported Stage 2 models (empty = off)
+
+[stage2.solver]
+time_limit_s = 600.0  # Gurobi TimeLimit in seconds for Stage 2 solves
+mip_gap = 0.01  # Sec. 5.8: "A target MIP gap of 1.0% is used for all optimization instances"
+mip_focus = 3  # Gurobi MIPFocus for Stage 2 solves
+heuristics = 0.05  # Gurobi Heuristics fraction for Stage 2 solves
+cuts = 2  # Gurobi Cuts level for Stage 2 solves
+
+[stage2.candidates]
+# Candidate pool of milp_core.select_routes: fully enumerated (Sec. 3.4.4), Eq. (21) depot bound.
+max_depots_per_route = 0  # maximum depots per candidate route (0 = all)
+
+[stage2.core_legacy]
+k_per_duration = 10  # scenarios kept per duration state
+scenario_prior = "uniform"  # prior over the kept scenarios
+prior_alpha = 1.0  # exponent of the scenario prior
+cluster_method = "kmeans"  # scenario clustering method
+cluster_space = "z"  # feature space of the scenario clustering
+cluster_metric = "euclidean"  # distance metric of the scenario clustering
+k_mode = "fixed"  # how the number of clusters is chosen
+k_criterion = "abs"  # criterion of the cluster-number choice
+k_sil_abs = 0.5  # absolute silhouette threshold
+k_sil_tau = 0.95  # relative silhouette tolerance
+k_min = 2  # minimum number of clusters
+k_max = 25  # maximum number of clusters
+k_budget = 0  # cluster budget (0 = unrestricted)
+reduction = "duration"  # scenario reduction grouping
+k_stations = 15  # number of stations kept by the reduction
+mip_focus = 1  # Gurobi MIPFocus of the core solve
+heuristics = 0.5  # Gurobi Heuristics fraction of the core solve
+lp_method = -1  # Gurobi Method of the core solve (-1 = automatic)
+crossover = -1  # Gurobi Crossover of the core solve (-1 = automatic)
+nodefile = 0.0  # Gurobi NodefileStart in GB (0 = off)
+cg_optimality_tol = 1e-9  # Gurobi OptimalityTol of the core solve
+cg_feasibility_tol = 1e-9  # Gurobi FeasibilityTol of the core solve
+time_limit_s = 3600.0  # Gurobi TimeLimit in seconds of the core solve

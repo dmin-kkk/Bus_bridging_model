@@ -1,0 +1,97 @@
+[archive]
+bootstrap_seed = 42  # random seed of the bootstrap confidence intervals
+bootstrap_repetitions = 3000  # number of bootstrap resamples for the archive statistics
+figure_dpi = 150  # resolution of the regenerated PNG figures (smaller PNGs)
+top_stations = 10  # number of stations shown in the top-station ranking
+# legend labels of the proposed and fixed centralized strategies
+benchmark_labels = ["Proposed strategy", "Fixed centralized strategy"]
+# axis order of the corridor panels (empty = corridors labelled from their ids)
+corridor_order = []
+corridor_labels = []  # display labels of the corridors (empty = derive from corridor ids)
+# order of the information settings in the out-of-fold figures
+oof_policy_order = ["Wrong information", "Historical", "LightGBM", "Perfect information"]
+scaling_window = 17  # planning window shown in the Stage 1 scaling table
+# depot columns of the scaling table (empty = every depot with a positive target)
+scaling_depots = []
+relocation_window_gap_min = 60  # minutes between consecutive hourly targets in the relocation statistics
+source_root_marker = "busbridging"  # folder name that marks the project root when resolving source paths
+# depot grouping of the allocation table (empty = depots listed alphabetically)
+table4_depot_groups = []
+
+# Table 7: two out-of-fold cases (long realized duration; one evening case, one central-station case).
+# Each descriptor triple must match exactly one incident of the OOF cohort.
+# incident descriptors (station, hour, state, label) of the out-of-fold case table
+oof_cases = [
+  { station = "AA5", hour = 17, state = 60, label = "AA5 incident at 17:00 (long duration)" },
+  { station = "HUB", hour = 8, state = 60, label = "HUB incident at 08:00 (long duration)" },
+]
+
+# Figs. 12-13 (Sec. 5.7): panel caption, x-axis label, tick labels and the sensitivity case id of each
+# setting; one variant of evaluation.sensitivity.cases per axis, baseline fleet 6, minimum boarding 1, express stops 3-5, weight 1.0.
+# caption, x-axis label, tick labels and case ids of each sensitivity panel
+sensitivity_panels = [
+  { caption = "(a) Incident type", xlabel = "Incident type", labels = ["Rolling\nStock", "Infra-\nstructure"], cases = ["S2_TYPE_ROLLING", "BASELINE"] },
+  { caption = "(b) Minimum trip boarding", xlabel = "Minimum trip boarding", labels = ["1", "5"], cases = ["BASELINE", "S2_MTB05"] },
+  { caption = "(c) Travel time scaling", xlabel = "Travel time scaling", labels = ["0%", "+20%"], cases = ["BASELINE", "S2_TTP20"] },
+  { caption = "(d) Fleet size", xlabel = "Number of buses", labels = ["4", "6"], cases = ["S2_BUS04", "BASELINE"] },
+  { caption = "(e) Express route pool", xlabel = "Stops per EXP route", labels = ["3", "3–5"], cases = ["S2_ROUTE_K3", "BASELINE"] },
+  { caption = "(f) Out-of-vehicle time weight", xlabel = "Out-of-vehicle time weight", labels = ["1.0", "1.5"], cases = ["BASELINE", "S2_QW150"] },
+]
+
+# Fig. 10a/b (Sec. 5.5): support case at a central shared station in the evening window; compares the proposed run
+# with paths.stage2_benchmark (fixed centralized benchmark) for each duration realization
+[archive.ap_case]
+station = "CEN"  # station of the passenger-support case study (empty = skip the case figures)
+window = 17  # planning window of the support case
+benchmark = "stage2_benchmark"  # paths key of the comparison Stage 2 run in the support case
+benchmark_label = "Bus bridging (fixed centralized)"  # legend label of the comparison run in the support case
+proposed_label = "Bus bridging (proposed)"  # legend label of the proposed run in the support case
+
+# Archive file names (below <archive>/).
+[archive.files]
+corridor_groups = "network_corridor_groups.csv"  # archive file name of the corridor groups table
+corridor_labels = "network_corridor_labels.csv"  # archive file name of the corridor labels table
+stage1_allocations = "stage1_allocations.csv"  # archive file name of the stage1 allocations table
+stage1_summary = "stage1_solver_summary.csv"  # archive file name of the stage1 summary table
+stage2_runtime = "stage2_proposed_runtime.csv"  # archive file name of the stage2 runtime table
+benchmark_runtime = "stage2_benchmark_runtime.csv"  # archive file name of the benchmark runtime table
+stage2_cases = "stage2_proposed_case_metrics.csv"  # archive file name of the stage2 cases table
+stage2_corridor = "stage2_proposed_corridor_metrics.csv"  # archive file name of the stage2 corridor table
+fig8_cases = "stage2_fig8_run_case_metrics.csv"  # archive file name of the fig8 cases table
+fig8_corridor = "stage2_fig8_run_corridor_metrics.csv"  # archive file name of the fig8 corridor table
+benchmark_cases = "benchmark_case_metrics.csv"  # archive file name of the benchmark cases table
+benchmark_hourly_ri = "benchmark_hourly_ri.csv"  # archive file name of the benchmark hourly ri table
+benchmark_hourly_pt = "benchmark_hourly_pt.csv"  # archive file name of the benchmark hourly pt table
+oof_policy_summary = "oof_policy_summary.csv"  # archive file name of the oof policy summary table
+oof_value_policy_summary = "oof_value_policy_summary.csv"  # archive file name of the oof value policy summary table
+oof_cases = "oof_table7_cases.csv"  # archive file name of the oof cases table
+sensitivity = "sensitivity_summary.csv"  # archive file name of the sensitivity table
+scaling = "stage1_scaling.csv"  # archive file name of the scaling table
+scaling_allocations = "stage1_scaling_allocations.csv"  # archive file name of the scaling allocations table
+clustering_metrics = "clustering_method_metrics.csv"  # archive file name of the clustering metrics table
+ml_cutoffs = "classifier_cutoff_metrics.csv"  # archive file name of the ml cutoffs table
+ml_models = "classifier_model_comparison.csv"  # archive file name of the ml models table
+ml_importance = "classifier_grouped_importance.csv"  # archive file name of the ml importance table
+routes = "bus_routes.csv"  # archive file name of the routes table
+data_hourly = "data_hourly_boarding_alighting.csv"  # archive file name of the data hourly table
+data_corridor = "data_corridor_boarding_alighting.csv"  # archive file name of the data corridor table
+ap_case = "stage2_ap_support_case.csv"  # archive file name of the ap case table
+
+# Output names of the regenerated figures (PNG, below cfg.results_dir / paths.figures) and tables.
+[archive.outputs]
+tables_subdir = "tables"  # sub-folder of the regenerated tables
+fig5a = "fig5a_hourly_boarding_alighting.png"  # output file name of Fig. 5a
+fig5b = "fig5b_corridor_boarding_alighting.png"  # output file name of Fig. 5b
+fig6 = "fig6_clustering_metrics.png"  # output file name of Fig. 6
+fig7 = "fig7_grouped_permutation_importance.png"  # output file name of Fig. 7
+fig8a = "fig8a_corridor_ri.png"  # output file name of Fig. 8a
+fig8b = "fig8b_corridor_pt.png"  # output file name of Fig. 8b
+fig8c = "fig8c_top10_station_ri.png"  # output file name of Fig. 8c
+fig9a = "fig9a_hourly_ri_proposed_vs_fixed.png"  # output file name of Fig. 9a
+fig9b = "fig9b_hourly_pt_proposed_vs_fixed.png"  # output file name of Fig. 9b
+fig10a = "fig10a_ap_support_case_short.png"  # output file name of Fig. 10a
+fig10b = "fig10b_ap_support_case_long.png"  # output file name of Fig. 10b
+fig11a = "fig11a_oof_ri.png"  # output file name of Fig. 11a
+fig11b = "fig11b_oof_pt.png"  # output file name of Fig. 11b
+fig12 = "fig12_sensitivity_ri.png"  # output file name of Fig. 12
+fig13 = "fig13_sensitivity_pt.png"  # output file name of Fig. 13

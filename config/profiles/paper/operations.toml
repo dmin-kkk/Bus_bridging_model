@@ -1,0 +1,9 @@
+[operations]
+fleet_size = 30  # Table 3: reserve fleet size B
+bus_capacity = 50  # Table 3: bridging bus capacity C_v, v in V_rho
+rail_capacity = 500  # Table 3: rail vehicle capacity C_v, v in V_r
+min_trip_boarding = 1.0  # Table 3: minimum trip boarding epsilon
+walking_transfer_min = 2  # Table 3: rail-bus walking transfer time sigma_ij
+out_of_vehicle_weight = 1.0  # Table 3: out-of-vehicle time weight kappa
+depot_access_bound_min = 120  # Table 3: depot access bound mu_max, Eq. (21) [eq:deadhead_bound]
+od_hourly_min_trips = 1.0  # minimum hourly OD trips for an OD pair to be kept

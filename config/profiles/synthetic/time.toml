@@ -1,0 +1,8 @@
+[time]
+windows = [8, 17]  # hourly planning windows (one morning and one evening window)
+horizon_min = 240  # planning horizon T in minutes
+disruption_onset_min = 10  # disruption onset t0 in minutes
+durations_min = [30, 60]  # disruption duration states in minutes
+dispatch_interval_min = 10  # candidate service start interval eta in minutes
+clearance_buffer_min = 30  # clearance buffer delta in minutes
+evaluation_start_min = 10  # first minute of the RI/PT evaluation

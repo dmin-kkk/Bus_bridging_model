@@ -1,0 +1,44 @@
+{
+  "profile": "synthetic",
+  "model_family": "LightGBM",
+  "ensemble": "outer-fold selected configurations refitted on the full cohort; arithmetic mean of p_long",
+  "members": [
+    {
+      "max_depth": 3,
+      "n_estimators": 300,
+      "learning_rate": 0.021599666693261032,
+      "num_leaves": 3,
+      "min_child_samples": 12,
+      "subsample": 0.7649137735440016,
+      "colsample_bytree": 0.7246117725414039,
+      "reg_lambda": 4.138485159278251,
+      "reg_alpha": 0.0005890998874327245
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 150,
+      "learning_rate": 0.07591818491259966,
+      "num_leaves": 3,
+      "min_child_samples": 16,
+      "subsample": 0.8015419524689352,
+      "colsample_bytree": 0.7967441256548208,
+      "reg_lambda": 7.547081742862735,
+      "reg_alpha": 0.00027143547932258926
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 400,
+      "learning_rate": 0.09384588995091091,
+      "num_leaves": 3,
+      "min_child_samples": 27,
+      "subsample": 0.9339868886385704,
+      "colsample_bytree": 0.7628046157312329,
+      "reg_lambda": 0.7610661668667317,
+      "reg_alpha": 0.8765233804768953
+    }
+  ],
+  "fixed_params": {
+    "verbosity": -1
+  },
+  "seed": 42
+}

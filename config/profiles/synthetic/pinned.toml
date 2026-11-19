@@ -1,0 +1,18 @@
+[pinned]
+use_pinned = false  # read the frozen input files below (hash-checked) instead of recomputing them
+
+[pinned.clustering]
+branches = ""  # frozen file of the representative branches
+branches_sha256 = ""  # SHA-256 of the frozen representative branches file
+assignments = ""  # frozen file of the station assignments
+assignments_sha256 = ""  # SHA-256 of the frozen station assignments file
+representatives = ""  # frozen file of the representative stations
+representatives_sha256 = ""  # SHA-256 of the frozen representative stations file
+station_probability = ""  # frozen file of the hourly corridor-station probabilities
+station_probability_sha256 = ""  # SHA-256 of the frozen hourly corridor-station probabilities file
+station_probability_evaluation = ""  # frozen file of the evaluation station probabilities
+station_probability_evaluation_sha256 = ""  # SHA-256 of the frozen evaluation station probabilities file
+
+[pinned.probabilities]
+infrastructure = ""  # frozen file of the Infrastructure duration probabilities
+infrastructure_sha256 = ""  # SHA-256 of the frozen Infrastructure duration probabilities file

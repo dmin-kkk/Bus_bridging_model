@@ -1,0 +1,33 @@
+[clustering.reduction]
+# K values swept in the reduction-method comparison (around clustering.k_per_window = 4, at least 3 corridor groups)
+k_candidates = [3, 4, 5, 6]
+global_ffs_profile_k = [1, 2, 3, 4, 5, 6]  # K values of the global fast-forward selection profile
+# scenario-reduction methods compared
+methods = ["K-means", "K-medoids", "Hierarchical clustering", "Fast-forward scenario reduction"]
+seed = 42  # random seed of K-means and K-medoids restarts
+n_init = 20  # number of K-means restarts
+location_support = "all-duration"  # duration support used to define the location features
+read_workers = 2  # worker threads reading the disruption result files
+impact_variables = ["Queue", "Walking"]  # impact variables summed into the station clustering feature
+production_rule = "legacy-positive-impact-cap"  # selection rule of the representative stations
+
+[clustering.guards]
+# Expected data counts; 0 disables a check
+retained_cases = 0  # expected number of retained location-window cases (0 disables the check)
+regular_incidents = 0  # expected number of regular incidents (0 disables the check)
+
+[clustering.files]
+# output file name of the representative stations
+representatives = "selected_representative_stations_k{k}_{durations}.csv"
+branches = "selected_representative_branches_k{k}_{durations}.csv"  # output file name of the representative branches
+# output file name of the station-to-representative assignments
+assignments = "selected_station_assignments_k{k}_{durations}.csv"
+# output file name of the hourly corridor-station probabilities
+station_probability = "hourly_corridor_station_probability.csv"
+# output file name of the historical corridor probabilities
+corridor_probability = "historical_corridor_probability.csv"
+# output file name of the station-corridor definition
+corridor_definition = "station_corridor_definition_{durations}.csv"
+audit = "production_clustering_audit.json"  # output file name of the clustering audit record
+comparison = "method_comparison_k{k}.csv"  # output file name of the reduction-method comparison
+ffs_mapping = "canonical_ffs_mapping_k{k}.csv"  # output file name of the fast-forward selection mapping

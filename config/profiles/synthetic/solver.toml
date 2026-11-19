@@ -1,0 +1,34 @@
+[solver.stage1]
+mip_gap = 0.01  # Gurobi MIPGap for Stage 1 solves
+time_limit_s = 600.0  # Gurobi TimeLimit in seconds for Stage 1 solves (laptop run)
+auto_parameters = true  # let Stage 1 choose Gurobi parameters automatically
+accept_incumbent = true  # accept the time-limit incumbent of Stage 1 (keep the time-limit incumbent)
+# Gurobi IgnoreNames (0 = keep variable and constraint names in the exported .mps)
+ignore_names = 0
+cg_opt_tol = 1e-9  # Gurobi OptimalityTol of Stage 1 continuous solves
+cg_feas_tol = 1e-9  # Gurobi FeasibilityTol of Stage 1 continuous solves
+
+[solver.stage1.manual_profile]
+method = 2  # Gurobi Method (2 = barrier) for Stage 1
+mip_focus = 3  # Gurobi MIPFocus for Stage 1
+cuts = 2  # Gurobi Cuts level for Stage 1
+symmetry = 2  # Gurobi Symmetry level for Stage 1
+heuristics = 0.05  # Gurobi Heuristics fraction for Stage 1
+incumbent_heuristics = 0.5  # Heuristics fraction in the incumbent-search phase
+bound_focus_heuristics = 0.01  # Heuristics fraction in the bound-focus phase
+incumbent_mip_focus = 1  # MIPFocus in the incumbent-search phase
+root_escape_mip_focus = 2  # MIPFocus of the root-escape phase
+incumbent_cuts = 1  # Cuts level in the incumbent-search phase
+incumbent_cut_passes = 1  # CutPasses in the incumbent-search phase
+root_escape_cut_passes = 3  # CutPasses of the root-escape phase
+concurrent_mip = 2  # Gurobi ConcurrentMIP setting for Stage 1
+incumbent_no_rel_heur_time_s = 900.0  # seconds of NoRelHeurTime in the incumbent-search phase
+incumbent_improve_start_time_s = 0.0  # ImproveStartTime in seconds in the incumbent-search phase
+
+[solver.stage2]
+mip_gap = 0.01  # Gurobi MIPGap for Stage 2 solves
+time_limit_s = 60.0  # Gurobi TimeLimit in seconds for Stage 2 solves (60 s per Stage 2 instance)
+mip_focus = 3  # Gurobi MIPFocus for Stage 2 solves
+heuristics = 0.05  # Gurobi Heuristics fraction for Stage 2 solves
+cuts = 2  # Gurobi Cuts level for Stage 2 solves
+accept_incumbent = true  # accept the time-limit incumbent of Stage 2
